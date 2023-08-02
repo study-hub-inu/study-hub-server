@@ -8,6 +8,6 @@ public class defaultController {
 
     @GetMapping("/")
     public String home() {
-        return "<h1>aws<h1>";
+        return "<h1>studyHub<h1>";
     }
 }
