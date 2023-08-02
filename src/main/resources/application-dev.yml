@@ -1,0 +1,35 @@
+server:
+  port: 8081
+  servlet:
+    encoding:
+      charset: utf-8
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: create
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      '[hibernate.format_sql]': true
+
+  output:
+    ansi:
+      enabled: always
+
+logging:
+  level:
+    '[org.springframework.boot.web]': DEBUG
+
+# debug info warn error
