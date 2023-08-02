@@ -6,8 +6,6 @@ build/
 !**/src/test/**/build/
 !build/libs
 
-*.yml
-!deploy.yml
 */**/generated/
 
 ### STS ###
@@ -30,7 +28,6 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-*.yml
 
 ### NetBeans ###
 /nbproject/private/
