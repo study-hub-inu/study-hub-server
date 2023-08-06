@@ -5,6 +5,7 @@ import kr.co.studyhubinu.studyhubserver.member.dto.data.GeneralSignUpInfo;
 import kr.co.studyhubinu.studyhubserver.member.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void registerUser(GeneralSignUpInfo signUpInfo) {
         log.info(signUpInfo.getEmail());
@@ -22,9 +24,9 @@ public class UserService {
             throw new RuntimeException();
         }
 
-        UserEntity user = new UserEntity(signUpInfo);
+        UserEntity userEntity = signUpInfo.changeEntity(bCryptPasswordEncoder);
 
-        userRepository.save(user);
+        userRepository.save(userEntity);
     }
 
 }

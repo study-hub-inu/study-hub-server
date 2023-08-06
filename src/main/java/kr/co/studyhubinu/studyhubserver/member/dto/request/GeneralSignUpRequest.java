@@ -27,11 +27,11 @@ public class GeneralSignUpRequest {
     private String password;
 
     @Schema(description = "유저 성별", example = "FEMALE")
-    @NotBlank
+    //@NotBlank
     private GenderType gender;
 
     @Schema(description = "유저 학년", example = "FOURTH")
-    @NotBlank
+    //@NotBlank
     private GradeType grade;
 
     public GeneralSignUpInfo toDomain() {

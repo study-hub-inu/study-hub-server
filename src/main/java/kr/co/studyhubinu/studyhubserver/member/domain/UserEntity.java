@@ -5,8 +5,10 @@ import kr.co.studyhubinu.studyhubserver.member.dto.data.GeneralSignUpInfo;
 import kr.co.studyhubinu.studyhubserver.member.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.member.enums.GradeType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,13 +32,12 @@ public class UserEntity extends BaseTimeEntity {
     private GradeType grade;
 
 
-    public UserEntity(GeneralSignUpInfo signUpInfo) {
-
-        this.email = signUpInfo.getEmail();
-        this.password = signUpInfo.getPassword();
-        this.gender = signUpInfo.getGender();
-        this.grade = signUpInfo.getGrade();
-
+    @Builder
+    public UserEntity(String email, String password, GenderType gender, GradeType grade) {
+        this.email = email;
+        this.password = password;
+        this.gender = gender;
+        this.grade = grade;
     }
 }
 
