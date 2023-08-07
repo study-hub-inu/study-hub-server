@@ -32,7 +32,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     // swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 
     // DB
     runtimeOnly 'com.h2database:h2'
