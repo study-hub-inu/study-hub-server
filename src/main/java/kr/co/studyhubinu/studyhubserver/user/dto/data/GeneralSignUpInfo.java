@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GradeType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,5 +44,11 @@ public class GeneralSignUpInfo {
         this.gender = generalSignUpRequest.getGender();
         this.grade = generalSignUpRequest.getGrade();
         this.jwtToken = token;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class UserId {
+        private final Long id;
     }
 }

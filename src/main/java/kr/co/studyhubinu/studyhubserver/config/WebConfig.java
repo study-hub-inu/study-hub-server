@@ -1,6 +1,6 @@
-package com.example.todolist.config;
+package kr.co.studyhubinu.studyhubserver.config;
 
-import com.example.todolist.config.resolver.UserIdArgumentResolver;
+import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
