@@ -8,6 +8,10 @@ build/
 
 */**/generated/
 
+*.yml
+!application-prod.yml
+!deploy.yml
+
 ### STS ###
 .apt_generated
 .classpath
