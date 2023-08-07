@@ -1,8 +1,7 @@
-package kr.co.studyhubinu.studyhubserver.member.controller;
+package kr.co.studyhubinu.studyhubserver.user.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import kr.co.studyhubinu.studyhubserver.member.dto.request.GeneralSignUpRequest;
-import kr.co.studyhubinu.studyhubserver.member.service.UserService;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

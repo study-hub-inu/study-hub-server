@@ -1,14 +1,12 @@
-package kr.co.studyhubinu.studyhubserver.member.domain;
+package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
-import kr.co.studyhubinu.studyhubserver.member.dto.data.GeneralSignUpInfo;
-import kr.co.studyhubinu.studyhubserver.member.enums.GenderType;
-import kr.co.studyhubinu.studyhubserver.member.enums.GradeType;
+import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
+import kr.co.studyhubinu.studyhubserver.user.enums.GradeType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

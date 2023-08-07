@@ -1,6 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.config.auth;
 
-import kr.co.studyhubinu.studyhubserver.member.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

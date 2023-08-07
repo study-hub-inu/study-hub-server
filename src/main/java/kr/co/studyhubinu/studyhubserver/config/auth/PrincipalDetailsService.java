@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.config.auth;
 
-import kr.co.studyhubinu.studyhubserver.member.domain.UserEntity;
-import kr.co.studyhubinu.studyhubserver.member.repository.UserRepository;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

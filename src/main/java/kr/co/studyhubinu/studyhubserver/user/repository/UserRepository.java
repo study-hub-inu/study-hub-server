@@ -1,6 +1,6 @@
-package kr.co.studyhubinu.studyhubserver.member.repository;
+package kr.co.studyhubinu.studyhubserver.user.repository;
 
-import kr.co.studyhubinu.studyhubserver.member.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

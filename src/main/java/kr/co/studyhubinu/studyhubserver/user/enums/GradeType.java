@@ -1,15 +1,20 @@
-package kr.co.studyhubinu.studyhubserver.member.enums;
+package kr.co.studyhubinu.studyhubserver.user.enums;
 
 import kr.co.studyhubinu.studyhubserver.common.enums.EnumModel;
 
-public enum GenderType implements EnumModel {
-    MALE("남자"),
-    FEMALE("여자"),
-    NULL("null");
+public enum GradeType implements EnumModel {
+
+    FIRST("1학년"),
+
+    SECOND("2학년"),
+
+    THIRD("3학년"),
+
+    FOURTH("4학년");
 
     private String value;
 
-    GenderType(String value) {
+    GradeType(String value) {
         this.value = value;
     }
 
