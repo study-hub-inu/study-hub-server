@@ -31,20 +31,23 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     // swagger
-    implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
-
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation 'io.springfox:springfox-swagger-ui:3.0.0'
     // DB
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
-
     // spring-security
-
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     // jwt
-    implementation 'io.jsonwebtoken:jjwt:0.9.1'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
-
+    implementation 'com.auth0:java-jwt:4.0.0'
+    //mail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    //cache
+    implementation 'org.ehcache:ehcache:3.8.1'
+    implementation 'javax.cache:cache-api:1.1.1'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
 }
 
 tasks.named('test') {
