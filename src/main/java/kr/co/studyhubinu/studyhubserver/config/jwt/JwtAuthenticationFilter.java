@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
         this.authenticationManager = authenticationManager;
-        setFilterProcessesUrl("/users/login");
+        setFilterProcessesUrl("/api/users/login");
     }
 
     @Override
@@ -60,11 +60,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))
                 .withClaim("email", principalDetails.getUser().getEmail())
                 .withClaim("password", principalDetails.getUser().getPassword())
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+                .sign(Algorithm.HMAC512("cos"));
 
         GeneralSignUpInfo generalSignUpInfo = new GeneralSignUpInfo(generalSignUpRequest, jwtToken);
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
+        log.info(jwtToken);
         CustomResponseUtil.success(response, generalSignUpInfo);
     }
 }

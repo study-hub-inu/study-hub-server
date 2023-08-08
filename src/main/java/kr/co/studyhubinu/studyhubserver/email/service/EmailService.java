@@ -11,7 +11,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 @Slf4j
@@ -28,16 +27,10 @@ public class EmailService {
 
     public void createCode() {
         Random random = new Random();
-        StringBuffer key = new StringBuffer();
+        StringBuilder key = new StringBuilder();
 
         for(int i=0;i<8;i++) {
-            int index = random.nextInt(1);
-
-            switch (index) {
-                case 0:
-                    key.append(random.nextInt(9));
-                    break;
-            }
+            key.append(random.nextInt(10));
         }
         authNum = key.toString();
     }
@@ -46,7 +39,7 @@ public class EmailService {
     public MimeMessage createEmailForm(String email) throws MessagingException {
 
         createCode(); //인증 코드 생성
-        String setFrom = "inustudyhub@gmail.com"; //email-config에 설정한 자신의 이메일 주소(보내는 사람)
+        String setFrom = "inustudyhub@gmail.com"; //email-config 에 설정한 자신의 이메일 주소(보내는 사람)
         String toEmail = email; //받는 사람
         String title = "스터디허브 이메일 인증 번호"; //제목
 

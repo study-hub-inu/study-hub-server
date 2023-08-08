@@ -30,6 +30,7 @@ public class UserController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
+
     @Operation(summary = "로그인", description = "바디에 {email, password} 를 json 형식으로 보내주시면 됩니다. " +
             "email 은 꼭 email 형식으로 보내주셔야 합니다")
     @PostMapping("/login")
@@ -37,6 +38,8 @@ public class UserController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 
 //    @Operation(summary = "회원 정보 수정", description = "바디에 {name, email} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
 //            "보내주시면 됩니다")
