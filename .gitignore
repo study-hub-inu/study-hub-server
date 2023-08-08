@@ -8,7 +8,6 @@ build/
 
 */**/generated/
 
-*mail.html
 *ehcache.xml
 *.yml
 !application-prod.yml
