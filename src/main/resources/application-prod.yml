@@ -23,3 +23,6 @@ spring:
 logging:
   level:
     '[org.springframework.boot.web]': INFO
+
+jwt:
+  secret: ${jwt.secret}
