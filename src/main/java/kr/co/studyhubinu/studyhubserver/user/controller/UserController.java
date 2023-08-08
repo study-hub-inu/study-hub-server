@@ -1,6 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.response.JwtLoginResponse;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,14 +30,18 @@ public class UserController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-//    @Operation(summary = "로그인", description = "바디에 {email, password} 를 json 형식으로 보내주시면 됩니다. " +
-//            "email 은 꼭 email 형식으로 보내주셔야 합니다")
-//    @PostMapping("/login")
-//    public ResponseEntity<JwtLoginResponse> login(@RequestBody SignInRequest request) {
-//        return new ResponseEntity<>(userService.login(request), HttpStatus.OK);
-//    }
 
-//    @Operation(summary = "회원 수정", description = "바디에 {name, email} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
+    @Operation(summary = "로그인", description = "바디에 {email, password} 를 json 형식으로 보내주시면 됩니다. " +
+            "email 은 꼭 email 형식으로 보내주셔야 합니다")
+    @PostMapping("/login")
+    public ResponseEntity<JwtLoginResponse> login(@RequestBody SignInRequest request) {
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
+//    @Operation(summary = "회원 정보 수정", description = "바디에 {name, email} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
 //            "보내주시면 됩니다")
 //    @PutMapping("")
 //    public ResponseEntity<CommonResponse> updateUser(@RequestBody UpdateUserRequest request, UserId userId) {

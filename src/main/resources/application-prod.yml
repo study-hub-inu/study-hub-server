@@ -20,6 +20,19 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${email.username}
+    password: ${email.password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   level:
     '[org.springframework.boot.web]': INFO

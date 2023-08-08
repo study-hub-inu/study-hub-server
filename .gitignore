@@ -8,6 +8,11 @@ build/
 
 */**/generated/
 
+*ehcache.xml
+*.yml
+!application-prod.yml
+!deploy.yml
+
 ### STS ###
 .apt_generated
 .classpath
