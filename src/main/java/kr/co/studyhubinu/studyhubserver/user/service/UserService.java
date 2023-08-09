@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static kr.co.studyhubinu.studyhubserver.user.exception.UserErrorCode.USER_NOT_FOUND_EXCEPTION;
+import static kr.co.studyhubinu.studyhubserver.user.exception.UserErrorCode.SAME_USER_EXCEPTION;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +24,7 @@ public class UserService {
     public void registerUser(GeneralSignUpInfo signUpInfo) {
         log.info(signUpInfo.getEmail());
         if (userRepository.existsByEmail(signUpInfo.getEmail())) {
-            throw new UserException(USER_NOT_FOUND_EXCEPTION);
+            throw new UserException(SAME_USER_EXCEPTION);
         }
 
         UserEntity userEntity = signUpInfo.changeEntity(bCryptPasswordEncoder);
