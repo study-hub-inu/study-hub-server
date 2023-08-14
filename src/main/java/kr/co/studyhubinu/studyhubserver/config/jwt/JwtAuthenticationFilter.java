@@ -8,6 +8,7 @@ import kr.co.studyhubinu.studyhubserver.user.dto.data.GeneralSignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
 import kr.co.studyhubinu.studyhubserver.util.CustomResponseUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private final AuthenticationManager authenticationManager;
     private GeneralSignUpRequest generalSignUpRequest = new GeneralSignUpRequest();
+    @Value("${jwt.secret}")
+    private String SECRET;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -44,23 +47,21 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        generalSignUpRequest.getEmail(),
-                        generalSignUpRequest.getPassword());
+                new UsernamePasswordAuthenticationToken(generalSignUpRequest.getEmail(), generalSignUpRequest.getPassword());
 
         return authenticationManager.authenticate(authenticationToken);
     }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
-        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+        @Override
+        protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
+            PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
-        String jwtToken = JWT.create()
-                .withSubject(principalDetails.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))
-                .withClaim("email", principalDetails.getUser().getEmail())
-                .withClaim("password", principalDetails.getUser().getPassword())
-                .sign(Algorithm.HMAC512(JwtProperties.SECRET));
+            String jwtToken = JWT.create()
+                    .withSubject(principalDetails.getUsername())
+                    .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))
+                    .withClaim("email", principalDetails.getUser().getEmail())
+                    .withClaim("id", principalDetails.getUser().getId())
+                .sign(Algorithm.HMAC512(SECRET));
 
         GeneralSignUpInfo generalSignUpInfo = new GeneralSignUpInfo(generalSignUpRequest, jwtToken);
 
