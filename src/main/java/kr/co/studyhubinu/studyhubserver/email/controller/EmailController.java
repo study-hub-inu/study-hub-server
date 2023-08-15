@@ -23,7 +23,7 @@ public class EmailController {
     private final EmailService emailService;
 
     @Operation(summary = "이메일 인증코드 전송", description = "바디에 {email} json 형식으로 보내주시면 됩니다. ")
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity sendEmail(@Valid @RequestBody MailSendRequest request) throws MessagingException {
 
         emailService.sendEmail(request.toService());
@@ -40,15 +40,5 @@ public class EmailController {
         return new ResponseEntity(new ValidEmailResponse(auth), HttpStatus.OK);
 
     }
-
-    @Operation(summary = "캐싱 테스트", description = "ㅇㅇ")
-    @GetMapping("/test/{number}")
-    public ResponseEntity<String> test(@PathVariable String number) {
-
-        String result = emailService.test(number);
-
-        return new ResponseEntity(result, HttpStatus.OK);
-    }
-
 
 }

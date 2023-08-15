@@ -9,11 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.springframework.cache.annotation.Cacheable;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.Random;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,18 +22,6 @@ public class EmailService {
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
     private final EmailCacheService emailCacheService;
-
-//    @Cacheable(value = "authNumCache", key = "#email")
-//    public String getAndCacheAuthCode(String email) {
-//        Random random = new Random();
-//        StringBuilder key = new StringBuilder();
-//
-//        for(int i=0;i<8;i++) {
-//            key.append(random.nextInt(10));
-//        }
-//        emailCacheService.cacheEmail(email, key.toString());
-//        return key.toString();
-//    }
 
     //이메일 보낼 양식
     public MimeMessage createEmailForm(String email) throws MessagingException {
@@ -88,17 +74,4 @@ public class EmailService {
 
     }
 
-//    @Cacheable(value = "authNumCache", key = "#str")
-    public String test(String str) {
-
-        String result = cache(str);
-
-        return result;
-    }
-
-//    @Cacheable(value = "authNumCache", key = "#str")
-    public String cache(String str) {
-        String result = "gaesibal";
-        return result;
-    }
 }
