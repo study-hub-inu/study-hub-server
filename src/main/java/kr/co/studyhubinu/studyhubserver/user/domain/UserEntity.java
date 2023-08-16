@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.AccessLevel;
@@ -38,5 +39,13 @@ public class UserEntity extends BaseTimeEntity {
         this.nickname = nickname;
         this.major = major;
         this.gender = gender;
+    }
+
+
+    public void update(UpdateUserInfo info) {
+
+        this.nickname = info.getNickname();
+        this.major = info.getMajor();
+
     }
 }

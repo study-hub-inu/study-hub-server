@@ -2,6 +2,7 @@ package kr.co.studyhubinu.studyhubserver.user.service;
 
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.exception.UserException;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,14 @@ public class UserService {
 
         userRepository.save(userEntity);
     }
+
+    public void updateUser(UpdateUserInfo info) {
+
+        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(RuntimeException::new);
+
+        user.update(info);
+    }
+
+
 
 }
