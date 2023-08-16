@@ -23,7 +23,7 @@ public class EmailService {
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
     private final EmailCacheService emailCacheService;
-    @Value("${mail.address}")
+    @Value("${spring.mail.username}")
     private String emailAddress;
 
     //이메일 보낼 양식

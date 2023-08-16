@@ -43,6 +43,3 @@ logging:
 
 jwt:
   secret: ${jwt.secret}
-
-mail:
-  address: ${email.address}
