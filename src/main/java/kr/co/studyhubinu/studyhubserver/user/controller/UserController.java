@@ -17,7 +17,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/api/users")
 public class UserController {
 
@@ -25,7 +24,6 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity registerUser(@Valid @RequestBody GeneralSignUpRequest request) {
-        //log.info("안녕하세요");
         userService.registerUser(request.toDomain());
         return new ResponseEntity(HttpStatus.CREATED);
     }

@@ -16,7 +16,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/api/email")
 public class EmailController {
 

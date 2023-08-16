@@ -65,8 +65,8 @@ public class EmailService {
 
         String cachedAuthCode = emailCacheService.getAndCacheAuthCode(info.getEmail()); // 캐시된 인증 코드 가져오기
 
-        log.info("**************************캐시된 인증 코드다" + cachedAuthCode);
-        log.info("**************************입력된 인증 코드다" + info.getAuthCode());
+        log.info("**************************캐시된 인증 코드" + cachedAuthCode);
+        log.info("**************************입력된 인증 코드" + info.getAuthCode());
 
 
         if (cachedAuthCode != null && cachedAuthCode.equals(info.getAuthCode())) {
