@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.dto.data;
 
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
-import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GradeType;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 @NoArgsConstructor
-public class GeneralSignUpInfo {
+public class SignUpInfo {
     private String nickName;
     private String email;
     private String password;
@@ -29,7 +29,7 @@ public class GeneralSignUpInfo {
                 .build();
     }
 
-    public GeneralSignUpInfo(String nickName, String email, String password, GenderType gender, GradeType grade) {
+    public SignUpInfo(String nickName, String email, String password, GenderType gender, GradeType grade) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
@@ -37,12 +37,12 @@ public class GeneralSignUpInfo {
         this.grade = grade;
     }
 
-    public GeneralSignUpInfo(GeneralSignUpRequest generalSignUpRequest, String token) {
-        this.nickName = generalSignUpRequest.getNickName();
-        this.email = generalSignUpRequest.getEmail();
-        this.password = generalSignUpRequest.getPassword();
-        this.gender = generalSignUpRequest.getGender();
-        this.grade = generalSignUpRequest.getGrade();
+    public SignUpInfo(SignUpRequest signUpRequest, String token) {
+        this.nickName = signUpRequest.getNickName();
+        this.email = signUpRequest.getEmail();
+        this.password = signUpRequest.getPassword();
+        this.gender = signUpRequest.getGender();
+        this.grade = signUpRequest.getGrade();
         this.jwtToken = token;
     }
 

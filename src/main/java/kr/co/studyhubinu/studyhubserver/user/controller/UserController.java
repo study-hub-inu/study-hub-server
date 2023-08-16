@@ -1,12 +1,11 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.JwtLoginResponse;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +22,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity registerUser(@Valid @RequestBody GeneralSignUpRequest request) {
-        userService.registerUser(request.toDomain());
+    public ResponseEntity registerUser(@Valid @RequestBody SignUpRequest request) {
+        userService.registerUser(request.toService());
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

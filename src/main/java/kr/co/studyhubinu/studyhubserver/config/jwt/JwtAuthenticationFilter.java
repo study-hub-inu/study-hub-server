@@ -4,8 +4,8 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
-import kr.co.studyhubinu.studyhubserver.user.dto.data.GeneralSignUpInfo;
-import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.util.CustomResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +26,7 @@ import java.util.Date;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private GeneralSignUpRequest generalSignUpRequest = new GeneralSignUpRequest();
+    private SignUpRequest signUpRequest = new SignUpRequest();
     @Value("${jwt.secret}")
     private String SECRET;
 
@@ -41,13 +41,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper om = new ObjectMapper();
 
         try {
-            generalSignUpRequest = om.readValue(request.getInputStream(), GeneralSignUpRequest.class);
+            signUpRequest = om.readValue(request.getInputStream(), SignUpRequest.class);
         } catch(Exception e) {
             e.printStackTrace();
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(generalSignUpRequest.getEmail(), generalSignUpRequest.getPassword());
+                new UsernamePasswordAuthenticationToken(signUpRequest.getEmail(), signUpRequest.getPassword());
 
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -63,10 +63,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                     .withClaim("id", principalDetails.getUser().getId())
                 .sign(Algorithm.HMAC512(SECRET));
 
-        GeneralSignUpInfo generalSignUpInfo = new GeneralSignUpInfo(generalSignUpRequest, jwtToken);
+        SignUpInfo signUpInfo = new SignUpInfo(signUpRequest, jwtToken);
 
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
         log.info(jwtToken);
-        CustomResponseUtil.success(response, generalSignUpInfo);
+        CustomResponseUtil.success(response, signUpInfo);
     }
 }

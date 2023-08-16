@@ -19,7 +19,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Objects;
 
-import static kr.co.studyhubinu.studyhubserver.user.dto.data.GeneralSignUpInfo.*;
+import static kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo.*;
 import static kr.co.studyhubinu.studyhubserver.user.exception.UserErrorCode.USER_NOT_FOUND_EXCEPTION;
 
 

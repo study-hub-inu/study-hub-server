@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
-import kr.co.studyhubinu.studyhubserver.user.dto.data.GeneralSignUpInfo;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.exception.UserException;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public void registerUser(GeneralSignUpInfo signUpInfo) {
+    public void registerUser(SignUpInfo signUpInfo) {
         log.info(signUpInfo.getEmail());
         if (userRepository.existsByEmail(signUpInfo.getEmail())) {
             throw new UserException(SAME_USER_EXCEPTION);
