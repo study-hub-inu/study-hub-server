@@ -5,6 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProperties;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.exception.UserException;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.JwtLoginResponse;
@@ -23,7 +24,9 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity registerUser(@Valid @RequestBody SignUpRequest request) {
+
         userService.registerUser(request.toService());
+
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
@@ -36,19 +39,16 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
-
 //    @Operation(summary = "회원 정보 수정", description = "바디에 {name, email} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
 //            "보내주시면 됩니다")
 //    @PutMapping("")
-//    public ResponseEntity<CommonResponse> updateUser(@RequestBody UpdateUserRequest request, UserId userId) {
+//    public ResponseEntity updateUser(@RequestBody UpdateUserRequest request, UserId userId) {
 //
 //        userService.updateUser(request, userId.getId());
-//        CommonResponse response = new CommonResponse("회원 수정 완료 했습니다");
 //
-//        return new ResponseEntity<>(response, HttpStatus.OK);
+//        return new ResponseEntity(HttpStatus.OK);
 //    }
-//
+
 //    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
 //    @DeleteMapping
 //    public ResponseEntity<CommonResponse> deleteUser(UserId userId) {

@@ -3,8 +3,7 @@ package kr.co.studyhubinu.studyhubserver.user.dto.data;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
-import kr.co.studyhubinu.studyhubserver.user.enums.GradeType;
-import lombok.AllArgsConstructor;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,26 +14,28 @@ public class SignUpInfo {
     private String nickName;
     private String email;
     private String password;
+    private String nickname;
+    private MajorType major;
     private GenderType gender;
-    private GradeType grade;
-
     private String jwtToken;
 
-    public UserEntity changeEntity(BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserEntity toEntity(BCryptPasswordEncoder bCryptPasswordEncoder) {
         return UserEntity.builder()
                 .email(email)
                 .password(bCryptPasswordEncoder.encode(password))
+                .nickname(nickname)
+                .major(major)
                 .gender(gender)
-                .grade(grade)
                 .build();
     }
 
-    public SignUpInfo(String nickName, String email, String password, GenderType gender, GradeType grade) {
+    public SignUpInfo(String nickName, String email, String password, String nickname, MajorType major, GenderType gender) {
         this.nickName = nickName;
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
+        this.major = major;
         this.gender = gender;
-        this.grade = grade;
     }
 
     public SignUpInfo(SignUpRequest signUpRequest, String token) {
@@ -42,13 +43,7 @@ public class SignUpInfo {
         this.email = signUpRequest.getEmail();
         this.password = signUpRequest.getPassword();
         this.gender = signUpRequest.getGender();
-        this.grade = signUpRequest.getGrade();
         this.jwtToken = token;
     }
 
-    @Getter
-    @AllArgsConstructor
-    public static class UserId {
-        private final Long id;
-    }
 }

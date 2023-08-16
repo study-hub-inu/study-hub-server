@@ -1,11 +1,10 @@
 package kr.co.studyhubinu.studyhubserver.user.dto.request;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.studyhubinu.studyhubserver.email.validate.InuEmail;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
-import kr.co.studyhubinu.studyhubserver.user.enums.GradeType;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -26,16 +25,21 @@ public class SignUpRequest {
     @NotBlank
     private String password;
 
+    @Schema(description = "유저 닉네임", example = "닉네임")
+    @NotBlank
+    private String nickname;
+
+    @Schema(description = "유저 닉네임", example = "닉네임")
+    @NotBlank
+    private MajorType major;
+
     @Schema(description = "유저 성별", example = "FEMALE")
     @NotBlank
     private GenderType gender;
 
-    @Schema(description = "유저 학년", example = "FOURTH")
-    @NotBlank
-    private GradeType grade;
 
     public SignUpInfo toService() {
-        return new SignUpInfo(nickName, email, password, gender, grade);
+        return new SignUpInfo(nickName, email, password, nickName, major, gender);
     }
 
 }

@@ -2,7 +2,7 @@ package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
-import kr.co.studyhubinu.studyhubserver.user.enums.GradeType;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,18 +25,18 @@ public class UserEntity extends BaseTimeEntity {
 
     private String password;
 
+    private String nickname;
+
+    private MajorType major;
+
     private GenderType gender;
 
-    private GradeType grade;
-
-
     @Builder
-    public UserEntity(String email, String password, GenderType gender, GradeType grade) {
+    public UserEntity(String email, String password, String nickname, MajorType major, GenderType gender) {
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
+        this.major = major;
         this.gender = gender;
-        this.grade = grade;
     }
 }
-
-//user 는 id, email, password, nickname, gender, grade 까지만 넣겠습니다

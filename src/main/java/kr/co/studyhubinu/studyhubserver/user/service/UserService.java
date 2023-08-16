@@ -27,7 +27,7 @@ public class UserService {
             throw new UserException(SAME_USER_EXCEPTION);
         }
 
-        UserEntity userEntity = signUpInfo.changeEntity(bCryptPasswordEncoder);
+        UserEntity userEntity = signUpInfo.toEntity(bCryptPasswordEncoder);
 
         userRepository.save(userEntity);
     }
