@@ -3,6 +3,7 @@ package kr.co.studyhubinu.studyhubserver.user.service;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
+import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.exception.UserException;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,11 @@ public class UserService {
     }
 
 
+    public GetUserResponse getUser(Long userId) {
 
+        UserEntity user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+
+        return new GetUserResponse(user);
+
+    }
 }

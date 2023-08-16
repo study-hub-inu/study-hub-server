@@ -5,6 +5,7 @@ import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.UpdateUserRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.JwtLoginResponse;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -50,14 +51,14 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-//    @Operation(summary = "회원 단건 조회", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
-//    @GetMapping("")
-//    public ResponseEntity<GetUserResponse> getUser(UserId userId) {
-//
-//        userService.getUser(userId.getId());
-//
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
+    @Operation(summary = "회원 단건 조회", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
+    @GetMapping("")
+    public ResponseEntity<GetUserResponse> getUser(UserId userId) {
+
+        GetUserResponse response = userService.getUser(userId.getId());
+
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
 
 
 
