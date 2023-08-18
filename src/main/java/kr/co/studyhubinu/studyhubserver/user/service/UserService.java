@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
@@ -36,7 +37,7 @@ public class UserService {
 
     public void updateUser(UpdateUserInfo info) {
 
-        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(RuntimeException::new);
+        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
 
         user.update(info);
     }
@@ -44,7 +45,7 @@ public class UserService {
 
     public GetUserResponse getUser(Long userId) {
 
-        UserEntity user = userRepository.findById(userId).orElseThrow(RuntimeException::new);
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         return new GetUserResponse(user);
 

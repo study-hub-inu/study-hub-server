@@ -34,8 +34,6 @@ public class EmailService {
         String toEmail = email; //받는 사람
         String title = "스터디허브 이메일 인증 번호"; //제목
         log.info("**************************발급된 인증 코드" + authCode);
-
-
         MimeMessage message = emailSender.createMimeMessage();
         message.addRecipients(MimeMessage.RecipientType.TO, email); //보낼 이메일 설정
         message.setSubject(title); //제목 설정
@@ -64,17 +62,12 @@ public class EmailService {
     public boolean validEmail(ValidMailInfo info) {
 
         String cachedAuthCode = emailCacheService.getAndCacheAuthCode(info.getEmail()); // 캐시된 인증 코드 가져오기
-
-        log.info("**************************캐시된 인증 코드" + cachedAuthCode);
+        log.info("**************************캐싱된 인증 코드" + cachedAuthCode);
         log.info("**************************입력된 인증 코드" + info.getAuthCode());
-
-
         if (cachedAuthCode != null && cachedAuthCode.equals(info.getAuthCode())) {
             return true;
         }
-
         return false;
-
     }
 
 }
