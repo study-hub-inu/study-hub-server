@@ -22,7 +22,7 @@ public class PrincipalDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(() -> "ROLE_" + userEntity.getGrade());
+        authorities.add(() -> "ROLE_" + userEntity.getMajor());
         return authorities;
     }
 

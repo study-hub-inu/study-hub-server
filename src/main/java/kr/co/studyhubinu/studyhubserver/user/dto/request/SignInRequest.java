@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@NoArgsConstructor
 public class SignInRequest {
 
     @Schema(description = "유저 이메일", example = "xxx@gmail.com")
