@@ -46,16 +46,17 @@ public class EmailService {
     public void sendEmail(MailInfo info) throws MessagingException {
 
         String email = info.getEmail();
-        //메일전송에 필요한 정보 설정
         MimeMessage emailForm = createEmailForm(email);
-        //실제 메일 전송
         emailSender.send(emailForm);
+
     }
 
     public String setContext(String code) {
+
         Context context = new Context();
         context.setVariable("code", code);
         return templateEngine.process("mail", context); //mail.html
+
     }
 
 
