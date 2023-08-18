@@ -4,7 +4,6 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
-import kr.co.studyhubinu.studyhubserver.user.exception.UserException;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static kr.co.studyhubinu.studyhubserver.user.exception.UserErrorCode.SAME_USER_EXCEPTION;
 
 @Slf4j
 @RequiredArgsConstructor
