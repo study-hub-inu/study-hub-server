@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
+import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
@@ -23,8 +24,9 @@ public class UserService {
 
     public void registerUser(SignUpInfo signUpInfo) {
         log.info(signUpInfo.getEmail());
+
         if (userRepository.existsByEmail(signUpInfo.getEmail())) {
-            throw new UserException(SAME_USER_EXCEPTION);
+            throw new AlreadyExistUserException();
         }
 
         UserEntity userEntity = signUpInfo.toEntity(bCryptPasswordEncoder);
