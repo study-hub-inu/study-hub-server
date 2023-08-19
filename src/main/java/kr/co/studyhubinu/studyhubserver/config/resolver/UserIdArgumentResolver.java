@@ -38,10 +38,9 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
                                                     NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         try {
             String jwtToken = Objects.requireNonNull(webRequest.getHeader(JwtProperties.HEADER_STRING)).replace(JwtProperties.TOKEN_PREFIX, "");
-            String email = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("email").asString();
-            UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+            Long id = Long.parseLong(JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id").asString());
 
-            return new UserId(userEntity.getId());
+            return new UserId(id);
         } catch (Exception e) {
             log.info("UserIdArgumentResolver.resolveArgument() : {}", e.getMessage());
             return null;

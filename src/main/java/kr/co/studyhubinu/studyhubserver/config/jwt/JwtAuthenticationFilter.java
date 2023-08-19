@@ -52,16 +52,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         return authenticationManager.authenticate(authenticationToken);
     }
 
-        @Override
-        protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
-            PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
 
-            String jwtToken = JWT.create()
-                    .withSubject(principalDetails.getUsername())
-                    .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))
-                    .withClaim("email", principalDetails.getUser().getEmail())
-                    .withClaim("id", principalDetails.getUser().getId())
-                .sign(Algorithm.HMAC512(SECRET));
+        String jwtToken = JWT.create()
+                .withSubject(principalDetails.getUsername())
+                .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))
+                .withClaim("id", principalDetails.getUser().getId())
+            .sign(Algorithm.HMAC512(SECRET));
 
         SignUpInfo signUpInfo = new SignUpInfo(signUpRequest, jwtToken);
 
