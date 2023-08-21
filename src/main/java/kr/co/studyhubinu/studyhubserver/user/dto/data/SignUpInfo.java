@@ -11,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Getter
 @NoArgsConstructor
 public class SignUpInfo {
-    private String nickName;
     private String email;
     private String password;
     private String nickname;
@@ -29,17 +28,16 @@ public class SignUpInfo {
                 .build();
     }
 
-    public SignUpInfo(String nickName, String email, String password, String nickname, MajorType major, GenderType gender) {
-        this.nickName = nickName;
+    public SignUpInfo(String nickname, String email, String password, MajorType major, GenderType gender) {
+        this.nickname = nickname;
         this.email = email;
         this.password = password;
-        this.nickname = nickname;
         this.major = major;
         this.gender = gender;
     }
 
     public SignUpInfo(SignUpRequest signUpRequest, String token) {
-        this.nickName = signUpRequest.getNickName();
+        this.nickname = signUpRequest.getNickName();
         this.email = signUpRequest.getEmail();
         this.password = signUpRequest.getPassword();
         this.gender = signUpRequest.getGender();
