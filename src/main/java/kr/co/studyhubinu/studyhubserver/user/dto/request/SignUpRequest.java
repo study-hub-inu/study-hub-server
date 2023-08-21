@@ -39,7 +39,7 @@ public class SignUpRequest {
 
 
     public SignUpInfo toService() {
-        return new SignUpInfo(nickName, email, password, nickName, major, gender);
+        return new SignUpInfo(nickName, email, password, major, gender);
     }
 
 }
