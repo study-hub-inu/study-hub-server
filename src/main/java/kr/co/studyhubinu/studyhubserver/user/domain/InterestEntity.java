@@ -21,7 +21,7 @@ public class InterestEntity {
 
     private String name;
 
-    @Column(name = "study_post")
+    @JoinColumn(name = "study_post")
     @ManyToOne(fetch = LAZY)
     private StudyPost studyPost;
 

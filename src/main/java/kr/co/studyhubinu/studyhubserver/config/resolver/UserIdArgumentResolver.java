@@ -3,8 +3,6 @@ package kr.co.studyhubinu.studyhubserver.config.resolver;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProperties;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +35,7 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
     public UserId resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                                     NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         try {
-            String jwtToken = Objects.requireNonNull(webRequest.getHeader(JwtProperties.HEADER_STRING)).replace(JwtProperties.TOKEN_PREFIX, "");
+            String jwtToken = Objects.requireNonNull(webRequest.getHeader(JwtProperties.ACCESS_HEADER_STRING)).replace(JwtProperties.TOKEN_PREFIX, "");
             Long id = Long.parseLong(JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id").asString());
 
             return new UserId(id);

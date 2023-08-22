@@ -5,6 +5,9 @@ server:
       charset: utf-8
 
 spring:
+  redis:
+    host: studyhub-redis.reoorm.ng.0001.apn2.cache.amazonaws.com
+    port: 6379
   datasource:
     url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}?allowPublicKeyRetrieval=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver

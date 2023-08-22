@@ -11,12 +11,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Getter
 @NoArgsConstructor
 public class SignUpInfo {
+
     private String email;
     private String password;
     private String nickname;
     private MajorType major;
     private GenderType gender;
-    private String jwtToken;
+    private String accessToken;
+
+    private String refreshToken;
 
     public UserEntity toEntity(BCryptPasswordEncoder bCryptPasswordEncoder) {
         return UserEntity.builder()
@@ -36,12 +39,13 @@ public class SignUpInfo {
         this.gender = gender;
     }
 
-    public SignUpInfo(SignUpRequest signUpRequest, String token) {
+    public SignUpInfo(SignUpRequest signUpRequest, String accessToken, String refreshToken) {
         this.nickname = signUpRequest.getNickName();
         this.email = signUpRequest.getEmail();
         this.password = signUpRequest.getPassword();
         this.gender = signUpRequest.getGender();
-        this.jwtToken = token;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 
 }
