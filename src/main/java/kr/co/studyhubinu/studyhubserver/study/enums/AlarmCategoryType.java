@@ -1,21 +1,22 @@
-package kr.co.studyhubinu.studyhubserver.user.enums;
+package kr.co.studyhubinu.studyhubserver.study.enums;
 
 import kr.co.studyhubinu.studyhubserver.common.enums.EnumModel;
 
-public enum MajorType implements EnumModel {
-    COMPUTER("컴퓨터공학부"),
-    INFORMATION("정보통신공학과"),
-    DESIGN("디자인학부");
+public enum AlarmCategoryType implements EnumModel {
+
+    ACTIVITY("활동"),
+    INTEREST("관심사"),
+    MAJOR("학과");
 
     private String value;
 
-    MajorType(String value) {
+    AlarmCategoryType(String value) {
         this.value = value;
     }
 
     /**
      * enum key 리턴
-     * @return 'Male' or 'FEMALE'
+     * @return 'CONTACT' or 'UNTACT'
      */
     @Override
     public String getKey() {
@@ -24,10 +25,12 @@ public enum MajorType implements EnumModel {
 
     /**
      * enum value 리턴
-     * @return '남자' or '여자'
+     * @return '대면' or '비대면'
      */
     @Override
     public String getValue() {
         return value;
     }
+
+
 }

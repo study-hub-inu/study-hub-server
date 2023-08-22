@@ -1,10 +1,8 @@
 package kr.co.studyhubinu.studyhubserver.config.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,43 +26,44 @@ import java.io.IOException;
 @Component
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
-    private final UserRepository userRepository;
+    private final JwtProvider jwtProvider;
+
     @Value("${jwt.secret}")
     private String SECRET;
 
-    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository) {
+    public JwtAuthorizationFilter(AuthenticationManager authenticationManager, UserRepository userRepository, JwtProvider jwtProvider) {
         super(authenticationManager);
-        this.userRepository = userRepository;
+        this.jwtProvider = jwtProvider;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
 
-        if (jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
-            chain.doFilter(request, response);
-            return;
-        }
+        if(isHeaderVerify(request, response)) {
+            String accessToken = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
+            String refreshToken = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
-        String jwtToken = request.getHeader(JwtProperties.HEADER_STRING).replace(JwtProperties.TOKEN_PREFIX, "");
+            try {
+                PrincipalDetails principalDetails = jwtProvider.accessTokenVerify(accessToken);
 
-        String email =
-                JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("email").asString();
-
-        if(email != null) {
-            UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
-
-            // 인증은 토큰 검증시 끝. 인증을 하기 위해서가 아닌 스프링 시큐리티가 수행하는 권한처리를 위해
-            // 아래와 같이 토큰을 만들어서 Authentication 객체를 강제로 만들고 그걸 세션에 저장
-            PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
-            Authentication authentication =
-                    new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
-
-            //강제로 시큐리티의 세션에 접근하여 Authentication 저장
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch(TokenExpiredException e) {
+                // 에러 발생 시켜서 보내줌
+                throw new TokenNotFoundException();
+            }
         }
 
         chain.doFilter(request, response);
+    }
+
+    private boolean isHeaderVerify(HttpServletRequest request, HttpServletResponse response) {
+        String accessHeader = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
+
+        if(accessHeader == null || accessHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
+            return false;
+        }
+        return true;
     }
 }

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
@@ -19,7 +20,7 @@ import javax.persistence.Id;
 public class UserEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -33,7 +34,8 @@ public class UserEntity extends BaseTimeEntity {
     private GenderType gender;
 
     @Builder
-    public UserEntity(String email, String password, String nickname, MajorType major, GenderType gender) {
+    public UserEntity(Long id, String email, String password, String nickname, MajorType major, GenderType gender) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -43,9 +45,7 @@ public class UserEntity extends BaseTimeEntity {
 
 
     public void update(UpdateUserInfo info) {
-
         this.nickname = info.getNickname();
         this.major = info.getMajor();
-
     }
 }

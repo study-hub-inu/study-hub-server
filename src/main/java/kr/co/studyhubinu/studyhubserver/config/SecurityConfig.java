@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .apply(new MyCustomDsl())
                 .and()
                 .authorizeRequests()
-                .antMatchers("/users/login").permitAll()
+                .antMatchers("/api/users/login").permitAll()
                 .and().build();
     }
 
