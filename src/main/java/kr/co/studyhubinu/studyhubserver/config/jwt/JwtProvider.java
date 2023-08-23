@@ -43,7 +43,7 @@ public class JwtProvider {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7 )) // 1주일
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(SECRET));
-        redisTemplate.opsForValue().set(id, jwtToken, 1000L * 60 * 60 * 24 * 7 * 4);
+        redisTemplate.opsForValue().set(id.toString(), jwtToken, 1000L * 60 * 60 * 24 * 7 * 4);
         return JwtProperties.TOKEN_PREFIX + jwtToken;
     }
 
@@ -72,7 +72,7 @@ public class JwtProvider {
         String refreshToken = jwtDto.getRefreshToken();
         Long id = jwtDto.getId();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
             return accessTokenCreate(id);
         }
         throw new TokenNotFoundException();
@@ -82,9 +82,9 @@ public class JwtProvider {
         String refreshToken = jwtDto.getRefreshToken();
         Long id = jwtDto.getId();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
             String token = refreshTokenCreate(id);
-            redisTemplate.opsForValue().set(id, token);
+            redisTemplate.opsForValue().set(id.toString(), token);
             return token;
         }
         throw new TokenNotFoundException();
