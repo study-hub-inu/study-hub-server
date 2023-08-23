@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPost;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +23,7 @@ public class InterestEntity {
 
     @JoinColumn(name = "study_post")
     @ManyToOne(fetch = LAZY)
-    private StudyPost studyPost;
+    private StudyPostEntity studyPostEntity;
 
     @ManyToOne(fetch = LAZY)
     private UserEntity user;
