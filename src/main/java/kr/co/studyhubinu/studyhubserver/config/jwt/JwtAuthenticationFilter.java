@@ -1,11 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.config.jwt;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
-import kr.co.studyhubinu.studyhubserver.user.dto.data.GeneralSignUpInfo;
-import kr.co.studyhubinu.studyhubserver.user.dto.request.GeneralSignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.util.CustomResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,20 +17,22 @@ import org.springframework.stereotype.Component;
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 @Slf4j
 @Component
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private GeneralSignUpRequest generalSignUpRequest = new GeneralSignUpRequest();
+    private final JwtProvider jwtProvider;
+    private SignUpRequest signUpRequest = new SignUpRequest();
+
     @Value("${jwt.secret}")
     private String SECRET;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtProvider jwtProvider) {
         super(authenticationManager);
         this.authenticationManager = authenticationManager;
+        this.jwtProvider = jwtProvider;
         setFilterProcessesUrl("/api/users/login");
     }
 
@@ -41,32 +41,28 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         ObjectMapper om = new ObjectMapper();
 
         try {
-            generalSignUpRequest = om.readValue(request.getInputStream(), GeneralSignUpRequest.class);
+            signUpRequest = om.readValue(request.getInputStream(), SignUpRequest.class);
         } catch(Exception e) {
             e.printStackTrace();
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(generalSignUpRequest.getEmail(), generalSignUpRequest.getPassword());
+                new UsernamePasswordAuthenticationToken(signUpRequest.getEmail(), signUpRequest.getPassword());
 
         return authenticationManager.authenticate(authenticationToken);
     }
 
-        @Override
-        protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
-            PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+    @Override
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
+        PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
+        String accessToken = jwtProvider.accessTokenCreate(principalDetails.getUser().getId());
+        String refreshToken = jwtProvider.refreshTokenCreate(principalDetails.getUser().getId());
 
-            String jwtToken = JWT.create()
-                    .withSubject(principalDetails.getUsername())
-                    .withExpiresAt(new Date(System.currentTimeMillis()+(JwtProperties.EXPIRATION_TIME)))
-                    .withClaim("email", principalDetails.getUser().getEmail())
-                    .withClaim("id", principalDetails.getUser().getId())
-                .sign(Algorithm.HMAC512(SECRET));
+        response.addHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
+        response.addHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
 
-        GeneralSignUpInfo generalSignUpInfo = new GeneralSignUpInfo(generalSignUpRequest, jwtToken);
+        SignUpInfo signUpInfo = new SignUpInfo(signUpRequest, accessToken, refreshToken);
 
-        response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
-        log.info(jwtToken);
-        CustomResponseUtil.success(response, generalSignUpInfo);
+        CustomResponseUtil.success(response, signUpInfo);
     }
 }

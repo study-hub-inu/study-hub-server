@@ -1,8 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
-import kr.co.studyhubinu.studyhubserver.user.enums.GradeType;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,33 +11,41 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
 
     private String password;
 
+    private String nickname;
+
+    private MajorType major;
+
     private GenderType gender;
 
-    private GradeType grade;
-
-
     @Builder
-    public UserEntity(String email, String password, GenderType gender, GradeType grade) {
+    public UserEntity(Long id, String email, String password, String nickname, MajorType major, GenderType gender) {
+        this.id = id;
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
+        this.major = major;
         this.gender = gender;
-        this.grade = grade;
+    }
+
+
+    public void update(UpdateUserInfo info) {
+        this.nickname = info.getNickname();
+        this.major = info.getMajor();
     }
 }
-
-//user 는 id, email, password, nickname, gender, grade 까지만 넣겠습니다

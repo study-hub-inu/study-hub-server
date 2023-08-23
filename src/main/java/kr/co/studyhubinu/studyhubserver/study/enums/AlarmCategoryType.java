@@ -1,26 +1,22 @@
-package kr.co.studyhubinu.studyhubserver.user.enums;
+package kr.co.studyhubinu.studyhubserver.study.enums;
 
 import kr.co.studyhubinu.studyhubserver.common.enums.EnumModel;
 
-public enum GradeType implements EnumModel {
+public enum AlarmCategoryType implements EnumModel {
 
-    FIRST("1학년"),
-
-    SECOND("2학년"),
-
-    THIRD("3학년"),
-
-    FOURTH("4학년");
+    ACTIVITY("활동"),
+    INTEREST("관심사"),
+    MAJOR("학과");
 
     private String value;
 
-    GradeType(String value) {
+    AlarmCategoryType(String value) {
         this.value = value;
     }
 
     /**
      * enum key 리턴
-     * @return 'Male' or 'FEMALE'
+     * @return 'CONTACT' or 'UNTACT'
      */
     @Override
     public String getKey() {
@@ -29,10 +25,12 @@ public enum GradeType implements EnumModel {
 
     /**
      * enum value 리턴
-     * @return '남자' or '여자'
+     * @return '대면' or '비대면'
      */
     @Override
     public String getValue() {
         return value;
     }
+
+
 }

@@ -5,6 +5,9 @@ server:
       charset: utf-8
 
 spring:
+  redis:
+    host: studyhub-redis.reoorm.ng.0001.apn2.cache.amazonaws.com
+    port: 6379
   datasource:
     url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}?allowPublicKeyRetrieval=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -43,3 +46,15 @@ logging:
 
 jwt:
   secret: ${jwt.secret}
+
+cloud:
+  aws:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key: ${s3.access}
+      secret-key: ${s3.secret}
+    s3:
+      bucket: ${s3.name}
