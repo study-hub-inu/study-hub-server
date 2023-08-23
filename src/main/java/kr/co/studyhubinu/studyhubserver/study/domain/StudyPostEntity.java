@@ -5,6 +5,7 @@ import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +16,7 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "POST")
-public class StudyPost extends BaseTimeEntity {
+public class StudyPostEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,8 @@ public class StudyPost extends BaseTimeEntity {
 
     private String content;
 
-    private String interest;
+    @Column(name = "chat_url")
+    private String chatUrl;
 
     @Column(name = "study_person")
     private int studyPerson;
@@ -47,4 +49,17 @@ public class StudyPost extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
+    @Builder
+    public StudyPostEntity(String title, String content, String chatUrl, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, UserEntity user) {
+        this.title = title;
+        this.content = content;
+        this.chatUrl = chatUrl;
+        this.studyPerson = studyPerson;
+        this.filteredGender = filteredGender;
+        this.studyWay = studyWay;
+        this.penalty = penalty;
+        this.studyStartDate = studyStartDate;
+        this.studyEndDate = studyEndDate;
+        this.user = user;
+    }
 }
