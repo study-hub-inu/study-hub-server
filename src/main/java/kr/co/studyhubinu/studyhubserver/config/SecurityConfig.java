@@ -39,8 +39,8 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) {
             http
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(jwtAuthenticationFilter)
-                    .addFilter(jwtAuthorizationFilter);
+                    .addFilter(jwtAuthenticationFilter);
+                    //.addFilter(jwtAuthorizationFilter);
         }
     }
 

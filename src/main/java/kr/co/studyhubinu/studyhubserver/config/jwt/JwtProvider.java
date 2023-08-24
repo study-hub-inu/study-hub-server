@@ -22,7 +22,7 @@ import java.util.Date;
 @Service
 public class JwtProvider {
 
-    private final RedisTemplate redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
     private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
@@ -84,7 +84,7 @@ public class JwtProvider {
 
         if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
             String token = refreshTokenCreate(id);
-            redisTemplate.opsForValue().set(id.toString(), token);
+            redisTemplate.opsForValue().set(id.toString(), token, 1000L * 60 * 60 * 24 * 7 * 4);
             return token;
         }
         throw new TokenNotFoundException();
