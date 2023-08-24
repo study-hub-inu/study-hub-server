@@ -56,12 +56,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult){
         PrincipalDetails principalDetails = (PrincipalDetails) authResult.getPrincipal();
         String accessToken = jwtProvider.accessTokenCreate(principalDetails.getUser().getId());
-        String refreshToken = jwtProvider.refreshTokenCreate(principalDetails.getUser().getId());
+        //String refreshToken = jwtProvider.refreshTokenCreate(principalDetails.getUser().getId());
 
         response.addHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
-        response.addHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
+        //response.addHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
 
-        SignUpInfo signUpInfo = new SignUpInfo(signUpRequest, accessToken, refreshToken);
+        SignUpInfo signUpInfo = new SignUpInfo(signUpRequest, accessToken);
 
         CustomResponseUtil.success(response, signUpInfo);
     }

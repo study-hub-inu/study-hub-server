@@ -48,4 +48,12 @@ public class SignUpInfo {
         this.refreshToken = refreshToken;
     }
 
+    public SignUpInfo(SignUpRequest signUpRequest, String accessToken) {
+        this.nickname = signUpRequest.getNickname();
+        this.email = signUpRequest.getEmail();
+        this.password = signUpRequest.getPassword();
+        this.gender = signUpRequest.getGender();
+        this.accessToken = accessToken;
+    }
+
 }
