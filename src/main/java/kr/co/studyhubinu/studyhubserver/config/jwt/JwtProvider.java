@@ -11,18 +11,20 @@ import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
 public class JwtProvider {
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate redisTemplate;
     private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
@@ -43,7 +45,7 @@ public class JwtProvider {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7 )) // 1주일
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(SECRET));
-        redisTemplate.opsForValue().set(id.toString(), jwtToken, 1000L * 60 * 60 * 24 * 7 * 4);
+        redisTemplate.opsForValue().set(id.toString(), jwtToken, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
         return JwtProperties.TOKEN_PREFIX + jwtToken;
     }
 
@@ -84,7 +86,7 @@ public class JwtProvider {
 
         if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
             String token = refreshTokenCreate(id);
-            redisTemplate.opsForValue().set(id.toString(), token, 1000L * 60 * 60 * 24 * 7 * 4);
+            redisTemplate.opsForValue().set(id.toString(), token, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
             return token;
         }
         throw new TokenNotFoundException();
