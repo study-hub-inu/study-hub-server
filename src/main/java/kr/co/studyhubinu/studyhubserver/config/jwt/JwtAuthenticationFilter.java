@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.addHeader(JwtProperties.ACCESS_HEADER_STRING, JwtProperties.TOKEN_PREFIX + accessToken);
         response.addHeader(JwtProperties.REFRESH_HEADER_STRING, JwtProperties.TOKEN_PREFIX + refreshToken);
 
-        SignUpInfo signUpInfo = new SignUpInfo(signUpRequest, accessToken);
+        SignUpInfo signUpInfo = new SignUpInfo(signUpRequest, accessToken, refreshToken);
 
         CustomResponseUtil.success(response, signUpInfo);
     }
