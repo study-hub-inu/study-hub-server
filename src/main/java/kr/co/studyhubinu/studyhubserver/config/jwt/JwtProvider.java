@@ -85,7 +85,7 @@ public class JwtProvider {
         Long id = jwtDto.getId();
 
         if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
-            String token = refreshTokenCreate(id);
+            String token = refreshTokenCreate(id).replace(JwtProperties.TOKEN_PREFIX, "");
             redisTemplate.delete(id.toString());
             redisTemplate.opsForValue().set(id.toString(), token, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
             return token;
