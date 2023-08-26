@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class JwtProvider {
 
-    private final StringRedisTemplate redisTemplate;
+    private final RedisTemplate<Long, String> redisTemplate;
     private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
@@ -45,7 +45,7 @@ public class JwtProvider {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7 )) // 1주일
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(SECRET));
-        redisTemplate.opsForValue().set(id.toString(), jwtToken, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(id, jwtToken, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
         return JwtProperties.TOKEN_PREFIX + jwtToken;
     }
 
@@ -74,7 +74,7 @@ public class JwtProvider {
         String refreshToken = jwtDto.getRefreshToken();
         Long id = jwtDto.getId();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
             return accessTokenCreate(id);
         }
         throw new TokenNotFoundException();
@@ -84,10 +84,10 @@ public class JwtProvider {
         String refreshToken = jwtDto.getRefreshToken();
         Long id = jwtDto.getId();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
             String token = refreshTokenCreate(id).replace(JwtProperties.TOKEN_PREFIX, "");
-            redisTemplate.delete(id.toString());
-            redisTemplate.opsForValue().set(id.toString(), token, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
+            redisTemplate.delete(id);
+            redisTemplate.opsForValue().set(id, token, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
             return token;
         }
         throw new TokenNotFoundException();
