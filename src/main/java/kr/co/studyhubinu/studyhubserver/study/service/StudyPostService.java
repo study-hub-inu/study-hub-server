@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.study.service;
 
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
@@ -32,11 +33,18 @@ public class StudyPostService {
     public void updatePost(UpdateStudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(info.getPostId()).orElseThrow(PostNotFoundException::new);
+        isPostOfUser(user.getId(), post);
         post.update(info);
     }
 
-    public void deletePost() {
-
+    public void deletePost(Long postId, Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        StudyPostEntity post = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        isPostOfUser(user.getId(), post);
+        studyPostRepository.delete(post);
     }
 
+    public void isPostOfUser(Long userId, StudyPostEntity post) {
+        if (!post.isVoteOfUser(userId)) throw new UserNotAccessRightException();
+    }
 }

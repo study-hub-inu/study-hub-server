@@ -28,7 +28,12 @@ public class StudyPostController {
     public ResponseEntity updatePost(@Valid @RequestBody UpdatePostRequest request, UserId userId) {
         studyPostService.updatePost(request.toService(userId.getId()));
         return new ResponseEntity(HttpStatus.OK);
+    }
 
+    @DeleteMapping("/{postId}")
+    public ResponseEntity deletePost(@PathVariable("postId") Long postId, UserId userId) {
+        studyPostService.deletePost(postId, userId.getId());
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }
