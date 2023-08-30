@@ -1,8 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.study.dto.data;
 
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Builder;
@@ -11,8 +9,8 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class StudyPostInfo {
-
+public class UpdateStudyPostInfo {
+    private Long postId;
     private Long userId;
     private String title;
     private String content;
@@ -26,7 +24,8 @@ public class StudyPostInfo {
     private LocalDate studyEndDate;
 
     @Builder
-    public StudyPostInfo(Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate startStartDate, LocalDate studyEndDate) {
+    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate startStartDate, LocalDate studyEndDate) {
+        this.postId = postId;
         this.userId = userId;
         this.title = title;
         this.content = content;
@@ -38,23 +37,5 @@ public class StudyPostInfo {
         this.studyWay = studyWay;
         this.startStartDate = startStartDate;
         this.studyEndDate = studyEndDate;
-    }
-
-    public StudyPostEntity toEntity(UserEntity user) {
-
-        return StudyPostEntity.builder()
-                .title(title)
-                .content(content)
-                .chatUrl(chatUrl)
-                .major(major)
-                .studyPerson(studyPerson)
-                .filteredGender(gender)
-                .studyWay(studyWay)
-                .penalty(penalty)
-                .studyStartDate(startStartDate)
-                .studyEndDate(studyEndDate)
-                .user(user)
-                .build();
-
     }
 }
