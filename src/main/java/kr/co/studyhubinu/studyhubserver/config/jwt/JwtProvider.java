@@ -11,7 +11,6 @@ import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +59,7 @@ public class JwtProvider {
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
-        String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id.toString()));
+        String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id));
 
         if(refreshToken.equals(tokenInRedis)) {
             UserEntity userEntity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
