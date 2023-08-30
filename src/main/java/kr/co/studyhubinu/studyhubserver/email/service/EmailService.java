@@ -5,6 +5,7 @@ import kr.co.studyhubinu.studyhubserver.email.dto.data.ValidMailInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,8 @@ public class EmailService {
     private final JavaMailSender emailSender;
     private final SpringTemplateEngine templateEngine;
     private final EmailCacheService emailCacheService;
+    private final StringRedisTemplate redisTemplate;
+
     @Value("${spring.mail.username}")
     private String emailAddress;
 
@@ -62,13 +65,10 @@ public class EmailService {
 
     public boolean validEmail(ValidMailInfo info) {
 
-        String cachedAuthCode = emailCacheService.getAndCacheAuthCode(info.getEmail()); // 캐시된 인증 코드 가져오기
+        String cachedAuthCode = redisTemplate.opsForValue().get(info.getEmail()); // 캐시된 인증 코드 가져오기
         log.info("**************************캐싱된 인증 코드" + cachedAuthCode);
         log.info("**************************입력된 인증 코드" + info.getAuthCode());
-        if (cachedAuthCode != null && cachedAuthCode.equals(info.getAuthCode())) {
-            return true;
-        }
-        return false;
+        return cachedAuthCode != null && cachedAuthCode.equals(info.getAuthCode());
     }
 
 }

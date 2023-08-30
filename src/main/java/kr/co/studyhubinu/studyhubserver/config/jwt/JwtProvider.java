@@ -60,7 +60,7 @@ public class JwtProvider {
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
-        String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id.toString()));
+        String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id));
 
         if(refreshToken.equals(tokenInRedis)) {
             UserEntity userEntity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
