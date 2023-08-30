@@ -3,7 +3,6 @@ package kr.co.studyhubinu.studyhubserver.config.jwt;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
-import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +39,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        if(isHeaderVerify(request, response)) {
+        if(isHeaderVerify(request)) {
             String accessToken = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
             String refreshToken = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
@@ -58,12 +57,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
-    private boolean isHeaderVerify(HttpServletRequest request, HttpServletResponse response) {
+    private boolean isHeaderVerify(HttpServletRequest request) {
         String accessHeader = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
 
-        if(accessHeader == null || accessHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
-            return false;
-        }
-        return true;
+        return accessHeader != null && !accessHeader.startsWith(JwtProperties.TOKEN_PREFIX);
     }
 }

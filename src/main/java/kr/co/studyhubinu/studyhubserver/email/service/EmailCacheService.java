@@ -13,7 +13,6 @@ public class EmailCacheService {
 
     private final StringRedisTemplate redisTemplate;
 
-    //@Cacheable(value = "authNumCache", key = "#email")
     public String getAndCacheAuthCode(String email) {
         Random random = new Random();
         StringBuilder key = new StringBuilder();
