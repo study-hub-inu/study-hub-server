@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,21 +20,21 @@ public class StudyPostController {
     private final StudyPostService studyPostService;
 
     @PostMapping("")
-    public ResponseEntity createPost(@Valid @RequestBody CreatePostRequest request, UserId userId) {
+    public ResponseEntity<?> createPost(@Valid @RequestBody CreatePostRequest request, UserId userId) {
         studyPostService.createPost(request.toService(userId.getId()));
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PutMapping("")
-    public ResponseEntity updatePost(@Valid @RequestBody UpdatePostRequest request, UserId userId) {
+    public ResponseEntity<?> updatePost(@Valid @RequestBody UpdatePostRequest request, UserId userId) {
         studyPostService.updatePost(request.toService(userId.getId()));
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity deletePost(@PathVariable("postId") Long postId, UserId userId) {
+    public ResponseEntity<?> deletePost(@PathVariable("postId") Long postId, UserId userId) {
         studyPostService.deletePost(postId, userId.getId());
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
