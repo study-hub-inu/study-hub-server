@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.bookmark.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +22,10 @@ public class BookMarkEntity {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @Builder
+    public BookMarkEntity(Long postId, Long userId) {
+        this.postId = postId;
+        this.userId = userId;
+    }
 }
