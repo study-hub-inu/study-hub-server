@@ -5,6 +5,5 @@ import lombok.Getter;
 @Getter
 public class JwtDto {
 
-    private Long id;
     private String refreshToken;
 }

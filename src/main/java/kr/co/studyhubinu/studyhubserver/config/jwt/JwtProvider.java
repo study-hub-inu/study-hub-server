@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Transactional
@@ -43,7 +44,7 @@ public class JwtProvider {
                 .withExpiresAt(new Date(System.currentTimeMillis() + 1000L * 60 * 60 * 24 * 7 )) // 1주일
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(SECRET));
-        redisTemplate.opsForValue().set(id.toString(), jwtToken, 1000L * 60 * 60 * 24 * 7 * 4);
+        redisTemplate.opsForValue().set(id, jwtToken, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
         return JwtProperties.TOKEN_PREFIX + jwtToken;
     }
 
@@ -70,7 +71,8 @@ public class JwtProvider {
 
     public String reissuedAccessToken(JwtDto jwtDto) {
         String refreshToken = jwtDto.getRefreshToken();
-        Long id = jwtDto.getId();
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
+        Long id = decodedJWT.getClaim("id").asLong();
 
         if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
             return accessTokenCreate(id);
@@ -80,7 +82,8 @@ public class JwtProvider {
 
     public String reissuedRefreshToken(JwtDto jwtDto) {
         String refreshToken = jwtDto.getRefreshToken();
-        Long id = jwtDto.getId();
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
+        Long id = decodedJWT.getClaim("id").asLong();
 
         if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
             String token = refreshTokenCreate(id);
