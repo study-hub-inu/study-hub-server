@@ -1,9 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.bookmark.controller;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.dto.request.CreateBookMarkRequest;
-import kr.co.studyhubinu.studyhubserver.bookmark.dto.request.FindBookMarkRequest;
 import kr.co.studyhubinu.studyhubserver.bookmark.dto.response.FindBookMarkResponse;
 import kr.co.studyhubinu.studyhubserver.bookmark.service.BookMarkService;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,13 @@ public class BookMarkController {
     private final BookMarkService bookMarkService;
 
     @GetMapping("")
-    public ResponseEntity<Slice<FindBookMarkResponse>> findBookMark(FindBookMarkRequest request) {
-        return ResponseEntity.ok(bookMarkService.findBookMark(request));
+    public ResponseEntity<Slice<FindBookMarkResponse>> findBookMark(UserId userId) {
+        return ResponseEntity.ok(bookMarkService.findBookMark(userId.getId()));
     }
 
     @PostMapping("")
-    public ResponseEntity<?> saveBookMark(CreateBookMarkRequest request) {
-        bookMarkService.saveBookMark(request);
+    public ResponseEntity<?> saveBookMark(UserId userId, CreateBookMarkRequest request) {
+        bookMarkService.saveBookMark(userId.getId(), request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

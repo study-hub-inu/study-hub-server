@@ -10,23 +10,18 @@ import javax.validation.constraints.NotBlank;
 @Getter
 public class CreateBookMarkRequest {
 
-    @Schema(description = "유저 id", example = "1")
-    @NotBlank
-    private Long userId;
 
     @Schema(description = "게시글 id", example = "1")
     @NotBlank
     private Long postId;
 
-    public CreateBookMarkRequest(Long userId, Long postId) {
-        this.userId = userId;
+    public CreateBookMarkRequest(Long postId) {
         this.postId = postId;
     }
 
     public BookMarkEntity toEntity(CreateBookMarkRequest request) {
         return BookMarkEntity.builder()
                 .postId(request.postId)
-                .userId(request.userId)
                 .build();
     }
 

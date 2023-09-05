@@ -2,7 +2,6 @@ package kr.co.studyhubinu.studyhubserver.bookmark.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.bookmark.dto.request.CreateBookMarkRequest;
-import kr.co.studyhubinu.studyhubserver.bookmark.dto.request.FindBookMarkRequest;
 import kr.co.studyhubinu.studyhubserver.bookmark.dto.response.FindBookMarkResponse;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.bookmark.BookMarkNotFoundException;
@@ -22,8 +21,11 @@ public class BookMarkService {
 
     private final BookMarkRepository bookMarkRepository;
 
-    public void saveBookMark(CreateBookMarkRequest request) {
-        bookMarkRepository.save(request.toEntity(request));
+    public void saveBookMark(Long id, CreateBookMarkRequest request) {
+        bookMarkRepository.save(BookMarkEntity.builder()
+                .userId(id)
+                .postId(request.getPostId())
+                .build());
     }
 
     public void deleteBookMark(Long bookMarkId) {
@@ -31,8 +33,8 @@ public class BookMarkService {
         bookMarkRepository.delete(bookMark);
     }
 
-    public Slice<FindBookMarkResponse> findBookMark(FindBookMarkRequest request) {
-        Slice<StudyPostEntity> postEntities = bookMarkRepository.findPostByBookMark(request.getUserId());
+    public Slice<FindBookMarkResponse> findBookMark(Long id) {
+        Slice<StudyPostEntity> postEntities = bookMarkRepository.findPostByBookMark(id);
 
         Slice<FindBookMarkResponse> responses = (Slice<FindBookMarkResponse>) postEntities.stream()
                 .map(postEntity -> {
