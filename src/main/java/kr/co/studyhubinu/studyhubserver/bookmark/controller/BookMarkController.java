@@ -32,7 +32,7 @@ public class BookMarkController {
     }
 
     @Operation(summary = "북마크 삭제", description = "바디에 BookMarkId 를 Json 형식으로 보내주시면 됩니다.")
-    @DeleteMapping("{bookMarkId}")
+    @DeleteMapping("/{bookMarkId}")
     public ResponseEntity<Void> deleteBookMark(@PathVariable("bookMarkId") Long bookMarkId) {
         bookMarkService.deleteBookMark(bookMarkId);
         return ResponseEntity.noContent().build();
