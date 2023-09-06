@@ -6,7 +6,6 @@ import kr.co.studyhubinu.studyhubserver.email.dto.response.ValidEmailResponse;
 import kr.co.studyhubinu.studyhubserver.email.service.EmailService;
 import kr.co.studyhubinu.studyhubserver.email.dto.request.MailSendRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,7 @@ public class EmailController {
 
         boolean auth = emailService.validEmail(request.toService());
 
-        return new ResponseEntity(new ValidEmailResponse(auth), HttpStatus.OK);
+        return ResponseEntity.ok(new ValidEmailResponse(auth));
 
     }
 

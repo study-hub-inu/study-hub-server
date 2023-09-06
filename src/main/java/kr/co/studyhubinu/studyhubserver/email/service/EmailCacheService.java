@@ -1,14 +1,18 @@
 package kr.co.studyhubinu.studyhubserver.email.service;
 
-import org.springframework.cache.annotation.Cacheable;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 public class EmailCacheService {
 
-    @Cacheable(value = "authNumCache", key = "#email")
+    private final StringRedisTemplate redisTemplate;
+
     public String getAndCacheAuthCode(String email) {
         Random random = new Random();
         StringBuilder key = new StringBuilder();
@@ -16,6 +20,7 @@ public class EmailCacheService {
         for(int i=0;i<8;i++) {
             key.append(random.nextInt(10));
         }
+        redisTemplate.opsForValue().set(email, key.toString(), 1000L * 60 * 5, TimeUnit.MILLISECONDS);
         return key.toString();
     }
 
