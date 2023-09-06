@@ -16,17 +16,11 @@ public class JwtController {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/accessToken")
-    public ResponseEntity<String> accessTokenIssued(@RequestBody JwtDto jwtDto) {
+    public ResponseEntity<JwtResponseDto> accessTokenIssued(@RequestBody JwtDto jwtDto) {
         String accessToken =  jwtProvider.reissuedAccessToken(jwtDto);
-
-        return ResponseEntity.ok(accessToken);
-    }
-
-    @PostMapping("/refreshToken")
-    public ResponseEntity<String> refreshTokenIssued(@RequestBody JwtDto jwtDto) {
         String refreshToken = jwtProvider.reissuedRefreshToken(jwtDto);
 
-        return ResponseEntity.ok(refreshToken);
+        return ResponseEntity.ok(new JwtResponseDto(accessToken, refreshToken));
     }
 
 }
