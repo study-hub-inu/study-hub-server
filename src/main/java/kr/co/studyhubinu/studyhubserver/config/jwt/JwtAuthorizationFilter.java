@@ -42,7 +42,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if(isHeaderVerify(request, response)) {
             String accessToken = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
-            String refreshToken = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
             try {
                 PrincipalDetails principalDetails = jwtProvider.accessTokenVerify(accessToken);
@@ -50,7 +49,6 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch(TokenExpiredException e) {
-                // 에러 발생 시켜서 보내줌
                 throw new TokenNotFoundException();
             }
         }
