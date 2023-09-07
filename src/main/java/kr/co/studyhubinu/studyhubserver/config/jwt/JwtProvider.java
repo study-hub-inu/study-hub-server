@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class JwtProvider {
 
     private final RedisTemplate<Long, String> redisTemplate;
+    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String SECRET;
@@ -50,6 +51,14 @@ public class JwtProvider {
         String jwtToken = Objects.requireNonNull(accessToken).replace(JwtProperties.TOKEN_PREFIX, "");
         Long id = (JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id")).asLong();
         UserEntity userEntity = UserEntity.builder().id(id).build();
+        return new PrincipalDetails(userEntity);
+    }
+
+    public PrincipalDetails refreshTokenVerify(String refreshToken) {
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
+        Long id = decodedJWT.getClaim("id").asLong();
+
+        String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id));
 
         return new PrincipalDetails(userEntity);
     }
@@ -59,7 +68,7 @@ public class JwtProvider {
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
             return accessTokenCreate(id);
         }
         throw new TokenNotFoundException();
@@ -70,8 +79,8 @@ public class JwtProvider {
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
-            String token = refreshTokenCreate(id);
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
+            String token = refreshTokenCreate(id).replace(JwtProperties.TOKEN_PREFIX, "");
             redisTemplate.delete(id);
             redisTemplate.opsForValue().set(id, token, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
             return token;

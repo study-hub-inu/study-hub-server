@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProperties;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
-import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +20,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final UserRepository userRepository;
     @Value("${jwt.secret}")
     private String SECRET;
 

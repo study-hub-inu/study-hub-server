@@ -3,7 +3,6 @@ package kr.co.studyhubinu.studyhubserver.config.jwt;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
-import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;

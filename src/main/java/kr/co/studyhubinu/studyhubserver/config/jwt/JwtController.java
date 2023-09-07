@@ -22,5 +22,4 @@ public class JwtController {
 
         return ResponseEntity.ok(new JwtResponseDto(accessToken, refreshToken));
     }
-
 }
