@@ -5,17 +5,16 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
-import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -49,8 +48,8 @@ public class JwtProvider {
     }
 
     public PrincipalDetails accessTokenVerify(String accessToken) {
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(accessToken);
-        Long id = decodedJWT.getClaim("id").asLong();
+        String jwtToken = Objects.requireNonNull(accessToken).replace(JwtProperties.TOKEN_PREFIX, "");
+        Long id = (JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id")).asLong();
         UserEntity userEntity = UserEntity.builder().id(id).build();
         return new PrincipalDetails(userEntity);
     }
@@ -61,17 +60,13 @@ public class JwtProvider {
 
         String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id));
 
-        if(refreshToken.equals(tokenInRedis)) {
-            UserEntity userEntity = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-            return new PrincipalDetails(userEntity);
-        }
-        SecurityContextHolder.getContext().setAuthentication(null);
-        return null;
+        return new PrincipalDetails(userEntity);
     }
 
     public String reissuedAccessToken(JwtDto jwtDto) {
         String refreshToken = jwtDto.getRefreshToken();
-        Long id = jwtDto.getId();
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
+        Long id = decodedJWT.getClaim("id").asLong();
 
         if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
             return accessTokenCreate(id);
@@ -81,7 +76,8 @@ public class JwtProvider {
 
     public String reissuedRefreshToken(JwtDto jwtDto) {
         String refreshToken = jwtDto.getRefreshToken();
-        Long id = jwtDto.getId();
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
+        Long id = decodedJWT.getClaim("id").asLong();
 
         if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
             String token = refreshTokenCreate(id).replace(JwtProperties.TOKEN_PREFIX, "");

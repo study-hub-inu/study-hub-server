@@ -1,9 +1,11 @@
 package kr.co.studyhubinu.studyhubserver.study.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +31,8 @@ public class StudyPostEntity extends BaseTimeEntity {
     @Column(name = "chat_url")
     private String chatUrl;
 
+    private MajorType major;
+
     @Column(name = "study_person")
     private int studyPerson;
 
@@ -49,11 +53,13 @@ public class StudyPostEntity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
+
     @Builder
-    public StudyPostEntity(String title, String content, String chatUrl, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, UserEntity user) {
+    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, UserEntity user) {
         this.title = title;
         this.content = content;
         this.chatUrl = chatUrl;
+        this.major = major;
         this.studyPerson = studyPerson;
         this.filteredGender = filteredGender;
         this.studyWay = studyWay;
@@ -61,5 +67,22 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.user = user;
+    }
+
+    public void update(UpdateStudyPostInfo info) {
+        this.title = info.getTitle();
+        this.content = info.getContent();
+        this.chatUrl = info.getChatUrl();
+        this.major = info.getMajor();
+        this.studyPerson = info.getStudyPerson();
+        this.filteredGender = info.getGender();
+        this.studyWay = info.getStudyWay();
+        this.penalty = info.getPenalty();
+        this.studyStartDate = info.getStartStartDate();
+        this.studyEndDate = info.getStudyEndDate();
+    }
+
+    public boolean isVoteOfUser(Long userId) {
+        return this.user.getId().equals(userId);
     }
 }

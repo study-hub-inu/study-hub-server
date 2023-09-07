@@ -21,7 +21,6 @@ import java.io.IOException;
 // 시큐리티가 filter 가지고있는데 그 필터중에 BasicAuthenticationFilter 라는 것이 있다.
 // 권한이나 인증이 필요한 특정 주소를 요청했을때 위 필터를 무조건 타게 되어있음
 // 만약 권한이나 인증이 필요한 주소가 아니라면 이 필터를 안탄다.
-@Slf4j
 @Component
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -41,15 +40,14 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
         if(isHeaderVerify(request)) {
             String accessToken = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
-            String refreshToken = request.getHeader(JwtProperties.REFRESH_HEADER_STRING);
 
             try {
                 PrincipalDetails principalDetails = jwtProvider.accessTokenVerify(accessToken);
 
-                Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(principalDetails, null, null);
+
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch(TokenExpiredException e) {
-                // 에러 발생 시켜서 보내줌
                 throw new TokenNotFoundException();
             }
         }
@@ -60,6 +58,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
     private boolean isHeaderVerify(HttpServletRequest request) {
         String accessHeader = request.getHeader(JwtProperties.ACCESS_HEADER_STRING);
 
-        return accessHeader != null && !accessHeader.startsWith(JwtProperties.TOKEN_PREFIX);
+        if(accessHeader == null) {
+            return false;
+        }
+        return true;
     }
 }
