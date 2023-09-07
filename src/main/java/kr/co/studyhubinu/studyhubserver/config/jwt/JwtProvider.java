@@ -7,12 +7,14 @@ import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -45,9 +47,10 @@ public class JwtProvider {
     }
 
     public PrincipalDetails accessTokenVerify(String accessToken) {
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(accessToken);
-        Long id = decodedJWT.getClaim("id").asLong();
+        String jwtToken = Objects.requireNonNull(accessToken).replace(JwtProperties.TOKEN_PREFIX, "");
+        Long id = (JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id")).asLong();
         UserEntity userEntity = UserEntity.builder().id(id).build();
+
         return new PrincipalDetails(userEntity);
     }
 

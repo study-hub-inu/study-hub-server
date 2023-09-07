@@ -17,7 +17,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import java.util.Objects;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
@@ -36,11 +35,11 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
                                                     NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         try {
             String jwtToken = Objects.requireNonNull(webRequest.getHeader(JwtProperties.ACCESS_HEADER_STRING)).replace(JwtProperties.TOKEN_PREFIX, "");
-            Long id = Long.parseLong(JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id").asString());
+
+            Long id = (JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id")).asLong();
 
             return new UserId(id);
         } catch (Exception e) {
-            log.info("UserIdArgumentResolver.resolveArgument() : {}", e.getMessage());
             return null;
         }
     }
