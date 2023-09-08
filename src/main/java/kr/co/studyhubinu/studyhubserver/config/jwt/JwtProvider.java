@@ -7,12 +7,14 @@ import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 public class JwtProvider {
 
     private final RedisTemplate<Long, String> redisTemplate;
+    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String SECRET;
@@ -45,9 +48,18 @@ public class JwtProvider {
     }
 
     public PrincipalDetails accessTokenVerify(String accessToken) {
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(accessToken);
-        Long id = decodedJWT.getClaim("id").asLong();
+        String jwtToken = Objects.requireNonNull(accessToken).replace(JwtProperties.TOKEN_PREFIX, "");
+        Long id = (JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id")).asLong();
         UserEntity userEntity = UserEntity.builder().id(id).build();
+        return new PrincipalDetails(userEntity);
+    }
+
+    public PrincipalDetails refreshTokenVerify(String refreshToken) {
+        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
+        Long id = decodedJWT.getClaim("id").asLong();
+
+        String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id));
+
         return new PrincipalDetails(userEntity);
     }
 
@@ -56,7 +68,7 @@ public class JwtProvider {
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
             return accessTokenCreate(id);
         }
         throw new TokenNotFoundException();
@@ -67,8 +79,8 @@ public class JwtProvider {
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
-        if(refreshToken.equals(redisTemplate.opsForValue().get(id.toString()))) {
-            String token = refreshTokenCreate(id);
+        if(refreshToken.equals(redisTemplate.opsForValue().get(id))) {
+            String token = refreshTokenCreate(id).replace(JwtProperties.TOKEN_PREFIX, "");
             redisTemplate.delete(id);
             redisTemplate.opsForValue().set(id, token, 1000L * 60 * 60 * 24 * 7 * 4, TimeUnit.MILLISECONDS);
             return token;
