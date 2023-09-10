@@ -6,6 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,14 +55,6 @@ public class JwtProvider {
         return new PrincipalDetails(userEntity);
     }
 
-    public PrincipalDetails refreshTokenVerify(String refreshToken) {
-        DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
-        Long id = decodedJWT.getClaim("id").asLong();
-
-        String tokenInRedis = String.valueOf(redisTemplate.opsForValue().get(id));
-
-        return new PrincipalDetails(userEntity);
-    }
 
     public String reissuedAccessToken(JwtDto jwtDto) {
         String refreshToken = jwtDto.getRefreshToken();

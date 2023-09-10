@@ -1,14 +1,19 @@
 HELP.md
 .gradle
-build/
+
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+build/classes
+build/libs
+build/resources
+build/tmp
+
 !build/libs
 
-*/**/generated/
 
 *.yml
+!application.yml
 !application-prod.yml
 !deploy.yml
 
