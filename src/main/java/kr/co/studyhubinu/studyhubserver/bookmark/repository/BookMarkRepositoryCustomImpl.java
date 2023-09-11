@@ -5,8 +5,6 @@ import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,16 +19,20 @@ public class BookMarkRepositoryCustomImpl implements BookMarkRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<StudyPostEntity> findPostByBookMark(Long userId) {
+    public List<StudyPostEntity> findPostByBookMark(Long userId) {
         QBookMarkEntity bookMark = bookMarkEntity;
         QStudyPostEntity post = studyPostEntity;
 
-        return (Slice<StudyPostEntity>) jpaQueryFactory
+        List<StudyPostEntity> studyPostEntityList = jpaQueryFactory
                 .select(post)
                 .from(post)
-                .join(bookMark)
-                .where(bookMark.userId.eq(userId), bookMark.postId.eq(post.id))
-                .limit(100);
+                .innerJoin(bookMark)
+                .on(bookMark.postId.eq(post.id)) // on 절을 사용하여 조인 조건을 정의
+                .where(bookMark.userId.eq(userId))
+                .limit(100)
+                .fetch();
+
+        return studyPostEntityList;
     }
 
 }

@@ -7,10 +7,10 @@ import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.bookmark.BookMarkNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -33,10 +33,10 @@ public class BookMarkService {
         bookMarkRepository.delete(bookMark);
     }
 
-    public Slice<FindBookMarkResponse> findBookMark(Long id) {
-        Slice<StudyPostEntity> postEntities = bookMarkRepository.findPostByBookMark(id);
+    public List<FindBookMarkResponse> findBookMark(Long id) {
+        List<StudyPostEntity> postEntities = bookMarkRepository.findPostByBookMark(id);
 
-        Slice<FindBookMarkResponse> responses = (Slice<FindBookMarkResponse>) postEntities.stream()
+        List<FindBookMarkResponse> responses = postEntities.stream()
                 .map(postEntity -> {
                     FindBookMarkResponse response = new FindBookMarkResponse(postEntity.getId(), postEntity.getTitle(), postEntity.getContent(), postEntity.getStudyPerson());
                     return response;

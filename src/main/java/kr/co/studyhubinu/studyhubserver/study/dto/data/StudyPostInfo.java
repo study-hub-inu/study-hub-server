@@ -22,11 +22,11 @@ public class StudyPostInfo {
     private int penalty;
     private GenderType gender;
     private StudyWayType studyWay;
-    private LocalDate startStartDate;
+    private LocalDate studyStartDate;
     private LocalDate studyEndDate;
 
     @Builder
-    public StudyPostInfo(Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate startStartDate, LocalDate studyEndDate) {
+    public StudyPostInfo(Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
         this.userId = userId;
         this.title = title;
         this.content = content;
@@ -36,7 +36,7 @@ public class StudyPostInfo {
         this.penalty = penalty;
         this.gender = gender;
         this.studyWay = studyWay;
-        this.startStartDate = startStartDate;
+        this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
     }
 
@@ -51,7 +51,7 @@ public class StudyPostInfo {
                 .filteredGender(gender)
                 .studyWay(studyWay)
                 .penalty(penalty)
-                .studyStartDate(startStartDate)
+                .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
                 .user(user)
                 .build();

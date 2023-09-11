@@ -6,10 +6,11 @@ import kr.co.studyhubinu.studyhubserver.bookmark.dto.response.FindBookMarkRespon
 import kr.co.studyhubinu.studyhubserver.bookmark.service.BookMarkService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ public class BookMarkController {
 
     @Operation(summary = "북마크 조회", description = "Http 헤더에 JWT accessToken 을 Json 형식으로 보내주시면 됩니다.")
     @GetMapping("")
-    public ResponseEntity<Slice<FindBookMarkResponse>> findBookMark(UserId userId) {
+    public ResponseEntity<List<FindBookMarkResponse>> findBookMark(UserId userId) {
         return ResponseEntity.ok(bookMarkService.findBookMark(userId.getId()));
     }
 
