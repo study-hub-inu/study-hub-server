@@ -47,7 +47,7 @@ public class CreatePostRequest {
 
     @Schema(description = "스터디 시작 날짜(ISO 8601)", example = "2023-08-23")
     @NotNull
-    private LocalDate startStartDate;
+    private LocalDate studyStartDate;
 
     @Schema(description = "스터디 종료 날짜(ISO 8601)", example = "2023-12-25")
     @NotNull
@@ -66,7 +66,7 @@ public class CreatePostRequest {
                 .penalty(penalty)
                 .gender(gender)
                 .studyWay(studyWay)
-                .startStartDate(startStartDate)
+                .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
                 .build();
     }
