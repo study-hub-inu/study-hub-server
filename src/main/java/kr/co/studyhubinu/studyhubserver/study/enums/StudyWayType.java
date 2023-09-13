@@ -5,7 +5,7 @@ import kr.co.studyhubinu.studyhubserver.common.enums.EnumModel;
 public enum StudyWayType implements EnumModel {
     CONTACT("대면"),
     UNTACT("비대면"),
-    NULL("null");
+    MIX("혼합");
 
     private String value;
 
