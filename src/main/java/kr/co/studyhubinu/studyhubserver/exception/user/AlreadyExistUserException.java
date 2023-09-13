@@ -8,7 +8,7 @@ public class AlreadyExistUserException extends CustomException {
 
     private final StatusType status;
 
-    private static final String message = "삭제된 유저는 조회 할 수 없습니다.";
+    private static final String message = "이미 해당 이메일로 회원가입 한 유저입니다.";
 
     public AlreadyExistUserException() {
         super(message);
