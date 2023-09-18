@@ -24,28 +24,22 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void registerUser(SignUpInfo signUpInfo) {
-
         log.info(signUpInfo.getEmail());
         if (userRepository.existsByEmail(signUpInfo.getEmail())) {
             throw new AlreadyExistUserException();
         }
         UserEntity userEntity = signUpInfo.toEntity(bCryptPasswordEncoder);
         userRepository.save(userEntity);
-
     }
 
     public void updateUser(UpdateUserInfo info) {
-
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         user.update(info);
-
     }
 
 
     public GetUserResponse getUser(Long userId) {
-
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         return new GetUserResponse(user);
-
     }
 }

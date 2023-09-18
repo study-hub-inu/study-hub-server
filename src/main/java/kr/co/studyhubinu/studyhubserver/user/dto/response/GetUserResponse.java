@@ -8,16 +8,16 @@ import lombok.Getter;
 @Getter
 public class GetUserResponse {
 
-    private Long userId;
-    private String email;
     private String nickname;
     private MajorType major;
     private GenderType gender;
+    private String email;
+    private String imageUrl;
     public GetUserResponse(UserEntity user) {
-        this.userId = user.getId();
-        this.email = user.getEmail();
         this.nickname = user.getNickname();
         this.major = user.getMajor();
         this.gender = user.getGender();
+        this.email = user.getEmail();
+        this.imageUrl = user.getImageUrl();
     }
 }
