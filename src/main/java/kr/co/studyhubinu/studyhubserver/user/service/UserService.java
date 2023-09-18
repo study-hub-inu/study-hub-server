@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
@@ -48,5 +49,9 @@ public class UserService {
     public void updateNickname(UpdateNicknameInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         user.updateNickname(info.getNickname());
+    }
+
+    public void nicknameDuplicationValid(String nickname) {
+        userRepository.findByNickname(nickname).orElseThrow(UserNicknameDuplicateException::new);
     }
 }

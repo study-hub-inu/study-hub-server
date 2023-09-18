@@ -55,12 +55,21 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "닉네임 중복 검사")
+    @GetMapping("duplication-nickname")
+    public ResponseEntity<HttpStatus> nicknameDuplicationValid(@RequestParam String nickname) {
+        userService.nicknameDuplicationValid(nickname);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @Operation(summary = "닉네임 수정", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
     @PutMapping("")
     public ResponseEntity<HttpStatus> updateNickname(@Valid @RequestBody updateNicknameRequest request, UserId userId) {
         userService.updateNickname(request.toService(userId.getId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 
 //    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
 //    @DeleteMapping
