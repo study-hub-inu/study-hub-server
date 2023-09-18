@@ -26,6 +26,8 @@ public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
 
     public final StringPath chatUrl = createString("chatUrl");
 
+    public final BooleanPath close = createBoolean("close");
+
     public final StringPath content = createString("content");
 
     //inherited

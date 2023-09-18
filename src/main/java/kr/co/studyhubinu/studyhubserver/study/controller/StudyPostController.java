@@ -9,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import javax.xml.ws.Response;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,5 +42,4 @@ public class StudyPostController {
         studyPostService.deletePost(postId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

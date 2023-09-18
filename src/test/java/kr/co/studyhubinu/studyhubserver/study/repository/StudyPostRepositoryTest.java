@@ -24,7 +24,7 @@ class StudyPostRepositoryTest {
                 .studyPerson(10)
                 .studyStartDate(LocalDate.now())
                 .studyEndDate(LocalDate.now())
-                .major(MajorType.COMPUTER)
+                .major(MajorType.COMPUTER_SCIENCE_ENGINEERING)
                 .studyWay(StudyWayType.CONTACT)
                 .title("정보처리기사")
                 .filteredGender(GenderType.MALE)
