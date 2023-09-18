@@ -5,6 +5,7 @@ import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.UpdateUserRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.updateNicknameRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.JwtLoginResponse;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
@@ -24,6 +25,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "회원가입")
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest request) {
         userService.registerUser(request.toService());
@@ -46,14 +48,19 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "회원 단건 조회(상세정보)", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다 북마크에 사용됩니다")
+    @Operation(summary = "회원 단건 조회(상세정보)", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다 마이페이지에 사용됩니다")
     @GetMapping("")
     public ResponseEntity<GetUserResponse> getUser(UserId userId) {
         GetUserResponse response = userService.getUser(userId.getId());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    @Operation(summary = "닉네임 수정", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
+    @PutMapping("")
+    public ResponseEntity<HttpStatus> updateNickname(@Valid @RequestBody updateNicknameRequest request, UserId userId) {
+        userService.updateNickname(request.toService(userId.getId()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 //    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
 //    @DeleteMapping

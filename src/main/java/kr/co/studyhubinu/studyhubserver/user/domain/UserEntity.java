@@ -50,4 +50,8 @@ public class UserEntity extends BaseTimeEntity {
         this.nickname = info.getNickname();
         this.major = info.getMajor();
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
