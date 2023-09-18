@@ -26,9 +26,7 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest request) {
-
         userService.registerUser(request.toService());
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -37,26 +35,21 @@ public class UserController {
             "email 은 꼭 email 형식으로 보내주셔야 합니다")
     @PostMapping("/login")
     public ResponseEntity<JwtLoginResponse> login(@RequestBody SignInRequest request) {
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "회원 정보 수정", description = "바디에 {nickname, major} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
             "보내주시면 됩니다")
     @PutMapping("")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request, UserId userId) {
-
+    public ResponseEntity<HttpStatus> updateUser(@Valid @RequestBody UpdateUserRequest request, UserId userId) {
         userService.updateUser(request.toService(userId.getId()));
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Operation(summary = "회원 단건 조회", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
+    @Operation(summary = "회원 단건 조회(상세정보)", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다 북마크에 사용됩니다")
     @GetMapping("")
     public ResponseEntity<GetUserResponse> getUser(UserId userId) {
-
         GetUserResponse response = userService.getUser(userId.getId());
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

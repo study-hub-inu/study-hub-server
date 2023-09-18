@@ -33,6 +33,8 @@ public class UserEntity extends BaseTimeEntity {
 
     private GenderType gender;
 
+    private String imageUrl;
+
     @Builder
     public UserEntity(Long id, String email, String password, String nickname, MajorType major, GenderType gender) {
         this.id = id;
