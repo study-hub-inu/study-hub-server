@@ -1,7 +1,10 @@
 package kr.co.studyhubinu.studyhubserver.email.service;
 
 import kr.co.studyhubinu.studyhubserver.email.dto.data.MailInfo;
+import kr.co.studyhubinu.studyhubserver.email.dto.data.ValidDuplicationInfo;
 import kr.co.studyhubinu.studyhubserver.email.dto.data.ValidMailInfo;
+import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
+import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +28,7 @@ public class EmailService {
     private final SpringTemplateEngine templateEngine;
     private final EmailCacheService emailCacheService;
     private final StringRedisTemplate redisTemplate;
+    private final UserRepository userRepository;
 
     @Value("${spring.mail.username}")
     private String emailAddress;
@@ -71,4 +75,9 @@ public class EmailService {
         return cachedAuthCode != null && cachedAuthCode.equals(info.getAuthCode());
     }
 
+    public void validDuplication(ValidDuplicationInfo info) {
+        if (userRepository.existsByEmail(info.getEmail())) {
+            throw new AlreadyExistUserException();
+        }
+    }
 }
