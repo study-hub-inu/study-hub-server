@@ -25,13 +25,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<HttpStatus> registerUser(@Valid @RequestBody SignUpRequest request) {
 
         userService.registerUser(request.toService());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 
     @Operation(summary = "로그인", description = "바디에 {email, password} 를 json 형식으로 보내주시면 됩니다. " +
             "email 은 꼭 email 형식으로 보내주셔야 합니다")
@@ -44,7 +43,7 @@ public class UserController {
     @Operation(summary = "회원 정보 수정", description = "바디에 {nickname, major} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
             "보내주시면 됩니다")
     @PutMapping("")
-    public ResponseEntity<?> updateUser(@Valid @RequestBody UpdateUserRequest request, UserId userId) {
+    public ResponseEntity<HttpStatus> updateUser(@Valid @RequestBody UpdateUserRequest request, UserId userId) {
 
         userService.updateUser(request.toService(userId.getId()));
 
@@ -60,17 +59,12 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> deleteUser(UserId userId) {
 
+        userService.deleteUser(userId.getId());
 
-//    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
-//    @DeleteMapping
-//    public ResponseEntity<CommonResponse> deleteUser(UserId userId) {
-//
-//        userService.deleteUser(userId.getId());
-//        CommonResponse response = new CommonResponse("회원 탈퇴 완료 했습니다");
-//
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-
-
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
