@@ -1,5 +1,7 @@
 package kr.co.studyhubinu.studyhubserver;
 
+import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookMarkEntity;
+import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.study.repository.StudyPostRepository;
@@ -24,6 +26,7 @@ public class InitDb {
     public void init() {
         initService.userInit();
         initService.postInit();
+        initService.bookMarkInit();
     }
 
     @Component
@@ -33,9 +36,10 @@ public class InitDb {
 
         private final UserRepository userRepository;
         private final StudyPostRepository studyPostRepository;
+        private final BookMarkRepository bookMarkRepository;
 
         public void userInit() {
-            UserEntity user = new UserEntity(1L, "xxx@inu.ac.kr", "asd123", "lee", MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.FEMALE);
+            UserEntity user = new UserEntity(1L, "xxx@inu.ac.kr", "asd123", "lee", "www.asdasdas" ,MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.FEMALE);
             userRepository.save(user);
         }
 
@@ -59,6 +63,14 @@ public class InitDb {
             studyPostRepository.save(post2);
             studyPostRepository.save(post3);
             studyPostRepository.save(post4);
+        }
+
+        public void bookMarkInit() {
+            UserEntity user = userRepository.findByEmail("xxx@inu.ac.kr").orElseThrow();
+            StudyPostEntity post1 = studyPostRepository.findById(2L).orElseThrow();
+
+            BookMarkEntity bookMark = new BookMarkEntity(user.getId(), post1.getId());
+            bookMarkRepository.save(bookMark);
         }
     }
 }

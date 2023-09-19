@@ -25,8 +25,6 @@ public class QStudyEntity extends EntityPathBase<StudyEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath interest = createString("interest");
-
     public final StringPath name = createString("name");
 
     public final DatePath<java.time.LocalDate> studyEndDate = createDate("studyEndDate", java.time.LocalDate.class);

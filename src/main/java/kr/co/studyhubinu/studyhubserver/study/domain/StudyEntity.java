@@ -33,15 +33,13 @@ public class StudyEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    private String interest;
 
     @Builder
-    public StudyEntity(String name, String content, LocalDate studyStartDate, LocalDate studyEndDate, String interest, String chatRoomUrl) {
+    public StudyEntity(String name, String content, LocalDate studyStartDate, LocalDate studyEndDate, String chatRoomUrl) {
         this.name = name;
         this.content = content;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
-        this.interest = interest;
         this.chatRoomUrl = chatRoomUrl;
     }
 
