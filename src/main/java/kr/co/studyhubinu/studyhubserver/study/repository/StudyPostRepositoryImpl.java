@@ -34,13 +34,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        Slice<FindPostResponseByString> sliceDto = toSlice(pageable, studyPostDto.fetch());
-
-        if(sliceDto.isEmpty()) {
-            return new SliceImpl<>(Collections.emptyList(), pageable, false);
-        }
-
-        return new SliceImpl<>(studyPostDto.fetch(), pageable, sliceDto.hasNext());
+        return findByQuery(studyPostDto, pageable);
     }
 
     @Override
@@ -55,13 +49,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        Slice<FindPostResponseByMajor> sliceDto = toSlice(pageable, studyPostDto.fetch());
-
-        if(sliceDto.isEmpty()) {
-            return new SliceImpl<>(Collections.emptyList(), pageable, false);
-        }
-
-        return new SliceImpl<>(studyPostDto.fetch(), pageable, sliceDto.hasNext());
+        return findByQuery(studyPostDto, pageable);
     }
 
     @Override
@@ -75,13 +63,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        Slice<FindPostResponseByAll> sliceDto = toSlice(pageable, studyPostDto.fetch());
-
-        if(sliceDto.isEmpty()) {
-            return new SliceImpl<>(Collections.emptyList(), pageable, false);
-        }
-
-        return new SliceImpl<>(studyPostDto.fetch(), pageable, sliceDto.hasNext());
+        return findByQuery(studyPostDto, pageable);
     }
 
     @Override
@@ -96,16 +78,29 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        Slice<FindPostResponseByContent> sliceDto = toSlice(pageable, studyPostDto.fetch());
+        return findByQuery(studyPostDto, pageable);
+    }
+
+    public <T> Slice<T> findByQuery(JPAQuery<T> query, Pageable pageable) {
+        Slice<T> sliceDto = toSlice(pageable, query.fetch());
 
         if(sliceDto.isEmpty()) {
             return new SliceImpl<>(Collections.emptyList(), pageable, false);
         }
 
-        return new SliceImpl<>(studyPostDto.fetch(), pageable, sliceDto.hasNext());
+        return new SliceImpl<>(query.fetch(), pageable, sliceDto.hasNext());
     }
 
-//    @Override
+    public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
+        if (items.size() > pageable.getPageSize()) {
+            items.remove(items.size() - 1);
+            return new SliceImpl<>(items, pageable, true);
+        }
+        return new SliceImpl<>(items, pageable, false);
+    }
+
+
+    //    @Override
 //    public Slice<StudyPostEntity> findByBookMark(Pageable pageable) {
 //        QStudyPostEntity post = studyPostEntity;
 //        QBookMarkEntity bookMark = bookMarkEntity;
@@ -120,20 +115,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 //                .offset(pageable.getOffset())
 //                .limit(pageable.getPageSize());
 //
-//        Slice<StudyPostEntity> sliceDto = toSlice(pageable, studyPostDto.fetch());
-//
-//        if(sliceDto.isEmpty()) {
-//            return new SliceImpl<>(Collections.emptyList(), pageable, false);
-//        }
-//
-//        return new SliceImpl<>(studyPostDto.fetch(), pageable, sliceDto.hasNext());
+//        return findByQuery(studyPostDto, pageable);
 //    }
-
-    public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
-        if (items.size() > pageable.getPageSize()) {
-            items.remove(items.size() - 1);
-            return new SliceImpl<>(items, pageable, true);
-        }
-        return new SliceImpl<>(items, pageable, false);
-    }
 }
