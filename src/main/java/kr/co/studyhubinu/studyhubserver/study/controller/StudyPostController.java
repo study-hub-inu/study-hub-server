@@ -3,9 +3,11 @@ package kr.co.studyhubinu.studyhubserver.study.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.study.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.study.dto.request.UpdatePostRequest;
+import kr.co.studyhubinu.studyhubserver.study.dto.response.GetMyPostResponse;
 import kr.co.studyhubinu.studyhubserver.study.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +43,12 @@ public class StudyPostController {
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("postId") Long postId, UserId userId) {
         studyPostService.deletePost(postId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "내가 쓴 스터디 조회")
+    @GetMapping("/mypost")
+    public ResponseEntity<Slice<GetMyPostResponse>> getMyPost(@RequestParam int page, @RequestParam int size, UserId userId) {
+
+        return ResponseEntity.ok(studyPostService.getMyPost(page, size, userId.getId()));
     }
 }
