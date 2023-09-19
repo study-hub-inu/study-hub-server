@@ -14,6 +14,9 @@ public class UpdateUserRequest {
     @NotBlank
     private String nickname;
 
+    @Schema(description = "수정할 이미지 Url")
+    private String imaUrl;
+
     @Schema(description = "수정할 전공", example = "컴퓨터공학부")
     @NotBlank
     private MajorType major;
@@ -23,6 +26,7 @@ public class UpdateUserRequest {
         return UpdateUserInfo.builder()
                 .userId(userId)
                 .nickname(nickname)
+                .imaUrl(imaUrl)
                 .major(major)
                 .build();
     }

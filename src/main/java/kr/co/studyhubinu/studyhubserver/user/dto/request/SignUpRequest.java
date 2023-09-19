@@ -25,7 +25,10 @@ public class SignUpRequest {
     @NotBlank
     private String nickname;
 
-    @Schema(description = "전공", example = "COMPUTER")
+    @Schema
+    private String imaUrl;
+
+    @Schema(description = "전공", example = "COMPUTER_SCIENCE_ENGINEERING")
     private MajorType major;
 
     @Schema(description = "유저 성별", example = "FEMALE")
@@ -33,7 +36,7 @@ public class SignUpRequest {
 
 
     public SignUpInfo toService() {
-        return new SignUpInfo(nickname, email, password, major, gender);
+        return new SignUpInfo(nickname, email, password, imaUrl, major, gender);
     }
 
 }

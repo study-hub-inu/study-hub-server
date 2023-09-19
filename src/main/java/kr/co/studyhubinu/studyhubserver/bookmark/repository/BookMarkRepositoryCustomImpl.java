@@ -29,7 +29,6 @@ public class BookMarkRepositoryCustomImpl implements BookMarkRepositoryCustom {
                 .innerJoin(bookMark)
                 .on(bookMark.postId.eq(post.id)) // on 절을 사용하여 조인 조건을 정의
                 .where(bookMark.userId.eq(userId))
-                .limit(100)
                 .fetch();
 
         return studyPostEntityList;

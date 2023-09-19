@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -43,6 +44,9 @@ public class StudyPostEntity extends BaseTimeEntity {
     private StudyWayType studyWay;
 
     private int penalty;
+
+    @ColumnDefault("false")
+    private boolean close;
 
     @Column(name = "study_start_date")
     private LocalDate studyStartDate;
