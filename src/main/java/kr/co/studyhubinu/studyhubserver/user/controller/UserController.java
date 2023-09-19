@@ -60,18 +60,24 @@ public class UserController {
 
     @Operation(summary = "닉네임 수정", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
     @PutMapping("/nickname")
-    public ResponseEntity<HttpStatus> updateNickname(@Valid @RequestBody updateNicknameRequest request, UserId userId) {
+    public ResponseEntity<HttpStatus> updateNickname(@Valid @RequestBody UpdateNicknameRequest request, UserId userId) {
         userService.updateNickname(request.toService(userId.getId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "학과 수정", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
     @PutMapping("/major")
-    public ResponseEntity<HttpStatus> updateMajor(@Valid @RequestBody updateMajorRequest request, UserId userId) {
+    public ResponseEntity<HttpStatus> updateMajor(@Valid @RequestBody UpdateMajorRequest request, UserId userId) {
         userService.updateMajor(request.toService(userId.getId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @Operation(summary = "비밀번호 수정", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
+    @PutMapping("/password")
+    public ResponseEntity<HttpStatus> updatePassword(@Valid @RequestBody UpdatePasswordRequest request, UserId userId) {
+        userService.updatePassword(request.toService(userId.getId()));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 //    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
 //    @DeleteMapping

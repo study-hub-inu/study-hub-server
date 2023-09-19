@@ -5,7 +5,7 @@ import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Getter;
 
 @Getter
-public class updateMajorRequest {
+public class UpdateMajorRequest {
 
     private MajorType major;
 

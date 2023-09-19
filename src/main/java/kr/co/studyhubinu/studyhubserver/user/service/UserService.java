@@ -59,4 +59,9 @@ public class UserService {
         user.updateMajor(info.getMajor());
     }
 
+    @Transactional
+    public void updatePassword(UpdatePasswordInfo info) {
+        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+        user.updatePassword(info, bCryptPasswordEncoder);
+    }
 }
