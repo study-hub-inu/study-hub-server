@@ -9,11 +9,13 @@ public class GetMyPostResponse {
     private String title;
     private String content;
     private int remainingSeat;
+    private boolean close;
 
-    public GetMyPostResponse(MajorType major, String title, String content, int remainingSeat) {
+    public GetMyPostResponse(MajorType major, String title, String content, int remainingSeat, boolean close) {
         this.major = major;
         this.title = title;
         this.content = content;
         this.remainingSeat = remainingSeat;
+        this.close = close;
     }
 }
