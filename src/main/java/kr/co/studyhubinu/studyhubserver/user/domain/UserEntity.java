@@ -29,16 +29,19 @@ public class UserEntity extends BaseTimeEntity {
 
     private String nickname;
 
+    private String imaUrl;
+
     private MajorType major;
 
     private GenderType gender;
 
     @Builder
-    public UserEntity(Long id, String email, String password, String nickname, MajorType major, GenderType gender) {
+    public UserEntity(Long id, String email, String password, String nickname, String imaUrl, MajorType major, GenderType gender) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
+        this.imaUrl = imaUrl;
         this.major = major;
         this.gender = gender;
     }
