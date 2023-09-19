@@ -4,9 +4,7 @@ import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
-import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
-import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateNicknameInfo;
-import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -54,4 +52,11 @@ public class UserService {
     public void nicknameDuplicationValid(String nickname) {
         userRepository.findByNickname(nickname).orElseThrow(UserNicknameDuplicateException::new);
     }
+
+    @Transactional
+    public void updateMajor(UpdateMajorInfo info) {
+        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+        user.updateMajor(info.getMajor());
+    }
+
 }
