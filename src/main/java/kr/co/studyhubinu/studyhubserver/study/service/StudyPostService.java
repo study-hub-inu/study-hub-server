@@ -6,10 +6,7 @@ import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByContent;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByMajor;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByString;
+import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.study.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -70,4 +67,8 @@ public class StudyPostService {
     public Slice<FindPostResponseByContent> findPostResponseByContent(String content, Pageable pageable) {
         return studyPostRepository.findByContent(content, pageable);
     }
+
+//    public Slice<StudyPostEntity> findPostResponseByBookMark(Pageable pageable) {
+//        return studyPostRepository.findByBookMark(pageable);
+//    }
 }

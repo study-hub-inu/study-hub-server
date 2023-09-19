@@ -4,10 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByContent;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByMajor;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByString;
+import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -33,9 +30,9 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByString.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
-                .where(post.title.like("%" + title + "%"))
+                .where(post.title.like(title + "%"))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1);
+                .limit(pageable.getPageSize());
 
         Slice<FindPostResponseByString> sliceDto = toSlice(pageable, studyPostDto.fetch());
 
@@ -56,7 +53,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .from(post)
                 .where(post.major.eq(major))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1);
+                .limit(pageable.getPageSize());
 
         Slice<FindPostResponseByMajor> sliceDto = toSlice(pageable, studyPostDto.fetch());
 
@@ -76,7 +73,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1);
+                .limit(pageable.getPageSize());
 
         Slice<FindPostResponseByAll> sliceDto = toSlice(pageable, studyPostDto.fetch());
 
@@ -97,7 +94,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .from(post)
                 .where(post.content.like("%" + content + "%"))
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1);
+                .limit(pageable.getPageSize());
 
         Slice<FindPostResponseByContent> sliceDto = toSlice(pageable, studyPostDto.fetch());
 
@@ -107,6 +104,30 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
         return new SliceImpl<>(studyPostDto.fetch(), pageable, sliceDto.hasNext());
     }
+
+//    @Override
+//    public Slice<StudyPostEntity> findByBookMark(Pageable pageable) {
+//        QStudyPostEntity post = studyPostEntity;
+//        QBookMarkEntity bookMark = bookMarkEntity;
+//
+//        JPAQuery<StudyPostEntity> studyPostDto = jpaQueryFactory
+//                .select(post).distinct()
+//                .from(post)
+//                .leftJoin(bookMark)
+//                .on(bookMark.postId.eq(post.id))
+//                .groupBy(post)
+//                .orderBy(bookMark.id.count().desc())
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize());
+//
+//        Slice<StudyPostEntity> sliceDto = toSlice(pageable, studyPostDto.fetch());
+//
+//        if(sliceDto.isEmpty()) {
+//            return new SliceImpl<>(Collections.emptyList(), pageable, false);
+//        }
+//
+//        return new SliceImpl<>(studyPostDto.fetch(), pageable, sliceDto.hasNext());
+//    }
 
     public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
         if (items.size() > pageable.getPageSize()) {
