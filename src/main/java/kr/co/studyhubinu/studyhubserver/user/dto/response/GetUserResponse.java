@@ -13,6 +13,7 @@ public class GetUserResponse {
     private GenderType gender;
     private String email;
     private String imageUrl;
+  
     public GetUserResponse(UserEntity user) {
         this.nickname = user.getNickname();
         this.major = user.getMajor();

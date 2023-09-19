@@ -24,7 +24,7 @@ public class UserController {
 
     @Operation(summary = "회원가입")
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest request) {
+    public ResponseEntity<HttpStatus> registerUser(@Valid @RequestBody SignUpRequest request) {
         userService.registerUser(request.toService());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -79,15 +79,10 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
-//    @DeleteMapping
-//    public ResponseEntity<CommonResponse> deleteUser(UserId userId) {
-//
-//        userService.deleteUser(userId.getId());
-//        CommonResponse response = new CommonResponse("회원 탈퇴 완료 했습니다");
-//
-//        return new ResponseEntity<>(response, HttpStatus.OK);
-//    }
-
-
+    @Operation(summary = "회원 탈퇴", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
+    @DeleteMapping
+    public ResponseEntity<HttpStatus> deleteUser(UserId userId) {
+        userService.deleteUser(userId.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

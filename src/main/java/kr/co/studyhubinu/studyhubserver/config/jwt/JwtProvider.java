@@ -6,9 +6,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import kr.co.studyhubinu.studyhubserver.config.auth.PrincipalDetails;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
-import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 public class JwtProvider {
 
     private final RedisTemplate<Long, String> redisTemplate;
-    private final UserRepository userRepository;
 
     @Value("${jwt.secret}")
     private String SECRET;
@@ -54,7 +51,6 @@ public class JwtProvider {
         UserEntity userEntity = UserEntity.builder().id(id).build();
         return new PrincipalDetails(userEntity);
     }
-
 
     public String reissuedAccessToken(JwtDto jwtDto) {
         String refreshToken = jwtDto.getRefreshToken();

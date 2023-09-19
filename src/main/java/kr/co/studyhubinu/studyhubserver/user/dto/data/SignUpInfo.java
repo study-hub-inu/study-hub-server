@@ -15,6 +15,7 @@ public class SignUpInfo {
     private String email;
     private String password;
     private String nickname;
+    private String imaUrl;
     private MajorType major;
     private GenderType gender;
     private String accessToken;
@@ -26,15 +27,17 @@ public class SignUpInfo {
                 .email(email)
                 .password(bCryptPasswordEncoder.encode(password))
                 .nickname(nickname)
+                .imaUrl(imaUrl)
                 .major(major)
                 .gender(gender)
                 .build();
     }
 
-    public SignUpInfo(String nickname, String email, String password, MajorType major, GenderType gender) {
+    public SignUpInfo(String nickname, String email, String password, String imaUrl, MajorType major, GenderType gender) {
         this.nickname = nickname;
         this.email = email;
         this.password = password;
+        this.imaUrl = imaUrl;
         this.major = major;
         this.gender = gender;
     }
@@ -43,6 +46,7 @@ public class SignUpInfo {
         this.nickname = signUpRequest.getNickname();
         this.email = signUpRequest.getEmail();
         this.password = signUpRequest.getPassword();
+        this.imaUrl = signUpRequest.getImaUrl();
         this.gender = signUpRequest.getGender();
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
@@ -52,6 +56,7 @@ public class SignUpInfo {
         this.nickname = signUpRequest.getNickname();
         this.email = signUpRequest.getEmail();
         this.password = signUpRequest.getPassword();
+        this.imaUrl = signUpRequest.getImaUrl();
         this.gender = signUpRequest.getGender();
         this.accessToken = accessToken;
     }
