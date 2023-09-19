@@ -48,16 +48,16 @@ public class InitDb {
 
             StudyPostEntity post1 = new StudyPostEntity("정처기 구함", "고수들만", "www.liljay.com",
                     MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), user, 10);
+                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
             StudyPostEntity post2 = new StudyPostEntity("축구하실분 구함", "브라질 사람만", "www.liljay.com",
                     MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), user, 10);
+                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
             StudyPostEntity post3 = new StudyPostEntity("스파링 뜨실분", "러시아 사람만", "www.liljay.com",
                     MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), user, 10);
+                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
             StudyPostEntity post4 = new StudyPostEntity("축구 할놈", "아르헨티나 사람만", "www.liljay.com",
                     MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), user, 10);
+                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
 
             studyPostRepository.save(post1);
             studyPostRepository.save(post2);

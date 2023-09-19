@@ -29,7 +29,7 @@ public class StudyPostService {
 
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
-        StudyPostEntity studyPost = info.toEntity(user);
+        StudyPostEntity studyPost = info.toEntity(user.getId());
         studyPostRepository.save(studyPost);
 
     }

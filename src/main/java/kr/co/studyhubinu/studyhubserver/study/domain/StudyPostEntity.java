@@ -3,7 +3,6 @@ package kr.co.studyhubinu.studyhubserver.study.domain;
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.AccessLevel;
@@ -54,14 +53,14 @@ public class StudyPostEntity extends BaseTimeEntity {
     @Column(name = "study_end_date")
     private LocalDate studyEndDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private UserEntity user;
+    @Column(name = "posted_user_Id")
+    private Long postedUserId;
 
     @Column(name = "remaining_seat")
     private int remainingSeat;
 
     @Builder
-    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, UserEntity user, int remainingSeat) {
+    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {
         this.title = title;
         this.content = content;
         this.chatUrl = chatUrl;
@@ -72,7 +71,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.penalty = penalty;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
-        this.user = user;
+        this.postedUserId = userId;
         this.remainingSeat = remainingSeat;
     }
 
@@ -90,6 +89,6 @@ public class StudyPostEntity extends BaseTimeEntity {
     }
 
     public boolean isVoteOfUser(Long userId) {
-        return this.user.getId().equals(userId);
+        return this.postedUserId.equals(userId);
     }
 }

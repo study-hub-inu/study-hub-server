@@ -2,7 +2,6 @@ package kr.co.studyhubinu.studyhubserver.study.dto.data;
 
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Builder;
@@ -40,7 +39,7 @@ public class StudyPostInfo {
         this.studyEndDate = studyEndDate;
     }
 
-    public StudyPostEntity toEntity(UserEntity user) {
+    public StudyPostEntity toEntity(Long userId) {
 
         return StudyPostEntity.builder()
                 .title(title)
@@ -53,7 +52,7 @@ public class StudyPostInfo {
                 .penalty(penalty)
                 .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
-                .user(user)
+                .userId(userId)
                 .remainingSeat(studyPerson)
                 .build();
 
