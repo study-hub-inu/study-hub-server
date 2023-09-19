@@ -57,9 +57,11 @@ public class StudyPostEntity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
+    @Column(name = "remaining_seat")
+    private int remainingSeat;
 
     @Builder
-    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, UserEntity user) {
+    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, UserEntity user, int remainingSeat) {
         this.title = title;
         this.content = content;
         this.chatUrl = chatUrl;
@@ -71,6 +73,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.user = user;
+        this.remainingSeat = remainingSeat;
     }
 
     public void update(UpdateStudyPostInfo info) {

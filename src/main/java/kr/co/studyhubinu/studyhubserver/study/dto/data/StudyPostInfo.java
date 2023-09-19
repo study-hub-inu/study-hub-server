@@ -54,6 +54,7 @@ public class StudyPostInfo {
                 .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
                 .user(user)
+                .remainingSeat(studyPerson)
                 .build();
 
     }
