@@ -27,14 +27,14 @@ public class BookMarkController {
 
     @Operation(summary = "북마크 저장", description = "Http 헤더에 JWT accessToken, 바디에 PostId를 Json 형식으로 보내주시면 됩니다.")
     @PostMapping("")
-    public ResponseEntity<Void> saveBookMark(UserId userId, CreateBookMarkRequest request) {
+    public ResponseEntity<HttpStatus> saveBookMark(UserId userId, CreateBookMarkRequest request) {
         bookMarkService.saveBookMark(userId.getId(), request);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "북마크 삭제", description = "바디에 BookMarkId 를 Json 형식으로 보내주시면 됩니다.")
     @DeleteMapping("/{bookMarkId}")
-    public ResponseEntity<Void> deleteBookMark(@PathVariable("bookMarkId") Long bookMarkId) {
+    public ResponseEntity<HttpStatus> deleteBookMark(@PathVariable("bookMarkId") Long bookMarkId) {
         bookMarkService.deleteBookMark(bookMarkId);
         return ResponseEntity.noContent().build();
     }

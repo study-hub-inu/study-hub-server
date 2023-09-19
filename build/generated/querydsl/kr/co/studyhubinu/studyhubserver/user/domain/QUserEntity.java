@@ -30,6 +30,8 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final StringPath imageUrl = createString("imageUrl");
+
     public final StringPath imaUrl = createString("imaUrl");
 
     public final EnumPath<kr.co.studyhubinu.studyhubserver.user.enums.MajorType> major = createEnum("major", kr.co.studyhubinu.studyhubserver.user.enums.MajorType.class);

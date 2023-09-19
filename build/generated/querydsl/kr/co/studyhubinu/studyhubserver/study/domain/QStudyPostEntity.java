@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -17,8 +16,6 @@ import com.querydsl.core.types.dsl.PathInits;
 public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
 
     private static final long serialVersionUID = -444406559L;
-
-    private static final PathInits INITS = PathInits.DIRECT2;
 
     public static final QStudyPostEntity studyPostEntity = new QStudyPostEntity("studyPostEntity");
 
@@ -44,6 +41,10 @@ public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
 
     public final NumberPath<Integer> penalty = createNumber("penalty", Integer.class);
 
+    public final NumberPath<Long> postedUserId = createNumber("postedUserId", Long.class);
+
+    public final NumberPath<Integer> remainingSeat = createNumber("remainingSeat", Integer.class);
+
     public final DatePath<java.time.LocalDate> studyEndDate = createDate("studyEndDate", java.time.LocalDate.class);
 
     public final NumberPath<Integer> studyPerson = createNumber("studyPerson", Integer.class);
@@ -54,27 +55,16 @@ public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
 
     public final StringPath title = createString("title");
 
-    public final kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity user;
-
     public QStudyPostEntity(String variable) {
-        this(StudyPostEntity.class, forVariable(variable), INITS);
+        super(StudyPostEntity.class, forVariable(variable));
     }
 
     public QStudyPostEntity(Path<? extends StudyPostEntity> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QStudyPostEntity(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QStudyPostEntity(PathMetadata metadata, PathInits inits) {
-        this(StudyPostEntity.class, metadata, inits);
-    }
-
-    public QStudyPostEntity(Class<? extends StudyPostEntity> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.user = inits.isInitialized("user") ? new kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity(forProperty("user")) : null;
+        super(StudyPostEntity.class, metadata);
     }
 
 }
