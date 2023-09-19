@@ -70,7 +70,7 @@ public class StudyPostService {
         return studyPostRepository.findByContent(content, pageable);
     }
 
-    public Slice<GetMyPostResponse> getMyPost(int page, int size, Long userId) {
+    public Slice<GetMyPostResponse> getMyPosts(int page, int size, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         return studyPostRepository.findByPostedUserId(user.getId(), pageable);

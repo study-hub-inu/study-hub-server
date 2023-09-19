@@ -47,8 +47,7 @@ public class StudyPostController {
 
     @Operation(summary = "내가 쓴 스터디 조회")
     @GetMapping("/mypost")
-    public ResponseEntity<Slice<GetMyPostResponse>> getMyPost(@RequestParam int page, @RequestParam int size, UserId userId) {
-
-        return ResponseEntity.ok(studyPostService.getMyPost(page, size, userId.getId()));
+    public ResponseEntity<Slice<GetMyPostResponse>> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
+        return ResponseEntity.ok(studyPostService.getMyPosts(page, size, userId.getId()));
     }
 }
