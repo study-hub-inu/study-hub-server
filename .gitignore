@@ -8,10 +8,8 @@ build/classes
 build/libs
 build/resources
 build/tmp
-build/reports
-build/test-results
-**/src/main/java/kr/co/studyhubinu/studyhubserver/InitDb.java
 
+!build/libs
 
 
 *.yml
