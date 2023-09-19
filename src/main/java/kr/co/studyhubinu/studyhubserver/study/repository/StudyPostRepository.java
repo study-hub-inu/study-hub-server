@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long>, StudyPostRepositoryCustom {
 
-    @Query("SELECT new kr.co.studyhubinu.studyhubserver.study.dto.response.GetMyPostResponse(sp.major, sp.title, sp.content, sp.remainingSeat, sp.close) " +
+    @Query("SELECT new kr.co.studyhubinu.studyhubserver.study.dto.response.GetMyPostResponse(sp.id, sp.major, sp.title, sp.content, sp.remainingSeat, sp.close) " +
             "FROM StudyPostEntity sp " +
             "WHERE sp.postedUserId = :userId")
     Slice<GetMyPostResponse> findByPostedUserId(Long userId, Pageable pageable);
