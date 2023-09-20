@@ -53,7 +53,7 @@ public class JwtProvider {
     }
 
     public String reissuedAccessToken(JwtDto jwtDto) {
-        String refreshToken = jwtDto.getRefreshToken();
+        String refreshToken = jwtDto.getRefreshToken().replace(JwtProperties.TOKEN_PREFIX, "");;
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
@@ -64,7 +64,7 @@ public class JwtProvider {
     }
 
     public String reissuedRefreshToken(JwtDto jwtDto) {
-        String refreshToken = jwtDto.getRefreshToken();
+        String refreshToken = jwtDto.getRefreshToken().replace(JwtProperties.TOKEN_PREFIX, "");;
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
