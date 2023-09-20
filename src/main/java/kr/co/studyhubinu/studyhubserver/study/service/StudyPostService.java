@@ -76,6 +76,12 @@ public class StudyPostService {
         return studyPostRepository.findByPostedUserId(user.getId(), pageable);
     }
 
+    public Slice<GetBookmarkedPostsResponse> getBookmarkedPosts(int page, int size, Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return studyPostRepository.findPostsByBookmarked(userId, pageable);
+    }
+
 //    public Slice<StudyPostEntity> findPostResponseByBookMark(Pageable pageable) {
 //        return studyPostRepository.findByBookMark(pageable);
 //    }

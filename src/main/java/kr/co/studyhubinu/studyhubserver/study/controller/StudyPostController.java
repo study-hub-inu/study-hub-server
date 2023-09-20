@@ -1,8 +1,10 @@
 package kr.co.studyhubinu.studyhubserver.study.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.MyStudyPostData;
 import kr.co.studyhubinu.studyhubserver.study.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.study.dto.request.UpdatePostRequest;
+import kr.co.studyhubinu.studyhubserver.study.dto.response.GetBookmarkedPostsResponse;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.GetMyPostResponse;
 import kr.co.studyhubinu.studyhubserver.study.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
@@ -49,5 +51,11 @@ public class StudyPostController {
     @GetMapping("/mypost")
     public ResponseEntity<Slice<GetMyPostResponse>> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
         return ResponseEntity.ok(studyPostService.getMyPosts(page, size, userId.getId()));
+    }
+
+    @Operation(summary = "내가 북마크한 스터디 조회")
+    @GetMapping("/bookmarked")
+    public ResponseEntity<Slice<GetBookmarkedPostsResponse>> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
+        return ResponseEntity.ok().body(studyPostService.getBookmarkedPosts(page, size, userId.getId()));
     }
 }
