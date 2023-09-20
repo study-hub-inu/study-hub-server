@@ -1,7 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.study.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.MyStudyPostData;
 import kr.co.studyhubinu.studyhubserver.study.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.study.dto.request.UpdatePostRequest;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.GetBookmarkedPostsResponse;
