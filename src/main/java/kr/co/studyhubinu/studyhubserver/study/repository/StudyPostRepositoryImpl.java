@@ -84,7 +84,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
     @Override
     public Slice<GetBookmarkedPostsResponse> findPostsByBookmarked(Long userId, Pageable pageable) {
-        JPAQuery<GetBookmarkedPostsResponse> query = jpaQueryFactory.select(
+        List<GetBookmarkedPostsResponse> lists = jpaQueryFactory.select(
                         Projections.bean(GetBookmarkedPostsResponse.class,
                                 studyPostEntity.id.as("postId"),
                                 studyPostEntity.major,
@@ -100,8 +100,9 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .where(bookMarkEntity.userId.eq(userId))
                 .orderBy(studyPostEntity.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-        return findByQuery(query, pageable);
+                .limit(pageable.getPageSize())
+                .fetch();
+        return toSlice(pageable, lists);
     }
 
     public <T> Slice<T> findByQuery(JPAQuery<T> query, Pageable pageable) {
