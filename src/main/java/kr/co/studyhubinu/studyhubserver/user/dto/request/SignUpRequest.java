@@ -13,12 +13,12 @@ import javax.validation.constraints.Pattern;
 @Getter
 public class SignUpRequest {
 
-    @Schema(description = "유저 이메일", example = "xxx@inu.ac.kr")
+    @Schema(description = "유저 이메일", example = "studyHub@inu.ac.kr")
     @InuEmail(message = "이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)")
     @NotBlank
     private String email;
 
-    @Schema(description = "유저 비밀번호", example = "asd123")
+    @Schema(description = "유저 비밀번호", example = "studyHub123@")
     @Pattern(
             regexp = "^(?=.*[!@#$%^&*?~_]).{10,}$",
             message = "비밀번호는 10자 이상이어야 하며, 하나 이상의 특수문자를 포함해야 합니다."
@@ -26,12 +26,12 @@ public class SignUpRequest {
     @NotBlank
     private String password;
 
-    @Schema(description = "유저 닉네임", example = "lee")
+    @Schema(description = "유저 닉네임", example = "서터디허브")
     @NotBlank
     private String nickname;
 
     @Schema
-    private String imaUrl;
+    private String imageUrl;
 
     @Schema(description = "전공", example = "COMPUTER_SCIENCE_ENGINEERING")
     private MajorType major;
@@ -41,7 +41,7 @@ public class SignUpRequest {
 
 
     public SignUpInfo toService() {
-        return new SignUpInfo(nickname, email, password, imaUrl, major, gender);
+        return new SignUpInfo(nickname, email, password, imageUrl, major, gender);
     }
 
 }

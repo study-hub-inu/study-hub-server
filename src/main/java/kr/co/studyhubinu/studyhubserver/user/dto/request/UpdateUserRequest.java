@@ -15,7 +15,7 @@ public class UpdateUserRequest {
     private String nickname;
 
     @Schema(description = "수정할 이미지 Url")
-    private String imaUrl;
+    private String imageUrl;
 
     @Schema(description = "수정할 전공", example = "컴퓨터공학부")
     @NotBlank
@@ -26,7 +26,7 @@ public class UpdateUserRequest {
         return UpdateUserInfo.builder()
                 .userId(userId)
                 .nickname(nickname)
-                .imaUrl(imaUrl)
+                .imageUrl(imageUrl)
                 .major(major)
                 .build();
     }
