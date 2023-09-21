@@ -18,20 +18,4 @@ public class BookMarkRepositoryCustomImpl implements BookMarkRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public List<StudyPostEntity> findPostByBookMark(Long userId) {
-        QBookMarkEntity bookMark = bookMarkEntity;
-        QStudyPostEntity post = studyPostEntity;
-
-        List<StudyPostEntity> studyPostEntityList = jpaQueryFactory
-                .select(post)
-                .from(post)
-                .innerJoin(bookMark)
-                .on(bookMark.postId.eq(post.id)) // on 절을 사용하여 조인 조건을 정의
-                .where(bookMark.userId.eq(userId))
-                .fetch();
-
-        return studyPostEntityList;
-    }
-
 }

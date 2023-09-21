@@ -19,12 +19,6 @@ public class BookMarkController {
 
     private final BookMarkService bookMarkService;
 
-    @Operation(summary = "북마크 조회", description = "Http 헤더에 JWT accessToken 을 Json 형식으로 보내주시면 됩니다.")
-    @GetMapping("")
-    public ResponseEntity<List<FindBookMarkResponse>> findBookMark(UserId userId) {
-        return ResponseEntity.ok(bookMarkService.findBookMark(userId.getId()));
-    }
-
     @Operation(summary = "북마크 저장", description = "Http 헤더에 JWT accessToken, 바디에 PostId를 Json 형식으로 보내주시면 됩니다.")
     @PostMapping("")
     public ResponseEntity<HttpStatus> saveBookMark(UserId userId, CreateBookMarkRequest request) {

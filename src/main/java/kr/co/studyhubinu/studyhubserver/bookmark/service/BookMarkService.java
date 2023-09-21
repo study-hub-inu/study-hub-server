@@ -33,16 +33,4 @@ public class BookMarkService {
         bookMarkRepository.delete(bookMark);
     }
 
-    public List<FindBookMarkResponse> findBookMark(Long id) {
-        List<StudyPostEntity> postEntities = bookMarkRepository.findPostByBookMark(id);
-
-        List<FindBookMarkResponse> responses = postEntities.stream()
-                .map(postEntity -> {
-                    FindBookMarkResponse response = new FindBookMarkResponse(postEntity.getId(), postEntity.getTitle(), postEntity.getContent(), postEntity.getStudyPerson());
-                    return response;
-                })
-                .collect(Collectors.toList());
-        return responses;
-    }
-
 }
