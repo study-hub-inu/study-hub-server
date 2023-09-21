@@ -32,45 +32,6 @@ public class StudyPostFindController {
         return ResponseEntity.ok(studyPostService.findPostResponseByAll(pageable));
     }
 
-    @Operation(summary = "스터디 게시글 제목으로 조회", description = "parameter 칸에 " +
-            "조회할 제목은 detail, 페이지 정보는 page, 조회할 행 개수는 size 에 입력해주세요")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "title", value = "내용", required = true),
-            @ApiImplicitParam(name = "page", value = "페이지", required = true),
-            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
-    })
-    @GetMapping("/title/{title}")
-    public ResponseEntity<Slice<FindPostResponseByString>> findPostByString(@PathVariable String title, @RequestParam int page, @RequestParam int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(studyPostService.findPostResponseByTitle(title, pageable));
-    }
-
-    @Operation(summary = "스터디 게시글 학과로 조회", description = " parameter 칸에 " +
-            "조회할 학과는 major, 페이지 정보는 page, 조회할 행 개수는 size 에 입력해주세요")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "major", value = "학과", required = true),
-            @ApiImplicitParam(name = "page", value = "페이지", required = true),
-            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
-    })
-    @GetMapping("/major/{major}")
-    public ResponseEntity<Slice<FindPostResponseByMajor>> findPostByMajor(@PathVariable MajorType major, @RequestParam int page, @RequestParam int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(studyPostService.findPostResponseByMajor(major, pageable));
-    }
-
-    @Operation(summary = "스터디 게시글 내용으로 조회", description = " parameter 칸에 " +
-            "조회할 내용은 content, 페이지 정보는 page, 조회할 행 개수는 size 에 입력해주세요")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "content", value = "내용", required = true),
-            @ApiImplicitParam(name = "page", value = "페이지", required = true),
-            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
-    })
-    @GetMapping("/content/{content}")
-    public ResponseEntity<Slice<FindPostResponseByContent>> findPostByContent(@PathVariable String content, @RequestParam int page, @RequestParam int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(studyPostService.findPostResponseByContent(content, pageable));
-    }
-
     @Operation(summary = "스터디 게시글 조회 전체 테스트", description = "parameter 칸에" +
             "조회할 내용을 입력해주세요")
     @ApiImplicitParams({
@@ -80,7 +41,7 @@ public class StudyPostFindController {
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
-    @GetMapping("/find/all")
+    @GetMapping("")
     public ResponseEntity<Slice<FindPostResponseByString>> findPostByAllString(@RequestParam(required = false) String title, @RequestParam(required = false) String content, @RequestParam(required = false) MajorType major, @RequestParam int page, @RequestParam int size) {
         Pageable pageable = PageRequest.of(page, size);
         return ResponseEntity.ok(studyPostService.findPostResponseByString(title, major, content,pageable));

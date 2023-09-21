@@ -12,13 +12,7 @@ public interface StudyPostRepositoryCustom {
 
     Slice<FindPostResponseByString> findByString(String title, MajorType majorType, String content, Pageable pageable);
 
-    Slice<FindPostResponseByString> findByTitle(String title, Pageable pageable);
-
-    Slice<FindPostResponseByMajor> findByMajor(MajorType major, Pageable pageable);
-
     Slice<FindPostResponseByAll> findByAll(Pageable pageable);
-
-    Slice<FindPostResponseByContent> findByContent(String content, Pageable pageable);
 
     //Slice<StudyPostEntity> findByBookMark(Pageable pageable);
 }
