@@ -56,7 +56,9 @@ public class UserService {
     }
 
     public void nicknameDuplicationValid(String nickname) {
-        userRepository.findByNickname(nickname).orElseThrow(UserNicknameDuplicateException::new);
+        if (userRepository.findByNickname(nickname).isPresent()) {
+            throw new UserNicknameDuplicateException();
+        }
     }
 
     @Transactional

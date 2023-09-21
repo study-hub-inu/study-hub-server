@@ -31,14 +31,17 @@ public class StudyPostEntity extends BaseTimeEntity {
     @Column(name = "chat_url")
     private String chatUrl;
 
+    @Enumerated(EnumType.STRING)
     private MajorType major;
 
     @Column(name = "study_person")
     private int studyPerson;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "filtered_gender")
     private GenderType filteredGender;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "study_way")
     private StudyWayType studyWay;
 

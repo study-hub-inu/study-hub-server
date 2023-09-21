@@ -1,6 +1,5 @@
 package kr.co.studyhubinu.studyhubserver.study.repository;
 
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +15,8 @@ public interface StudyPostRepositoryCustom {
     Slice<FindPostResponseByAll> findByAll(Pageable pageable);
 
     Slice<FindPostResponseByContent> findByContent(String content, Pageable pageable);
+
+    Slice<GetBookmarkedPostsResponse> findPostsByBookmarked(Long userId, Pageable pageable);
 
     //Slice<StudyPostEntity> findByBookMark(Pageable pageable);
 }
