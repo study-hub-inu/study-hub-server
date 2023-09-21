@@ -2,15 +2,12 @@ package kr.co.studyhubinu.studyhubserver.bookmark.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.bookmark.dto.request.CreateBookMarkRequest;
-import kr.co.studyhubinu.studyhubserver.bookmark.dto.response.FindBookMarkResponse;
 import kr.co.studyhubinu.studyhubserver.bookmark.service.BookMarkService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
