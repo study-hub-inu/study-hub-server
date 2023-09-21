@@ -19,7 +19,15 @@ public class QBookMarkEntity extends EntityPathBase<BookMarkEntity> {
 
     public static final QBookMarkEntity bookMarkEntity = new QBookMarkEntity("bookMarkEntity");
 
+    public final kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity _super = new kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final NumberPath<Long> postId = createNumber("postId", Long.class);
 
