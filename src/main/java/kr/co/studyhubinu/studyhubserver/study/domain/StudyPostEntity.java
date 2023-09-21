@@ -34,7 +34,6 @@ public class StudyPostEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private MajorType major;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "study_person")
     private int studyPerson;
 
