@@ -71,6 +71,22 @@ public class StudyPostFindController {
         return ResponseEntity.ok(studyPostService.findPostResponseByContent(content, pageable));
     }
 
+    @Operation(summary = "스터디 게시글 조회 전체 테스트", description = "parameter 칸에" +
+            "조회할 내용을 입력해주세요")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "title", value = "내용"),
+            @ApiImplicitParam(name = "content", value = "내용"),
+            @ApiImplicitParam(name = "major", value = "학과"),
+            @ApiImplicitParam(name = "page", value = "페이지", required = true),
+            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
+    })
+    @GetMapping("/find/all")
+    public ResponseEntity<Slice<FindPostResponseByString>> findPostByAllString(@RequestParam(required = false) String title, @RequestParam(required = false) String content, @RequestParam(required = false) MajorType major, @RequestParam int page, @RequestParam int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(studyPostService.findPostResponseByString(title, major, content,pageable));
+    }
+
+
     //    @Operation(summary = "스터디 게시글 인기순 조회", description = "parameter 칸에 " +
 //            "페이지 정보는 page, 조회할 행 개수는 size 에 입력해주세요")
 //    @ApiImplicitParams({

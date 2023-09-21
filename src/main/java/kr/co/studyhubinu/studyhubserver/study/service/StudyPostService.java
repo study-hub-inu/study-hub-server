@@ -68,6 +68,10 @@ public class StudyPostService {
         return studyPostRepository.findByContent(content, pageable);
     }
 
+    public Slice<FindPostResponseByString> findPostResponseByString(String title, MajorType major, String content, Pageable pageable) {
+        return studyPostRepository.findByString(title, major, content, pageable);
+    }
+
 //    public Slice<StudyPostEntity> findPostResponseByBookMark(Pageable pageable) {
 //        return studyPostRepository.findByBookMark(pageable);
 //    }

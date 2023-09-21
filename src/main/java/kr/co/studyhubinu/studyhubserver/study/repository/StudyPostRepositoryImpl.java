@@ -23,6 +23,31 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
+    public Slice<FindPostResponseByString> findByString(String title, MajorType major, String content, Pageable pageable) {
+        QStudyPostEntity post = studyPostEntity;
+
+        JPAQuery<FindPostResponseByString> studyPostDto = jpaQueryFactory
+                .select(Projections.constructor(FindPostResponseByString.class,
+                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
+                .from(post)
+                .orderBy(post.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        if(title != null) {
+            studyPostDto.where(post.title.like(title + "%"));
+        }
+        if(major != null) {
+            studyPostDto.where(post.major.eq(major));
+        }
+        if(content != null) {
+            studyPostDto.where(post.content.like("%" + content + "%"));
+        }
+
+        return findByQuery(studyPostDto, pageable);
+    }
+
+    @Override
     public Slice<FindPostResponseByString> findByTitle(String title, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
 
@@ -31,6 +56,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
                 .where(post.title.like(title + "%"))
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -46,6 +72,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
                 .where(post.major.eq(major))
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -60,6 +87,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByAll.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
@@ -75,6 +103,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
                 .where(post.content.like("%" + content + "%"))
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
