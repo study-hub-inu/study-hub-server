@@ -58,8 +58,7 @@ public class UserService {
     }
 
     public void nicknameDuplicationValid(String nickname) {
-        Optional<UserEntity> user = userRepository.findByNickname(nickname);
-        if(user.isPresent()) { throw new AlreadyExistUserException(); }
+        userRepository.findByNickname(nickname).orElseThrow(AlreadyExistUserException::new);
     }
 
     @Transactional
