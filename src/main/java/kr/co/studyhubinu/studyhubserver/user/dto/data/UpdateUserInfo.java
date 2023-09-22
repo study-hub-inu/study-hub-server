@@ -9,14 +9,14 @@ public class UpdateUserInfo {
 
     private Long userId;
     private String nickname;
-    private String imaUrl;
+    private String imageUrl;
     private MajorType major;
 
     @Builder
-    public UpdateUserInfo(Long userId, String nickname, String imaUrl, MajorType major) {
+    public UpdateUserInfo(Long userId, String nickname, String imageUrl, MajorType major) {
         this.userId = userId;
         this.nickname = nickname;
-        this.imaUrl = imaUrl;
+        this.imageUrl = imageUrl;
         this.major = major;
     }
 }

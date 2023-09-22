@@ -24,31 +24,18 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<FindPostResponseByString> findByTitle(String title, Pageable pageable) {
+    public Slice<FindPostResponseByString> findByString(String title, MajorType major, String content, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
 
         JPAQuery<FindPostResponseByString> studyPostDto = jpaQueryFactory
                 .select(Projections.constructor(FindPostResponseByString.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
-                .where(post.title.like(title + "%"))
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        return findByQuery(studyPostDto, pageable);
-    }
-
-    @Override
-    public Slice<FindPostResponseByMajor> findByMajor(MajorType major, Pageable pageable) {
-        QStudyPostEntity post = studyPostEntity;
-
-        JPAQuery<FindPostResponseByMajor> studyPostDto = jpaQueryFactory
-                .select(Projections.constructor(FindPostResponseByMajor.class,
-                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
-                .from(post)
-                .where(post.major.eq(major))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+        insertQuery(studyPostDto, title, major, content);
 
         return findByQuery(studyPostDto, pageable);
     }
@@ -61,25 +48,25 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByAll.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
         return findByQuery(studyPostDto, pageable);
     }
 
-    @Override
-    public Slice<FindPostResponseByContent> findByContent(String content, Pageable pageable) {
+    public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {
         QStudyPostEntity post = studyPostEntity;
 
-        JPAQuery<FindPostResponseByContent> studyPostDto = jpaQueryFactory
-                .select(Projections.constructor(FindPostResponseByContent.class,
-                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
-                .from(post)
-                .where(post.content.like("%" + content + "%"))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-
-        return findByQuery(studyPostDto, pageable);
+        if(title != null) {
+            studyPostDto.where(post.title.like(title + "%"));
+        }
+        if(major != null) {
+            studyPostDto.where(post.major.eq(major));
+        }
+        if(content != null) {
+            studyPostDto.where(post.content.like("%" + content + "%"));
+        }
     }
 
     @Override
