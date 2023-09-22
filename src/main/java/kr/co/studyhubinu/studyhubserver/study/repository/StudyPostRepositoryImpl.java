@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collections;
 import java.util.List;
 
+import static kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity.bookMarkEntity;
 import static kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity.*;
 
 @Repository
@@ -66,6 +67,29 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         if(content != null) {
             studyPostDto.where(post.content.like("%" + content + "%"));
         }
+    }
+
+    @Override
+    public Slice<GetBookmarkedPostsResponse> findPostsByBookmarked(Long userId, Pageable pageable) {
+        List<GetBookmarkedPostsResponse> lists = jpaQueryFactory.select(
+                        Projections.bean(GetBookmarkedPostsResponse.class,
+                                studyPostEntity.id.as("postId"),
+                                studyPostEntity.major,
+                                studyPostEntity.title,
+                                studyPostEntity.content,
+                                studyPostEntity.remainingSeat,
+                                studyPostEntity.close
+                        )
+                )
+                .from(studyPostEntity)
+                .innerJoin(bookMarkEntity)
+                .on(bookMarkEntity.postId.eq(studyPostEntity.id))
+                .where(bookMarkEntity.userId.eq(userId))
+                .orderBy(studyPostEntity.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+        return toSlice(pageable, lists);
     }
 
     public <T> Slice<T> findByQuery(JPAQuery<T> query, Pageable pageable) {

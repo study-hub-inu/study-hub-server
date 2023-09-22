@@ -13,8 +13,10 @@ import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,6 +60,18 @@ public class StudyPostService {
 
     public Slice<FindPostResponseByString> findPostResponseByString(String title, MajorType major, String content, Pageable pageable) {
         return studyPostRepository.findByString(title, major, content, pageable);
+    }
+
+    public Slice<GetMyPostResponse> getMyPosts(int page, int size, Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return studyPostRepository.findByPostedUserId(user.getId(), pageable);
+    }
+
+    public Slice<GetBookmarkedPostsResponse> getBookmarkedPosts(int page, int size, Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return studyPostRepository.findPostsByBookmarked(userId, pageable);
     }
 
 //    public Slice<StudyPostEntity> findPostResponseByBookMark(Pageable pageable) {

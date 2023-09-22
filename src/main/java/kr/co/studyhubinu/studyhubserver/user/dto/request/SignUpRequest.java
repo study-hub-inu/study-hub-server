@@ -18,7 +18,8 @@ public class SignUpRequest {
     @NotBlank
     private String email;
 
-    @Schema(description = "유저 비밀번호", example = "studyHub123@")
+
+    @Schema(description = "유저 비밀번호", example = "asdasdasd!!")
     @Pattern(
             regexp = "^(?=.*[!@#$%^&*?~_]).{10,}$",
             message = "비밀번호는 10자 이상이어야 하며, 하나 이상의 특수문자를 포함해야 합니다."

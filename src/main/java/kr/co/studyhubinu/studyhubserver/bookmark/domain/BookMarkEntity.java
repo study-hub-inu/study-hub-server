@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.bookmark.domain;
 
+import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +10,8 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BookMarkEntity {
+@Table(name = "bookmark")
+public class BookMarkEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +24,6 @@ public class BookMarkEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @Builder
     public BookMarkEntity(Long postId, Long userId) {
         this.postId = postId;
         this.userId = userId;

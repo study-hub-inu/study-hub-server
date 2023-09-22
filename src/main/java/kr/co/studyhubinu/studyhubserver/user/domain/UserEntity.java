@@ -11,10 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -32,8 +29,10 @@ public class UserEntity extends BaseTimeEntity {
     private String nickname;
 
 
+    @Enumerated(EnumType.STRING)
     private MajorType major;
 
+    @Enumerated(EnumType.STRING)
     private GenderType gender;
 
     private String imageUrl;
