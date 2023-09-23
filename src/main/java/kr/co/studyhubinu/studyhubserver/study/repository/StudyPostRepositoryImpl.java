@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
-
-import java.util.Collections;
 import java.util.List;
 
 import static kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity.bookMarkEntity;
@@ -31,13 +29,13 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByString.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
-                .orderBy(post.createdDate.desc())
+                .orderBy(post.createdDate.asc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize()+1);
 
         insertQuery(studyPostDto, title, major, content);
 
-        return findByQuery(studyPostDto, pageable);
+        return toSlice(pageable, studyPostDto.fetch());
     }
 
     @Override
@@ -48,25 +46,11 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByAll.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
-                .orderBy(post.createdDate.desc())
+                .orderBy(post.createdDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize());
 
-        return findByQuery(studyPostDto, pageable);
-    }
-
-    public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {
-        QStudyPostEntity post = studyPostEntity;
-
-        if(title != null) {
-            studyPostDto.where(post.title.like(title + "%"));
-        }
-        if(major != null) {
-            studyPostDto.where(post.major.eq(major));
-        }
-        if(content != null) {
-            studyPostDto.where(post.content.like("%" + content + "%"));
-        }
+        return toSlice(pageable, studyPostDto.fetch());
     }
 
     @Override
@@ -92,40 +76,26 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         return toSlice(pageable, lists);
     }
 
-    public <T> Slice<T> findByQuery(JPAQuery<T> query, Pageable pageable) {
-        Slice<T> sliceDto = toSlice(pageable, query.fetch());
 
-        if(sliceDto.isEmpty()) {
-            return new SliceImpl<>(Collections.emptyList(), pageable, false);
+    public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {
+        QStudyPostEntity post = studyPostEntity;
+
+        if(title != null) {
+            studyPostDto.where(post.title.like(title + "%"));
         }
-
-        return new SliceImpl<>(query.fetch(), pageable, sliceDto.hasNext());
+        if(major != null) {
+            studyPostDto.where(post.major.eq(major));
+        }
+        if(content != null) {
+            studyPostDto.where(post.content.like("%" + content + "%"));
+        }
     }
 
     public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
         if (items.size() > pageable.getPageSize()) {
-            items.remove(items.size() - 1);
+            items.remove(items.size()-1);
             return new SliceImpl<>(items, pageable, true);
         }
         return new SliceImpl<>(items, pageable, false);
     }
-
-
-    //    @Override
-//    public Slice<StudyPostEntity> findByBookMark(Pageable pageable) {
-//        QStudyPostEntity post = studyPostEntity;
-//        QBookMarkEntity bookMark = bookMarkEntity;
-//
-//        JPAQuery<StudyPostEntity> studyPostDto = jpaQueryFactory
-//                .select(post).distinct()
-//                .from(post)
-//                .leftJoin(bookMark)
-//                .on(bookMark.postId.eq(post.id))
-//                .groupBy(post)
-//                .orderBy(bookMark.id.count().desc())
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize());
-//
-//        return findByQuery(studyPostDto, pageable);
-//    }
 }

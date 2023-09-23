@@ -10,6 +10,7 @@ import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,7 @@ import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class InitDb {
 
     private final InitService initService;
@@ -63,6 +65,10 @@ public class InitDb {
             studyPostRepository.save(post2);
             studyPostRepository.save(post3);
             studyPostRepository.save(post4);
+
+            log.info(post1.getCreatedDate().toString());
+            log.info(post2.getCreatedDate().toString());
+            log.info(post3.getCreatedDate().toString());
         }
 
         public void bookMarkInit() {
