@@ -3,6 +3,7 @@ package kr.co.studyhubinu.studyhubserver.study.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -29,9 +30,9 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByString.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
-                .orderBy(post.createdDate.asc())
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize()+1);
+                .limit(pageable.getPageSize() + 1);
 
         insertQuery(studyPostDto, title, major, content);
 
@@ -46,34 +47,30 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByAll.class,
                         post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
                 .from(post)
-                .orderBy(post.createdDate.asc())
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize() + 1);
 
         return toSlice(pageable, studyPostDto.fetch());
     }
 
     @Override
     public Slice<GetBookmarkedPostsResponse> findPostsByBookmarked(Long userId, Pageable pageable) {
-        List<GetBookmarkedPostsResponse> lists = jpaQueryFactory.select(
-                        Projections.bean(GetBookmarkedPostsResponse.class,
-                                studyPostEntity.id.as("postId"),
-                                studyPostEntity.major,
-                                studyPostEntity.title,
-                                studyPostEntity.content,
-                                studyPostEntity.remainingSeat,
-                                studyPostEntity.close
-                        )
-                )
-                .from(studyPostEntity)
-                .innerJoin(bookMarkEntity)
-                .on(bookMarkEntity.postId.eq(studyPostEntity.id))
-                .where(bookMarkEntity.userId.eq(userId))
-                .orderBy(studyPostEntity.createdDate.desc())
+        QStudyPostEntity post = studyPostEntity;
+        QBookMarkEntity bookMark = bookMarkEntity;
+
+        JPAQuery<GetBookmarkedPostsResponse> studyPostDto = jpaQueryFactory.select(
+                        Projections.constructor(GetBookmarkedPostsResponse.class,
+                                post.id.as("postId"), post.major, post.title, post.content, post.remainingSeat, post.close))
+                .from(post)
+                .innerJoin(bookMark)
+                .on(bookMark.postId.eq(post.id))
+                .where(bookMark.userId.eq(userId))
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-        return toSlice(pageable, lists);
+                .limit(pageable.getPageSize());
+
+        return toSlice(pageable, studyPostDto.fetch());
     }
 
 
