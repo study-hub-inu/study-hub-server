@@ -13,6 +13,8 @@ public interface StudyPostRepositoryCustom {
 
     Slice<FindPostResponseByAll> findByAll(Pageable pageable);
 
+    Slice<GetBookmarkedPostsResponse> findPostsByBookmarked(Long userId, Pageable pageable);
+
     //Slice<StudyPostEntity> findByBookMark(Pageable pageable);
 }
 

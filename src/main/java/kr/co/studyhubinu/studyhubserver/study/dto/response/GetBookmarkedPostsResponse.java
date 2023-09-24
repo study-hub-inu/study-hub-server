@@ -4,7 +4,6 @@ import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.*;
 
 @Getter
-@Setter // QueryDsl 때문에 필요함
 @NoArgsConstructor
 @AllArgsConstructor
 public class GetBookmarkedPostsResponse {
