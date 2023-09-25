@@ -2,16 +2,11 @@ HELP.md
 .gradle
 
 
-build/classes
-build/libs
-build/resources
-build/tmp
-build/reports
-build/test-results
+build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+!build/generated
 
 
 *.yml

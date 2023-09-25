@@ -22,8 +22,6 @@ public class PrincipalDetailsService implements UserDetailsService {
         System.out.println("PrincipalDetailsService : 진입");
         UserEntity userEntity = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
-        log.info(userEntity.getEmail() + " " + userEntity.getPassword());
-
         return new PrincipalDetails(userEntity);
     }
 }
