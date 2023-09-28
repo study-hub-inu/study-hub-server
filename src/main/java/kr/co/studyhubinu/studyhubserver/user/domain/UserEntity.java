@@ -16,6 +16,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "USERS")
 public class UserEntity extends BaseTimeEntity {
 
     @Id
@@ -35,6 +36,7 @@ public class UserEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
     @Builder
