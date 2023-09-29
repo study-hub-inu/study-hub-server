@@ -15,7 +15,6 @@ public class BookMarkEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bookmark_id")
     private Long id;
 
     @Column(name = "post_id")

@@ -11,15 +11,14 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "STUDY")
+@Table(name = "study")
 public class StudyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "study_id")
     private Long id;
 
-    private String name;
+    private String title;
 
     private String content;
 
@@ -29,20 +28,20 @@ public class StudyEntity {
     @Column(name = "study_end_date")
     private LocalDate studyEndDate;
 
-    @Column(name = "chat_room_url")
-    private String chatRoomUrl;
+    @Column(name = "chat_url")
+    private String chatUrl;
 
     @Column(name = "user_id")
     private Long userId;
 
 
     @Builder
-    public StudyEntity(String name, String content, LocalDate studyStartDate, LocalDate studyEndDate, String chatRoomUrl) {
-        this.name = name;
+    public StudyEntity(String title, String content, LocalDate studyStartDate, LocalDate studyEndDate, String chatUrl) {
+        this.title = title;
         this.content = content;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
-        this.chatRoomUrl = chatRoomUrl;
+        this.chatUrl = chatUrl;
     }
 
 }

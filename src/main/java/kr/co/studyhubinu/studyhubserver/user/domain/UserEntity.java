@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "USERS")
+@Table(name = "users")
 public class UserEntity extends BaseTimeEntity {
 
     @Id
