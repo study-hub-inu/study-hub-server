@@ -54,20 +54,12 @@ public class StudyPostService {
         if (!post.isVoteOfUser(userId)) throw new UserNotAccessRightException();
     }
 
-    public Slice<FindPostResponseByString> findPostResponseByTitle(String title, Pageable pageable) {
-        return studyPostRepository.findByTitle(title, pageable);
-    }
-
-    public Slice<FindPostResponseByMajor> findPostResponseByMajor(MajorType major, Pageable pageable) {
-        return studyPostRepository.findByMajor(major, pageable);
-    }
-
     public Slice<FindPostResponseByAll> findPostResponseByAll(Pageable pageable) {
         return studyPostRepository.findByAll(pageable);
     }
 
-    public Slice<FindPostResponseByContent> findPostResponseByContent(String content, Pageable pageable) {
-        return studyPostRepository.findByContent(content, pageable);
+    public Slice<FindPostResponseByString> findPostResponseByString(String title, MajorType major, String content, Pageable pageable) {
+        return studyPostRepository.findByString(title, major, content, pageable);
     }
 
     public Slice<GetMyPostResponse> getMyPosts(int page, int size, Long userId) {

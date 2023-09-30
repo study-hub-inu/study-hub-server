@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -56,9 +58,7 @@ public class UserService {
     }
 
     public void nicknameDuplicationValid(String nickname) {
-        if (userRepository.findByNickname(nickname).isPresent()) {
-            throw new UserNicknameDuplicateException();
-        }
+        userRepository.findByNickname(nickname).orElseThrow(AlreadyExistUserException::new);
     }
 
     @Transactional

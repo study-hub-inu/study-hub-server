@@ -28,7 +28,6 @@ public class UserEntity extends BaseTimeEntity {
 
     private String nickname;
 
-    private String imaUrl;
 
     @Enumerated(EnumType.STRING)
     private MajorType major;
@@ -39,12 +38,12 @@ public class UserEntity extends BaseTimeEntity {
     private String imageUrl;
 
     @Builder
-    public UserEntity(Long id, String email, String password, String nickname, String imaUrl, MajorType major, GenderType gender) {
+    public UserEntity(Long id, String email, String password, String nickname, String imageUrl, MajorType major, GenderType gender) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.imaUrl = imaUrl;
+        this.imageUrl = imageUrl;
         this.major = major;
         this.gender = gender;
     }
