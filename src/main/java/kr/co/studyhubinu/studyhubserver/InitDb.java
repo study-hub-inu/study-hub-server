@@ -3,8 +3,10 @@ package kr.co.studyhubinu.studyhubserver;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.study.repository.StudyPostRepository;
+import kr.co.studyhubinu.studyhubserver.study.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -37,8 +39,9 @@ public class InitDb {
     static class InitService {
 
         private final UserRepository userRepository;
-        private final StudyPostRepository studyPostRepository;
+        private final StudyPostService studyPostService;
         private final BookMarkRepository bookMarkRepository;
+        private final StudyPostRepository studyPostRepository;
 
         public void userInit() {
             UserEntity user = new UserEntity( "xxx@inu.ac.kr", "asd123", "lee", "www.asdasdas" ,MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.FEMALE);
@@ -49,27 +52,24 @@ public class InitDb {
         public void postInit() {
             UserEntity user = userRepository.findByEmail("xxx@inu.ac.kr").orElseThrow();
 
-            StudyPostEntity post1 = new StudyPostEntity("정처기 구함", "고수들만", "www.liljay.com",
-                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
-            StudyPostEntity post2 = new StudyPostEntity("축구하실분 구함", "브라질 사람만", "www.liljay.com",
-                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
-            StudyPostEntity post3 = new StudyPostEntity("스파링 뜨실분", "러시아 사람만", "www.liljay.com",
-                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
-            StudyPostEntity post4 = new StudyPostEntity("축구 할놈", "아르헨티나 사람만", "www.liljay.com",
-                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, GenderType.MALE, StudyWayType.CONTACT,
-                    1000, LocalDate.now(), LocalDate.now(), 1L, 10);
+            StudyPostInfo post1 = new StudyPostInfo(user.getId(),"정처기 구함", "고수들만", "www.liljay.com",
+                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, 1000, GenderType.MALE, StudyWayType.CONTACT,
+                     LocalDate.now(), LocalDate.now());
+            StudyPostInfo post2 = new StudyPostInfo(user.getId(),"축구하실분 구함", "브라질 사람만", "www.liljay.com",
+                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, 1000, GenderType.MALE, StudyWayType.CONTACT,
+                    LocalDate.now(), LocalDate.now());
+            StudyPostInfo post3 = new StudyPostInfo(user.getId(),"스파링 뜨실분", "다게스탄만", "www.liljay.com",
+                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, 1000, GenderType.MALE, StudyWayType.CONTACT,
+                    LocalDate.now(), LocalDate.now());
+            StudyPostInfo post4 = new StudyPostInfo(user.getId(),"축구 할놈", "아르헨티나 사람만", "www.liljay.com",
+                    MajorType.COMPUTER_SCIENCE_ENGINEERING, 10, 1000, GenderType.MALE, StudyWayType.CONTACT,
+                    LocalDate.now(), LocalDate.now());
 
-            studyPostRepository.save(post1);
-            studyPostRepository.save(post2);
-            studyPostRepository.save(post3);
-            studyPostRepository.save(post4);
 
-            log.info(post1.getCreatedDate().toString());
-            log.info(post2.getCreatedDate().toString());
-            log.info(post3.getCreatedDate().toString());
+            studyPostService.createPost(post1);
+            studyPostService.createPost(post2);
+            studyPostService.createPost(post3);
+            studyPostService.createPost(post4);
         }
 
         public void bookMarkInit() {
