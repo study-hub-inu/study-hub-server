@@ -1,11 +1,8 @@
 DROP TABLE if EXISTS users CASCADE;
-DROP TABLE if EXISTS vote_result;
-DROP TABLE if EXISTS drink;
-DROP TABLE if EXISTS vote_drink_content;
+DROP TABLE if EXISTS post;
+DROP TABLE if EXISTS study;
+DROP TABLE if EXISTS alarm;
 DROP TABLE if EXISTS bookmark;
-DROP TABLE if EXISTS enjoy_drink;
-DROP TABLE if EXISTS comment_emotion;
-DROP TABLE if EXISTS comment;
 
 CREATE TABLE users
 (
