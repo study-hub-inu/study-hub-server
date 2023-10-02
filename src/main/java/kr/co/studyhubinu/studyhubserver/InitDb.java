@@ -41,8 +41,9 @@ public class InitDb {
         private final BookMarkRepository bookMarkRepository;
 
         public void userInit() {
-            UserEntity user = new UserEntity(1L, "xxx@inu.ac.kr", "asd123", "lee", "www.asdasdas" ,MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.FEMALE);
+            UserEntity user = new UserEntity( "xxx@inu.ac.kr", "asd123", "lee", "www.asdasdas" ,MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.FEMALE);
             userRepository.save(user);
+            log.info("test Transaction : " + user.getId());
         }
 
         public void postInit() {

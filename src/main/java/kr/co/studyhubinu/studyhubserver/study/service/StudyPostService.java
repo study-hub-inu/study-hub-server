@@ -11,6 +11,8 @@ import kr.co.studyhubinu.studyhubserver.study.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
+import kr.co.studyhubinu.studyhubserver.userpost.domain.UserPostEntity;
+import kr.co.studyhubinu.studyhubserver.userpost.repository.UserPostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -28,12 +30,16 @@ public class StudyPostService {
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
+    private final UserPostRepository userPostRepository;
 
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
-        studyPostRepository.save(studyPost);
+        UserPostEntity userPost = new UserPostEntity(studyPost, user);
 
+        studyPostRepository.save(studyPost);
+        user.getUserPost().add(userPost);
+        userPostRepository.save(userPost);
     }
 
     public void updatePost(UpdateStudyPostInfo info) {
