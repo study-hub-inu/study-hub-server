@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.support;
+package kr.co.studyhubinu.studyhubserver.support.repository;
 
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;

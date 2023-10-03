@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.repository;
 
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.support.RepositoryTest;
+import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import org.junit.jupiter.api.Assertions;
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RepositoryTest
 class UserRepositoryTest {
@@ -27,7 +28,7 @@ class UserRepositoryTest {
         UserEntity saveUser = userRepository.save(user);
 
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(saveUser.equals(user))
         );
     }
@@ -43,7 +44,7 @@ class UserRepositoryTest {
         UserEntity findUserById = userRepository.findById(1L).orElseThrow(UserNotFoundException::new);
 
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(findUserById.equals(user))
         );
     }
@@ -59,7 +60,7 @@ class UserRepositoryTest {
         UserEntity findUserByEmail = userRepository.findByEmail("xxx@inu.ac.kr").orElseThrow(UserNotFoundException::new);
 
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(findUserByEmail.equals(user))
         );
     }
@@ -75,7 +76,7 @@ class UserRepositoryTest {
         UserEntity findUserByNickname = userRepository.findByNickname("LilJay").orElseThrow(UserNotFoundException::new);
 
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(findUserByNickname.equals(user))
         );
     }
@@ -92,7 +93,7 @@ class UserRepositoryTest {
         boolean nonExist = userRepository.existsByEmail("나는아니야@inu.ac.kr");
 
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(exist).isTrue(),
                 () -> assertThat(nonExist).isFalse()
         );

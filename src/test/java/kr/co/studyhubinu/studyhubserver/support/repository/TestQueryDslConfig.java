@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.support;
+package kr.co.studyhubinu.studyhubserver.support.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.boot.test.context.TestConfiguration;
