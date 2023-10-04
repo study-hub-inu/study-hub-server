@@ -1,10 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.study.domain;
 
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
@@ -32,6 +34,9 @@ public class StudyEntity {
 
     @Column(name = "user_id")
     private Long userId;
+
+    @OneToMany(mappedBy = "study")
+    private List<UserStudyEntity> userStudyEntityList;
 
 
     @Builder

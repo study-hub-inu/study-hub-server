@@ -1,11 +1,13 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdatePasswordInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +43,7 @@ public class UserEntity extends BaseTimeEntity {
     private String imageUrl;
 
     @OneToMany(mappedBy = "user")
-    private List<StudyPostEntity> studyPostEntityList;
+    private List<UserStudyEntity> userStudyEntitiyList;
 
     @Builder
     public UserEntity(Long id, String email, String password, String nickname, String imageUrl, MajorType major, GenderType gender) {

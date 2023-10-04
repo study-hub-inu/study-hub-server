@@ -3,10 +3,8 @@ package kr.co.studyhubinu.studyhubserver.study.domain;
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
-import kr.co.studyhubinu.studyhubserver.studyuser.domain.StudyUserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
-import kr.co.studyhubinu.studyhubserver.userpost.domain.UserPostEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +13,6 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
@@ -65,9 +62,6 @@ public class StudyPostEntity extends BaseTimeEntity {
 
     @Column(name = "remaining_seat")
     private int remainingSeat;
-
-    @OneToMany(mappedBy = "post")
-    private List<StudyUserEntity> studyUserEntityList;
 
     @Builder
     public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {

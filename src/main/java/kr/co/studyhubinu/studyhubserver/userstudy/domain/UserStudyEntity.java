@@ -1,6 +1,6 @@
-package kr.co.studyhubinu.studyhubserver.userpost.domain;
+package kr.co.studyhubinu.studyhubserver.userstudy.domain;
 
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserPostEntity {
+public class UserStudyEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -21,15 +21,15 @@ public class UserPostEntity {
 
     @ManyToOne
     @JoinColumn(name = "post_id")
-    private StudyPostEntity studyPostEntity;
+    private StudyEntity study;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Builder
-    public UserPostEntity(StudyPostEntity studyPost, UserEntity user) {
-        this.studyPostEntity = studyPost;
+    public UserStudyEntity(StudyEntity study, UserEntity user) {
+        this.study = study;
         this.user = user;
     }
 

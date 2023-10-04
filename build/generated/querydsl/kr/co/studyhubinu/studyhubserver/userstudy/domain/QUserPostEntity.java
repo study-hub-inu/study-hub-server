@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.userpost.domain;
+package kr.co.studyhubinu.studyhubserver.userstudy.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -14,7 +14,7 @@ import com.querydsl.core.types.dsl.PathInits;
  * QUserPostEntity is a Querydsl query type for UserPostEntity
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QUserPostEntity extends EntityPathBase<UserPostEntity> {
+public class QUserPostEntity extends EntityPathBase<UserStudyEntity> {
 
     private static final long serialVersionUID = -1684592337L;
 
@@ -29,10 +29,10 @@ public class QUserPostEntity extends EntityPathBase<UserPostEntity> {
     public final kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity user;
 
     public QUserPostEntity(String variable) {
-        this(UserPostEntity.class, forVariable(variable), INITS);
+        this(UserStudyEntity.class, forVariable(variable), INITS);
     }
 
-    public QUserPostEntity(Path<? extends UserPostEntity> path) {
+    public QUserPostEntity(Path<? extends UserStudyEntity> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
@@ -41,10 +41,10 @@ public class QUserPostEntity extends EntityPathBase<UserPostEntity> {
     }
 
     public QUserPostEntity(PathMetadata metadata, PathInits inits) {
-        this(UserPostEntity.class, metadata, inits);
+        this(UserStudyEntity.class, metadata, inits);
     }
 
-    public QUserPostEntity(Class<? extends UserPostEntity> type, PathMetadata metadata, PathInits inits) {
+    public QUserPostEntity(Class<? extends UserStudyEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.studyPostEntity = inits.isInitialized("studyPostEntity") ? new kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity(forProperty("studyPostEntity")) : null;
         this.user = inits.isInitialized("user") ? new kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity(forProperty("user")) : null;
