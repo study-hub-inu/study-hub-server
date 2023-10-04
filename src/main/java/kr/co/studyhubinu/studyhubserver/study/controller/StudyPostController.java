@@ -54,7 +54,7 @@ public class StudyPostController {
 
     @Operation(summary = "내가 북마크한 스터디 조회")
     @GetMapping("/bookmarked")
-    public ResponseEntity<Slice<GetBookmarkedPostsResponse>> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
+    public ResponseEntity<GetBookmarkedPostsResponse> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
         return ResponseEntity.ok().body(studyPostService.getBookmarkedPosts(page, size, userId.getId()));
     }
 }

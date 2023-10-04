@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class StudyPostEntity extends BaseTimeEntity {
 
     @Id
-    @Column(name = "study_post_id")
+    @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
