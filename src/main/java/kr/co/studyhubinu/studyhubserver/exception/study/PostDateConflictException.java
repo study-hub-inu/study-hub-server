@@ -11,7 +11,7 @@ public class PostDateConflictException extends CustomException {
 
     public PostDateConflictException() {
         super(message);
-        this.status = StatusType.USER_NOT_FOUND;
+        this.status = StatusType.DATA_CONFLICT;
     }
 
     @Override
