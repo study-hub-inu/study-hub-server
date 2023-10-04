@@ -28,7 +28,7 @@ CREATE TABLE post
     major              VARCHAR(50)   DEFAULT NULL,
     study_person       INTEGER       DEFAULT NULL,
     filtered_gender    VARCHAR(6)    DEFAULT NULL,
-    study_way          VARCHAR(6)    DEFAULT NULL,
+    study_way          VARCHAR(7)    DEFAULT NULL,
     penalty            INTEGER       DEFAULT NULL,
     close              TINYINT       DEFAULT 0,
     study_start_date   DATE          DEFAULT NULL,
