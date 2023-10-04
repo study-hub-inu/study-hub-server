@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/users/login").permitAll()
+                .antMatchers("/api/users/signup").permitAll()
                 .and().build();
     }
 

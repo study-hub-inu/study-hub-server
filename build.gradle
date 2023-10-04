@@ -54,8 +54,6 @@ dependencies {
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    // s3
-    implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-aws', version: '2.2.6.RELEASE'
 
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
