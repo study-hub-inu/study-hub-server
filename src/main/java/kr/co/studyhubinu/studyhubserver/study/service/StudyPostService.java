@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostValidator;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
@@ -28,30 +29,28 @@ public class StudyPostService {
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
+    private final StudyPostValidator studyPostValidator;
 
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
+        studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         studyPostRepository.save(studyPost);
-
     }
 
     public void updatePost(UpdateStudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(info.getPostId()).orElseThrow(PostNotFoundException::new);
-        isPostOfUser(user.getId(), post);
+        studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
+        studyPostValidator.validIsPostOfUser(user.getId(), post);
         post.update(info);
     }
 
     public void deletePost(Long postId, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        isPostOfUser(user.getId(), post);
+        studyPostValidator.validIsPostOfUser(user.getId(), post);
         studyPostRepository.delete(post);
-    }
-
-    public void isPostOfUser(Long userId, StudyPostEntity post) {
-        if (!post.isVoteOfUser(userId)) throw new UserNotAccessRightException();
     }
 
     public Slice<FindPostResponseByAll> findPostResponseByAll(Pageable pageable) {

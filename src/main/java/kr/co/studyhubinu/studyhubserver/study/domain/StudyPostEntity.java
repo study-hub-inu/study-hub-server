@@ -88,11 +88,11 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.filteredGender = info.getGender();
         this.studyWay = info.getStudyWay();
         this.penalty = info.getPenalty();
-        this.studyStartDate = info.getStartStartDate();
+        this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
     }
 
-    public boolean isVoteOfUser(Long userId) {
+    public boolean isPostOfUser(Long userId) {
         return this.postedUserId.equals(userId);
     }
 }
