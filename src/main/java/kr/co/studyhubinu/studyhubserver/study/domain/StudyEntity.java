@@ -14,6 +14,7 @@ import static javax.persistence.FetchType.*;
 public class StudyEntity {
 
     @Id
+    @Column(name = "study_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
