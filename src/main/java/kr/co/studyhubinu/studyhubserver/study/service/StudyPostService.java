@@ -1,7 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.study.service;
 
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostValidator;
