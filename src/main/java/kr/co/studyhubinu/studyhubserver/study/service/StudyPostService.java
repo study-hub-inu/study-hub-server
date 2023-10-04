@@ -6,6 +6,7 @@ import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostValidator;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.GetMyPostData;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
@@ -63,10 +64,12 @@ public class StudyPostService {
         return studyPostRepository.findByString(title, major, content, pageable);
     }
 
-    public Slice<GetMyPostResponse> getMyPosts(int page, int size, Long userId) {
+    public GetMyPostResponse getMyPosts(int page, int size, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        return studyPostRepository.findByPostedUserId(user.getId(), pageable);
+        Long totalCount = studyPostRepository.countByPostedUserId(userId);
+        Slice<GetMyPostData> getMyPostData = studyPostRepository.findByPostedUserId(user.getId(), pageable);
+        return new GetMyPostResponse(totalCount, getMyPostData);
     }
 
     public GetBookmarkedPostsResponse getBookmarkedPosts(int page, int size, Long userId) {
