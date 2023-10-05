@@ -74,7 +74,7 @@ CREATE TABLE bookmark
     PRIMARY KEY (bookmark_id)
 );
 
-CREATE TABLE user_post_entity (
+CREATE TABLE user_study (
       user_post_id BIGINT AUTO_INCREMENT PRIMARY KEY,
       post_id BIGINT,
       user_id BIGINT,

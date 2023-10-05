@@ -12,6 +12,7 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "user_study")
 public class UserStudyEntity {
 
     @Id
