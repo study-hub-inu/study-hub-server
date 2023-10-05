@@ -76,6 +76,7 @@ public class UserService {
     }
 
     public Slice<FindPostResponseByAll> findUserPost(Long userId, Pageable pageable) {
-        return userRepository.findMyPost(userId, pageable);
+//        return userRepository.findMyPost(userId, pageable);
+        return null;
     }
 }
