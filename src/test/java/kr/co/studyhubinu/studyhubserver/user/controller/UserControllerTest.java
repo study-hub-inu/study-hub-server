@@ -43,12 +43,12 @@ public class UserControllerTest {
 
 
 
-    @Test
-    void 닉네임을_중복검사한다() throws Exception {
-        String url = "/api/users/duplication-nickname";
-        String nickName = "lee";
-
-        BDDMockito.given(userService.nicknameDuplicationValid(nickName))
-    }
+//    @Test
+//    void 닉네임을_중복검사한다() throws Exception {
+//        String url = "/api/users/duplication-nickname";
+//        String nickName = "lee";
+//
+//        BDDMockito.given(userService.nicknameDuplicationValid(nickName));
+//    }
 
 }
