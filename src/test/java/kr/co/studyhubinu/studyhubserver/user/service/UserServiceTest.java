@@ -108,6 +108,7 @@ class UserServiceTest {
         UpdateNicknameInfo updateNicknameInfo = UpdateNicknameInfo.builder()
                 .nickname("나사나이이영재")
                 .userId(user.getId())
+                .auth(true)
                 .build();
         BDDMockito.given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));
 
