@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.GetBookmarkedPostsData;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
@@ -55,12 +56,12 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public Slice<GetBookmarkedPostsResponse> findPostsByBookmarked(Long userId, Pageable pageable) {
+    public Slice<GetBookmarkedPostsData> findPostsByBookmarked(Long userId, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
         QBookMarkEntity bookMark = bookMarkEntity;
 
-        JPAQuery<GetBookmarkedPostsResponse> studyPostDto = jpaQueryFactory.select(
-                        Projections.constructor(GetBookmarkedPostsResponse.class,
+        JPAQuery<GetBookmarkedPostsData> studyPostDto = jpaQueryFactory.select(
+                        Projections.constructor(GetBookmarkedPostsData.class,
                                 post.id.as("postId"), post.major, post.title, post.content, post.remainingSeat, post.close))
                 .from(post)
                 .innerJoin(bookMark)

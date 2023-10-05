@@ -6,29 +6,29 @@ DROP TABLE if EXISTS bookmark;
 
 CREATE TABLE users
 (
-    id                 BIGINT NOT NULL AUTO_INCREMENT,
+    user_id            BIGINT NOT NULL AUTO_INCREMENT,
     email              VARCHAR(55)  DEFAULT NULL,
     nickname           VARCHAR(20)  DEFAULT NULL,
-    password           VARCHAR(30)  DEFAULT NULL,
+    password           VARCHAR(100)  DEFAULT NULL,
     image_url          VARCHAR(100) DEFAULT NULL,
     gender             VARCHAR(6)   DEFAULT NULL,
-    major              VARCHAR(20)  DEFAULT NULL,
+    major              VARCHAR(50)  DEFAULT NULL,
     created_date       TIMESTAMP    DEFAULT NULL,
     modified_date      TIMESTAMP    DEFAULT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (user_id)
 );
 
 CREATE TABLE post
 (
-    id                 BIGINT NOT NULL AUTO_INCREMENT,
+    post_id            BIGINT NOT NULL AUTO_INCREMENT,
     posted_user_id     BIGINT        NOT NULL,
     title              VARCHAR(55)   DEFAULT NULL,
     content            VARCHAR(255)  DEFAULT NULL,
     chat_url           VARCHAR(100)  DEFAULT NULL,
-    major              VARCHAR(20)   DEFAULT NULL,
+    major              VARCHAR(50)   DEFAULT NULL,
     study_person       INTEGER       DEFAULT NULL,
     filtered_gender    VARCHAR(6)    DEFAULT NULL,
-    study_way          VARCHAR(6)    DEFAULT NULL,
+    study_way          VARCHAR(7)    DEFAULT NULL,
     penalty            INTEGER       DEFAULT NULL,
     close              TINYINT       DEFAULT 0,
     study_start_date   DATE          DEFAULT NULL,
@@ -36,12 +36,12 @@ CREATE TABLE post
     remaining_seat     INTEGER       DEFAULT NULL,
     created_date       TIMESTAMP     DEFAULT NULL,
     modified_date      TIMESTAMP     DEFAULT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (post_id)
 );
 
 CREATE TABLE study
 (
-    id                 BIGINT NOT NULL AUTO_INCREMENT,
+    study_id                 BIGINT NOT NULL AUTO_INCREMENT,
     posted_user_id     BIGINT        NOT NULL,
     title              VARCHAR(55)   DEFAULT NULL,
     content            VARCHAR(255)  DEFAULT NULL,
@@ -50,26 +50,26 @@ CREATE TABLE study
     chat_url           VARCHAR(100)  DEFAULT NULL,
     created_date       TIMESTAMP     DEFAULT NULL,
     modified_date      TIMESTAMP     DEFAULT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (study_id)
 );
 
 CREATE TABLE alarm
 (
-    id                 BIGINT NOT NULL AUTO_INCREMENT,
+    alarm_id                 BIGINT NOT NULL AUTO_INCREMENT,
     post_id            BIGINT        NOT NULL,
     alarm_category     VARCHAR(10)   DEFAULT NULL,
     title              VARCHAR(55)  DEFAULT NULL,
     created_date       TIMESTAMP     DEFAULT NULL,
     modified_date      TIMESTAMP     DEFAULT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (alarm_id)
 );
 
 CREATE TABLE bookmark
 (
-    id                 BIGINT NOT NULL AUTO_INCREMENT,
+    bookmark_id                 BIGINT NOT NULL AUTO_INCREMENT,
     post_id            BIGINT        NOT NULL,
     user_id            BIGINT        NOT NULL,
     created_date       TIMESTAMP     DEFAULT NULL,
     modified_date      TIMESTAMP     DEFAULT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (bookmark_id)
 );

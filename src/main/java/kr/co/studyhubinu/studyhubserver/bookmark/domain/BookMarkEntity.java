@@ -14,6 +14,7 @@ import javax.persistence.*;
 public class BookMarkEntity extends BaseTimeEntity {
 
     @Id
+    @Column(name = "bookmark_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

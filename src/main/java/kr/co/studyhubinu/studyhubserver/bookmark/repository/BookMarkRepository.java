@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface BookMarkRepository extends JpaRepository<BookMarkEntity, Long>, BookMarkRepositoryCustom {
     Optional<BookMarkEntity> findByUserIdAndPostId(Long userId, Long postId);
+
+    Long countByUserId(Long userId);
 }
