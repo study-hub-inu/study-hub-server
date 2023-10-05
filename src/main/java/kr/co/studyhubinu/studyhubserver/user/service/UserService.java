@@ -54,7 +54,9 @@ public class UserService {
     @Transactional
     public void updateNickname(UpdateNicknameInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
-        nicknameDuplicationValid(info.getNickname());
+        if(!info.isAuth()) {
+            throw new UserNotAccessRightException();
+        }
         user.updateNickname(info.getNickname());
     }
 
@@ -62,7 +64,6 @@ public class UserService {
         userRepository.findByNickname(nickname).ifPresent(existingUser -> {
             throw new UserNicknameDuplicateException();
         });
-//        userRepository.findByNickname(nickname).orElseThrow(UserNicknameDuplicateException::new);
     }
 
     @Transactional
