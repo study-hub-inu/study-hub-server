@@ -6,7 +6,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
-import kr.co.studyhubinu.studyhubserver.userpost.domain.QUserPostEntity;
+import kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserPostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity.studyPostEntity;
-import static kr.co.studyhubinu.studyhubserver.userpost.domain.QUserPostEntity.*;
+import static kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserPostEntity.*;
 
 @Repository
 @RequiredArgsConstructor

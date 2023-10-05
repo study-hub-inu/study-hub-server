@@ -1,18 +1,16 @@
 package kr.co.studyhubinu.studyhubserver.study.dto.response;
 
-import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
-import lombok.*;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.GetBookmarkedPostsData;
+import lombok.Getter;
+import org.springframework.data.domain.Slice;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class GetBookmarkedPostsResponse {
+    Long totalCount;
+    Slice<GetBookmarkedPostsData> getBookmarkedPostsData;
 
-    private Long postId;
-    private MajorType major;
-    private String title;
-    private String content;
-    private int remainingSeat;
-    private boolean close;
-
+    public GetBookmarkedPostsResponse(Long totalCount, Slice<GetBookmarkedPostsData> getBookmarkedPostsData) {
+        this.totalCount = totalCount;
+        this.getBookmarkedPostsData = getBookmarkedPostsData;
+    }
 }

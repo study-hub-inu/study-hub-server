@@ -5,7 +5,6 @@ import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
-import kr.co.studyhubinu.studyhubserver.userpost.domain.UserPostEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,12 +17,12 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "POST")
+@Table(name = "post")
 public class StudyPostEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -89,11 +88,11 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.filteredGender = info.getGender();
         this.studyWay = info.getStudyWay();
         this.penalty = info.getPenalty();
-        this.studyStartDate = info.getStartStartDate();
+        this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
     }
 
-    public boolean isVoteOfUser(Long userId) {
+    public boolean isPostOfUser(Long userId) {
         return this.postedUserId.equals(userId);
     }
 }

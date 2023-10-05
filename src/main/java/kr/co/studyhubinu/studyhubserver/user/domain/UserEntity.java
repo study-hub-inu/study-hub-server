@@ -5,7 +5,7 @@ import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdatePasswordInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
-import kr.co.studyhubinu.studyhubserver.userpost.domain.UserPostEntity;
+import kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,11 +18,12 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "users")
 public class UserEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
@@ -38,10 +39,11 @@ public class UserEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
+    @Column(name = "image_url")
     private String imageUrl;
 
     @OneToMany(mappedBy = "user")
-    private List<UserPostEntity> userPost;
+    private List<UserStudyEntity> userStudyEntitiyList;
 
     @Builder
     public UserEntity(Long id, String email, String password, String nickname, String imageUrl, MajorType major, GenderType gender) {

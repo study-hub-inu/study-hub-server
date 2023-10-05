@@ -20,11 +20,11 @@ public class UpdateStudyPostInfo {
     private int penalty;
     private GenderType gender;
     private StudyWayType studyWay;
-    private LocalDate startStartDate;
+    private LocalDate studyStartDate;
     private LocalDate studyEndDate;
 
     @Builder
-    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate startStartDate, LocalDate studyEndDate) {
+    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
@@ -35,7 +35,7 @@ public class UpdateStudyPostInfo {
         this.penalty = penalty;
         this.gender = gender;
         this.studyWay = studyWay;
-        this.startStartDate = startStartDate;
+        this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
     }
 }
