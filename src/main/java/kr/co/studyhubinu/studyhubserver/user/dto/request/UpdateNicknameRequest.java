@@ -15,15 +15,11 @@ public class UpdateNicknameRequest {
     @Size(max = 10, message = "닉네임은 10자 이하여야 합니다")
     private String nickname;
 
-    @Schema(description = "해당 유저가 기존 닉네임 중복검사를 실시했는지")
-    @NotNull(message = "접근권한이 없는 유저입니다")
-    private boolean auth;
 
     public UpdateNicknameInfo toService(Long userId) {
         return UpdateNicknameInfo.builder()
                 .userId(userId)
                 .nickname(nickname)
-                .auth(auth)
                 .build();
     }
 }
