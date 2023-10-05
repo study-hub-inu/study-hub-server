@@ -41,7 +41,7 @@ class UserServiceTest {
         UserEntity user1 = UserEntityFixture.DONGWOO.UserEntity_생성(1L);
         UserEntity user2 = UserEntityFixture.DONGWOO.UserEntity_생성(2L);
         SignUpInfo signUpInfo = new SignUpInfo(user2.getNickname(), user2.getEmail(), user2.getPassword(),
-                user2.getImageUrl(), user2.getMajor(), user2.getGender());
+                user2.getMajor(), user2.getGender());
 
         // when
         BDDMockito.given(userRepository.existsByEmail(user1.getEmail())).willReturn(true);

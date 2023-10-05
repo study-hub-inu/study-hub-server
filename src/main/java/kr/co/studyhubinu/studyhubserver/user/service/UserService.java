@@ -53,6 +53,7 @@ public class UserService {
     @Transactional
     public void updateNickname(UpdateNicknameInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+        nicknameDuplicationValid(info.getNickname());
         user.updateNickname(info.getNickname());
     }
 

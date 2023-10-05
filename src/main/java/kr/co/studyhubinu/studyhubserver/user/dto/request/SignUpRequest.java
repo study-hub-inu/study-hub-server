@@ -34,9 +34,6 @@ public class SignUpRequest {
     @NotBlank
     private String nickname;
 
-    @Schema
-    private String imageUrl;
-
     @Schema(description = "전공", example = "COMPUTER_SCIENCE_ENGINEERING")
     private MajorType major;
 
@@ -44,18 +41,17 @@ public class SignUpRequest {
     private GenderType gender;
 
     @Builder
-    public SignUpRequest(String email, String password, String nickname, String imageUrl, MajorType major, GenderType gender) {
+    public SignUpRequest(String email, String password, String nickname, MajorType major, GenderType gender) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
-        this.imageUrl = imageUrl;
         this.major = major;
         this.gender = gender;
     }
 
 
     public SignUpInfo toService() {
-        return new SignUpInfo(nickname, email, password, imageUrl, major, gender);
+        return new SignUpInfo(nickname, email, password, major, gender);
     }
 
 }
