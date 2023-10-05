@@ -19,7 +19,7 @@ public class UpdatePasswordRequest {
     @NotBlank(message = "비밀번호는 입력하셔야 합니다")
     private String password;
 
-    @Schema(description = "해당 유저가 기존 비밀번호를 확인했는지", example = "asd1242")
+    @Schema(description = "해당 유저가 기존 비밀번호를 확인했는지")
     @NotNull(message = "접근권한이 없는 유저입니다")
     private boolean auth;
 
