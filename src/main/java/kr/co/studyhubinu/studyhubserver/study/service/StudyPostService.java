@@ -34,9 +34,11 @@ public class StudyPostService {
     private final StudyPostValidator studyPostValidator;
     private final BookMarkRepository bookMarkRepository;
 
+
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
+
         studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         studyPostRepository.save(studyPost);
     }
@@ -79,8 +81,4 @@ public class StudyPostService {
         Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
         return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
     }
-
-//    public Slice<StudyPostEntity> findPostResponseByBookMark(Pageable pageable) {
-//        return studyPostRepository.findByBookMark(pageable);
-//    }
 }

@@ -6,7 +6,7 @@ DROP TABLE if EXISTS bookmark;
 
 CREATE TABLE users
 (
-    user_id            BIGINT NOT NULL AUTO_INCREMENT,
+    user_id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     email              VARCHAR(55)  DEFAULT NULL,
     nickname           VARCHAR(20)  DEFAULT NULL,
     password           VARCHAR(100)  DEFAULT NULL,
@@ -66,10 +66,18 @@ CREATE TABLE alarm
 
 CREATE TABLE bookmark
 (
-    bookmark_id                 BIGINT NOT NULL AUTO_INCREMENT,
+    bookmark_id        BIGINT NOT NULL AUTO_INCREMENT,
     post_id            BIGINT        NOT NULL,
     user_id            BIGINT        NOT NULL,
     created_date       TIMESTAMP     DEFAULT NULL,
     modified_date      TIMESTAMP     DEFAULT NULL,
     PRIMARY KEY (bookmark_id)
+);
+
+CREATE TABLE user_post_entity (
+      user_post_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      post_id BIGINT,
+      user_id BIGINT,
+      FOREIGN KEY (post_id) REFERENCES study(study_id),
+      FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
