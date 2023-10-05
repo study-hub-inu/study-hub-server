@@ -106,7 +106,7 @@ class UserServiceTest {
         // given
         UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
         UpdateNicknameInfo updateNicknameInfo = UpdateNicknameInfo.builder()
-                .nickname("messi")
+                .nickname("나사나이이영재")
                 .userId(user.getId())
                 .build();
         BDDMockito.given(userRepository.findById(1L)).willReturn(Optional.ofNullable(user));

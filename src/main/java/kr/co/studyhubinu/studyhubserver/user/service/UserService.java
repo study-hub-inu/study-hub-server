@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
@@ -58,7 +59,10 @@ public class UserService {
     }
 
     public void nicknameDuplicationValid(String nickname) {
-        userRepository.findByNickname(nickname).orElseThrow(AlreadyExistUserException::new);
+        userRepository.findByNickname(nickname).ifPresent(existingUser -> {
+            throw new UserNicknameDuplicateException();
+        });
+//        userRepository.findByNickname(nickname).orElseThrow(UserNicknameDuplicateException::new);
     }
 
     @Transactional
