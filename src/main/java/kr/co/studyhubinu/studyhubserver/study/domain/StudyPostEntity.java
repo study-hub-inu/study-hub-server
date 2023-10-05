@@ -17,10 +17,11 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "POST")
+@Table(name = "post")
 public class StudyPostEntity extends BaseTimeEntity {
 
     @Id
+    @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -87,11 +88,11 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.filteredGender = info.getGender();
         this.studyWay = info.getStudyWay();
         this.penalty = info.getPenalty();
-        this.studyStartDate = info.getStartStartDate();
+        this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
     }
 
-    public boolean isVoteOfUser(Long userId) {
+    public boolean isPostOfUser(Long userId) {
         return this.postedUserId.equals(userId);
     }
 }

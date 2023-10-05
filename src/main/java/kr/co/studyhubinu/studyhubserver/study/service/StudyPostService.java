@@ -1,9 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.study.service;
 
+import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostValidator;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.study.dto.data.GetMyPostData;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
@@ -28,30 +31,31 @@ public class StudyPostService {
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
+    private final StudyPostValidator studyPostValidator;
+    private final BookMarkRepository bookMarkRepository;
+
 
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
-        studyPostRepository.save(studyPost);
 
+        studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
+        studyPostRepository.save(studyPost);
     }
 
     public void updatePost(UpdateStudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(info.getPostId()).orElseThrow(PostNotFoundException::new);
-        isPostOfUser(user.getId(), post);
+        studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
+        studyPostValidator.validIsPostOfUser(user.getId(), post);
         post.update(info);
     }
 
     public void deletePost(Long postId, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        isPostOfUser(user.getId(), post);
+        studyPostValidator.validIsPostOfUser(user.getId(), post);
         studyPostRepository.delete(post);
-    }
-
-    public void isPostOfUser(Long userId, StudyPostEntity post) {
-        if (!post.isVoteOfUser(userId)) throw new UserNotAccessRightException();
     }
 
     public Slice<FindPostResponseByAll> findPostResponseByAll(Pageable pageable) {
@@ -62,19 +66,19 @@ public class StudyPostService {
         return studyPostRepository.findByString(title, major, content, pageable);
     }
 
-    public Slice<GetMyPostResponse> getMyPosts(int page, int size, Long userId) {
+    public GetMyPostResponse getMyPosts(int page, int size, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        return studyPostRepository.findByPostedUserId(user.getId(), pageable);
+        Long totalCount = studyPostRepository.countByPostedUserId(userId);
+        Slice<GetMyPostData> getMyPostData = studyPostRepository.findByPostedUserId(user.getId(), pageable);
+        return new GetMyPostResponse(totalCount, getMyPostData);
     }
 
-    public Slice<GetBookmarkedPostsResponse> getBookmarkedPosts(int page, int size, Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public GetBookmarkedPostsResponse getBookmarkedPosts(int page, int size, Long userId) {
+        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        return studyPostRepository.findPostsByBookmarked(userId, pageable);
+        Long totalCount = bookMarkRepository.countByUserId(userId);
+        Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
+        return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
     }
-
-//    public Slice<StudyPostEntity> findPostResponseByBookMark(Pageable pageable) {
-//        return studyPostRepository.findByBookMark(pageable);
-//    }
 }

@@ -1,20 +1,20 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
+import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @Slf4j
@@ -28,7 +28,6 @@ public class UserService {
 
     @Transactional
     public void registerUser(SignUpInfo signUpInfo) {
-        log.info(signUpInfo.getEmail());
         if (userRepository.existsByEmail(signUpInfo.getEmail())) {
             throw new AlreadyExistUserException();
         }
@@ -70,9 +69,13 @@ public class UserService {
     @Transactional
     public void updatePassword(UpdatePasswordInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
-        if(info.isAuth() != true) {
+        if(!info.isAuth()) {
             throw new UserNotAccessRightException();
         }
         user.updatePassword(info, bCryptPasswordEncoder);
+    }
+
+    public Slice<FindPostResponseByAll> findUserPost(Long userId, Pageable pageable) {
+        return userRepository.findMyPost(userId, pageable);
     }
 }

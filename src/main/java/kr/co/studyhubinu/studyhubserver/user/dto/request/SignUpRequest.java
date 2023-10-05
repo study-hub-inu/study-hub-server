@@ -5,12 +5,15 @@ import kr.co.studyhubinu.studyhubserver.email.validate.InuEmail;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@NoArgsConstructor
 public class SignUpRequest {
 
     @Schema(description = "유저 이메일", example = "studyHub@inu.ac.kr")
@@ -39,6 +42,16 @@ public class SignUpRequest {
 
     @Schema(description = "유저 성별", example = "FEMALE")
     private GenderType gender;
+
+    @Builder
+    public SignUpRequest(String email, String password, String nickname, String imageUrl, MajorType major, GenderType gender) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.imageUrl = imageUrl;
+        this.major = major;
+        this.gender = gender;
+    }
 
 
     public SignUpInfo toService() {
