@@ -81,8 +81,4 @@ public class StudyPostService {
         Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
         return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
     }
-
-//    public Slice<StudyPostEntity> findPostResponseByBookMark(Pageable pageable) {
-//        return studyPostRepository.findByBookMark(pageable);
-//    }
 }
