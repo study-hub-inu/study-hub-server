@@ -6,6 +6,6 @@ import org.springframework.data.domain.Slice;
 
 public interface UserRepositoryCustom {
 
-    Slice<FindPostResponseByAll> findMyPost(Long userId, Pageable pageable);
+//    Slice<FindPostResponseByAll> findMyPost(Long userId, Pageable pageable);
 
 }
