@@ -48,6 +48,9 @@ public class StudyPostEntity extends BaseTimeEntity {
 
     private int penalty;
 
+    @Column(name = "penalty_way")
+    private String penaltyWay;
+
     @ColumnDefault("false")
     private boolean close;
 
