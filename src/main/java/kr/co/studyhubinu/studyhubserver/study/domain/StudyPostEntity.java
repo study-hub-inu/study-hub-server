@@ -92,6 +92,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.filteredGender = info.getGender();
         this.studyWay = info.getStudyWay();
         this.penalty = info.getPenalty();
+        this.penaltyWay = info.getPenaltyWay();
         this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
     }

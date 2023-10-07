@@ -18,13 +18,14 @@ public class UpdateStudyPostInfo {
     private MajorType major;
     private int studyPerson;
     private int penalty;
+    private String penaltyWay;
     private GenderType gender;
     private StudyWayType studyWay;
     private LocalDate studyStartDate;
     private LocalDate studyEndDate;
 
     @Builder
-    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
+    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, String penaltyWay, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
@@ -33,6 +34,7 @@ public class UpdateStudyPostInfo {
         this.major = major;
         this.studyPerson = studyPerson;
         this.penalty = penalty;
+        this.penaltyWay = penaltyWay;
         this.gender = gender;
         this.studyWay = studyWay;
         this.studyStartDate = studyStartDate;
