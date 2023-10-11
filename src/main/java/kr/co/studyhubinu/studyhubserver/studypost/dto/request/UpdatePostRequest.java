@@ -1,7 +1,7 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.request;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;

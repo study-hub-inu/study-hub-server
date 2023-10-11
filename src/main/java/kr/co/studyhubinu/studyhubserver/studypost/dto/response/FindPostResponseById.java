@@ -1,10 +1,9 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.response;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
 
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
-import lombok.Builder;
 import lombok.Getter;
 import java.time.LocalDate;
 

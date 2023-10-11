@@ -1,6 +1,6 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.response;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
 
-import kr.co.studyhubinu.studyhubserver.study.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
 import lombok.Getter;
 import org.springframework.data.domain.Slice;
 

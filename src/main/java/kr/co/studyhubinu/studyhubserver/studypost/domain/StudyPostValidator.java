@@ -1,7 +1,8 @@
-package kr.co.studyhubinu.studyhubserver.study.domain;
+package kr.co.studyhubinu.studyhubserver.studypost.domain;
 
 import kr.co.studyhubinu.studyhubserver.exception.study.PostDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

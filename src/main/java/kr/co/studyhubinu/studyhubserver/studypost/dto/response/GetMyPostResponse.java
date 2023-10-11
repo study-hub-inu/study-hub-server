@@ -1,7 +1,6 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.response;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
 
-import kr.co.studyhubinu.studyhubserver.study.dto.data.GetMyPostData;
-import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
 import lombok.Getter;
 import org.springframework.data.domain.Slice;
 

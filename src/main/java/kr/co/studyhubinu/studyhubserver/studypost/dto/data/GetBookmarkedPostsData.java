@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.data;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.data;
 
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
+import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.*;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
