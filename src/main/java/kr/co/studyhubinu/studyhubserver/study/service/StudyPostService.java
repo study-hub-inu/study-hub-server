@@ -38,7 +38,6 @@ public class StudyPostService {
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
-
         studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         studyPostRepository.save(studyPost);
     }
