@@ -80,4 +80,10 @@ public class StudyPostService {
         Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
         return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
     }
+
+    public FindPostResponseById findPostById(Long postId) {
+        StudyPostEntity studyPost = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        FindPostResponseById findPostResponseById = new FindPostResponseById(studyPost);
+        return findPostResponseById;
+    }
 }
