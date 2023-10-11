@@ -1,8 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdatePasswordInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;

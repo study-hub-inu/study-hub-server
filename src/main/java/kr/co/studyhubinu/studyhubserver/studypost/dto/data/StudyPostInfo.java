@@ -1,5 +1,6 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.data;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.data;
 
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -9,8 +10,8 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class UpdateStudyPostInfo {
-    private Long postId;
+public class StudyPostInfo {
+
     private Long userId;
     private String title;
     private String content;
@@ -24,8 +25,7 @@ public class UpdateStudyPostInfo {
     private LocalDate studyEndDate;
 
     @Builder
-    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
-        this.postId = postId;
+    public StudyPostInfo(Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
         this.userId = userId;
         this.title = title;
         this.content = content;
@@ -37,5 +37,24 @@ public class UpdateStudyPostInfo {
         this.studyWay = studyWay;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
+    }
+
+    public StudyPostEntity toEntity(Long userId) {
+
+        return StudyPostEntity.builder()
+                .title(title)
+                .content(content)
+                .chatUrl(chatUrl)
+                .major(major)
+                .studyPerson(studyPerson)
+                .filteredGender(gender)
+                .studyWay(studyWay)
+                .penalty(penalty)
+                .studyStartDate(studyStartDate)
+                .studyEndDate(studyEndDate)
+                .userId(userId)
+                .remainingSeat(studyPerson)
+                .build();
+
     }
 }

@@ -4,7 +4,7 @@ import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;

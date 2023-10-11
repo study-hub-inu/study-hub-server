@@ -3,7 +3,7 @@ package kr.co.studyhubinu.studyhubserver.user.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
