@@ -1,18 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
-import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.FindPostResponseByAll;
+import kr.co.studyhubinu.studyhubserver.exception.user.*;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,8 +72,10 @@ public class UserService {
         user.updatePassword(info, bCryptPasswordEncoder);
     }
 
-    public Slice<FindPostResponseByAll> findUserPost(Long userId, Pageable pageable) {
-//        return userRepository.findMyPost(userId, pageable);
-        return null;
+    public void verifyPassword(Long userId, String password) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotAccessRightException::new);
+        if(!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+            throw new PasswordNotFoundException();
+        }
     }
 }
