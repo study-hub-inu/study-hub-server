@@ -1,7 +1,7 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.request;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -39,6 +39,9 @@ public class UpdatePostRequest {
     @NotBlank
     private int penalty;
 
+    @Schema(description = "수정할 벌금 방식", example = "지각비")
+    private String penaltyWay;
+
     @Schema(description = "수정할 필터 성별", example = "FEMALE")
     @NotBlank
     private GenderType gender;
@@ -65,6 +68,7 @@ public class UpdatePostRequest {
                 .major(major)
                 .studyPerson(studyPerson)
                 .penalty(penalty)
+                .penaltyWay(penaltyWay)
                 .gender(gender)
                 .studyWay(studyWay)
                 .studyStartDate(studyStartDate)

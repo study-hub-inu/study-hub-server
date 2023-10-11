@@ -1,14 +1,13 @@
-package kr.co.studyhubinu.studyhubserver.study.controller;
+package kr.co.studyhubinu.studyhubserver.studypost.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import kr.co.studyhubinu.studyhubserver.study.dto.request.CreatePostRequest;
-import kr.co.studyhubinu.studyhubserver.study.dto.request.UpdatePostRequest;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.GetBookmarkedPostsResponse;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.GetMyPostResponse;
-import kr.co.studyhubinu.studyhubserver.study.service.StudyPostService;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetMyPostResponse;
+import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,11 +45,6 @@ public class StudyPostController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "내가 쓴 스터디 조회")
-    @GetMapping("/mypost")
-    public ResponseEntity<GetMyPostResponse> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
-        return ResponseEntity.ok(studyPostService.getMyPosts(page, size, userId.getId()));
-    }
 
     @Operation(summary = "내가 북마크한 스터디 조회")
     @GetMapping("/bookmarked")

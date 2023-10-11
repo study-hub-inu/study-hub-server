@@ -1,10 +1,11 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.response;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
 
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class FindPostResponseByBookMark {
+public class FindPostResponseByString {
 
     private Long postId;
     private MajorType major;
@@ -13,9 +14,8 @@ public class FindPostResponseByBookMark {
     private int leftover;
     private int studyPerson;
     private boolean close;
-    private Long bookMarkCount;
 
-    public FindPostResponseByBookMark(Long postId, MajorType major, String title, String content, int leftover, int studyPerson, Boolean close, Long bookMarkCount) {
+    public FindPostResponseByString(Long postId, MajorType major, String title, String content, int leftover, Integer studyPerson, Boolean close) {
         this.postId = postId;
         this.major = major;
         this.title = title;
@@ -23,6 +23,6 @@ public class FindPostResponseByBookMark {
         this.leftover = leftover;
         this.studyPerson = studyPerson;
         this.close = close;
-        this.bookMarkCount = bookMarkCount;
     }
+
 }

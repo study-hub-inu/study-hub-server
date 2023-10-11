@@ -31,6 +31,7 @@ CREATE TABLE post
     filtered_gender    VARCHAR(6)    DEFAULT NULL,
     study_way          VARCHAR(7)    DEFAULT NULL,
     penalty            INTEGER       DEFAULT NULL,
+    penalty_way        VARCHAR(30)   DEFAULT NULL,
     close              TINYINT       DEFAULT 0,
     study_start_date   DATE          DEFAULT NULL,
     study_end_date     DATE          DEFAULT NULL,

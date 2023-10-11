@@ -1,12 +1,14 @@
-package kr.co.studyhubinu.studyhubserver.study.repository;
+package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.study.domain.QStudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.GetBookmarkedPostsData;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByRemainingSeat;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByString;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -69,11 +71,25 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .where(bookMark.userId.eq(userId))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize() + 1);
 
         return toSlice(pageable, studyPostDto.fetch());
     }
 
+    @Override
+    public Slice<FindPostResponseByRemainingSeat> findPostsByRemainingSeat(Pageable pageable) {
+        QStudyPostEntity post = studyPostEntity;
+
+        JPAQuery<FindPostResponseByRemainingSeat> studyPostDto = jpaQueryFactory.select(
+                Projections.constructor(FindPostResponseByRemainingSeat.class,
+                        post.id.as("postId"), post.title, post.studyPerson, post.remainingSeat))
+                .from(post)
+                .orderBy(post.remainingSeat.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize());
+
+        return toSlice(pageable, studyPostDto.fetch());
+    }
 
     public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {
         QStudyPostEntity post = studyPostEntity;

@@ -1,16 +1,16 @@
-package kr.co.studyhubinu.studyhubserver.study.service;
+package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyPostValidator;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.GetBookmarkedPostsData;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.GetMyPostData;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
-import kr.co.studyhubinu.studyhubserver.study.dto.response.*;
-import kr.co.studyhubinu.studyhubserver.study.repository.StudyPostRepository;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
+import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
@@ -38,7 +38,6 @@ public class StudyPostService {
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
-
         studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         studyPostRepository.save(studyPost);
     }
@@ -80,5 +79,14 @@ public class StudyPostService {
         Long totalCount = bookMarkRepository.countByUserId(userId);
         Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
         return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
+    }
+
+    public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
+        return studyPostRepository.findPostsByRemainingSeat(pageable);
+    }
+    public FindPostResponseById findPostById(Long postId) {
+        StudyPostEntity studyPost = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        FindPostResponseById findPostResponseById = new FindPostResponseById(studyPost);
+        return findPostResponseById;
     }
 }

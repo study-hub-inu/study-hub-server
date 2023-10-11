@@ -1,7 +1,7 @@
-package kr.co.studyhubinu.studyhubserver.study.domain;
+package kr.co.studyhubinu.studyhubserver.studypost.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.UpdateStudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -48,6 +48,9 @@ public class StudyPostEntity extends BaseTimeEntity {
 
     private int penalty;
 
+    @Column(name = "penalty_way")
+    private String penaltyWay;
+
     @ColumnDefault("false")
     private boolean close;
 
@@ -64,7 +67,7 @@ public class StudyPostEntity extends BaseTimeEntity {
     private int remainingSeat;
 
     @Builder
-    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {
+    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {
         this.title = title;
         this.content = content;
         this.chatUrl = chatUrl;
@@ -73,6 +76,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.filteredGender = filteredGender;
         this.studyWay = studyWay;
         this.penalty = penalty;
+        this.penaltyWay = penaltyWay;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.postedUserId = userId;
@@ -88,6 +92,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.filteredGender = info.getGender();
         this.studyWay = info.getStudyWay();
         this.penalty = info.getPenalty();
+        this.penaltyWay = info.getPenaltyWay();
         this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
     }

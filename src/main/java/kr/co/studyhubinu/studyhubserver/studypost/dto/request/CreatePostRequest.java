@@ -1,7 +1,7 @@
-package kr.co.studyhubinu.studyhubserver.study.dto.request;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.studyhubinu.studyhubserver.study.dto.data.StudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -33,9 +33,12 @@ public class CreatePostRequest {
     @NotNull
     private int studyPerson;
 
-    @Schema(description = "벌금", example = "10000 (벌금이 없다면 null 보내주세요!)")
+    @Schema(description = "벌금", example = "10000 (벌금이 없다면 0 보내주세요!)")
     @NotNull
     private int penalty;
+
+    @Schema(description = "벌금 방식 없으면 null 보내주시면 됩니다", example = "지각비")
+    private String penaltyWay;
 
     @Schema(description = "마감 여부", example = "false (default 값이 false 로 설정되어 있습니다, 따로 기입 안해주셔도 된다는 뜻)")
     private boolean close;
@@ -67,6 +70,7 @@ public class CreatePostRequest {
                 .major(major)
                 .studyPerson(studyPerson)
                 .penalty(penalty)
+                .penaltyWay(penaltyWay)
                 .gender(gender)
                 .studyWay(studyWay)
                 .studyStartDate(studyStartDate)

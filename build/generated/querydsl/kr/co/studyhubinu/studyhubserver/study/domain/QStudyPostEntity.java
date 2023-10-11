@@ -7,6 +7,7 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 
 
 /**
@@ -40,6 +41,8 @@ public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final NumberPath<Integer> penalty = createNumber("penalty", Integer.class);
+
+    public final StringPath penaltyWay = createString("penaltyWay");
 
     public final NumberPath<Long> postedUserId = createNumber("postedUserId", Long.class);
 
