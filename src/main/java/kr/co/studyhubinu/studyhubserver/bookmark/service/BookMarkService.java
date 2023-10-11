@@ -4,7 +4,7 @@ import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.study.repository.StudyPostRepository;
+import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
