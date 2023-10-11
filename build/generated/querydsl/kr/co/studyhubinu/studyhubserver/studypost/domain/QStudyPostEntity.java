@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.study.domain;
+package kr.co.studyhubinu.studyhubserver.studypost.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 
 
 /**
@@ -16,7 +15,7 @@ import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
 
-    private static final long serialVersionUID = -444406559L;
+    private static final long serialVersionUID = -2147182655L;
 
     public static final QStudyPostEntity studyPostEntity = new QStudyPostEntity("studyPostEntity");
 
