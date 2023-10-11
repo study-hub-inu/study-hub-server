@@ -45,11 +45,6 @@ public class StudyPostController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Operation(summary = "내가 쓴 스터디 조회")
-    @GetMapping("/mypost")
-    public ResponseEntity<GetMyPostResponse> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
-        return ResponseEntity.ok(studyPostService.getMyPosts(page, size, userId.getId()));
-    }
 
     @Operation(summary = "내가 북마크한 스터디 조회")
     @GetMapping("/bookmarked")

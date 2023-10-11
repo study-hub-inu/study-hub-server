@@ -38,7 +38,6 @@ public class StudyPostService {
     public void createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
-
         studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         studyPostRepository.save(studyPost);
     }
@@ -84,5 +83,10 @@ public class StudyPostService {
 
     public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
         return studyPostRepository.findPostsByRemainingSeat(pageable);
+    }
+    public FindPostResponseById findPostById(Long postId) {
+        StudyPostEntity studyPost = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        FindPostResponseById findPostResponseById = new FindPostResponseById(studyPost);
+        return findPostResponseById;
     }
 }

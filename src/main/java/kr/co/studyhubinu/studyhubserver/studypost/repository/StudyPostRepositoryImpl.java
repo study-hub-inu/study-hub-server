@@ -71,7 +71,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .where(bookMark.userId.eq(userId))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
+                .limit(pageable.getPageSize() + 1);
 
         return toSlice(pageable, studyPostDto.fetch());
     }

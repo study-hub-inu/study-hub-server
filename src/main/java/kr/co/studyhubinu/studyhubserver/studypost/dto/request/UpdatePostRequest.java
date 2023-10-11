@@ -39,6 +39,9 @@ public class UpdatePostRequest {
     @NotBlank
     private int penalty;
 
+    @Schema(description = "수정할 벌금 방식", example = "지각비")
+    private String penaltyWay;
+
     @Schema(description = "수정할 필터 성별", example = "FEMALE")
     @NotBlank
     private GenderType gender;
@@ -65,6 +68,7 @@ public class UpdatePostRequest {
                 .major(major)
                 .studyPerson(studyPerson)
                 .penalty(penalty)
+                .penaltyWay(penaltyWay)
                 .gender(gender)
                 .studyWay(studyWay)
                 .studyStartDate(studyStartDate)

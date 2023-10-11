@@ -42,6 +42,8 @@ public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
 
     public final NumberPath<Integer> penalty = createNumber("penalty", Integer.class);
 
+    public final StringPath penaltyWay = createString("penaltyWay");
+
     public final NumberPath<Long> postedUserId = createNumber("postedUserId", Long.class);
 
     public final NumberPath<Integer> remainingSeat = createNumber("remainingSeat", Integer.class);

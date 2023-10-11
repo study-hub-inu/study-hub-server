@@ -1,18 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.JwtLoginResponse;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,19 +51,6 @@ public class UserController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @Operation(summary = "회원 게시글 조회", description = "jwt 토큰 bearer 헤더에 보내주시고, " +
-            "parameter 칸에 " +
-            "페이지 정보는 page, 조회할 행 개수는 size 에 입력해주세요")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "페이지", required = true),
-            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
-    })
-    @GetMapping("/post")
-    public ResponseEntity<Slice<FindPostResponseByAll>> findUserPost(UserId userId, @RequestParam int page, @RequestParam int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(userService.findUserPost(userId.getId(), pageable));
-    }
-
     @Operation(summary = "닉네임 중복 검사")
     @GetMapping("/duplication-nickname")
     public ResponseEntity<HttpStatus> nicknameDuplicationValid(@RequestParam String nickname) {
@@ -90,6 +71,14 @@ public class UserController {
         userService.updateMajor(request.toService(userId.getId()));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "비밀번호 중복 검증", description = "jwt 토큰 bearer 헤더에 넣어주시고 parameter 칸에 비밀번호 넣어주세요")
+    @PostMapping("/password/verify")
+    public ResponseEntity<HttpStatus> verifyPassword(@RequestBody VerifyPasswordRequest request, UserId userId) {
+        userService.verifyPassword(userId.getId(), request.getPassword());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     @Operation(summary = "비밀번호 수정", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
     @PutMapping("/password")

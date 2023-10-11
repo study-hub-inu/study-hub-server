@@ -19,13 +19,14 @@ public class StudyPostInfo {
     private MajorType major;
     private int studyPerson;
     private int penalty;
+    private String penaltyWay;
     private GenderType gender;
     private StudyWayType studyWay;
     private LocalDate studyStartDate;
     private LocalDate studyEndDate;
 
     @Builder
-    public StudyPostInfo(Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
+    public StudyPostInfo(Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, String penaltyWay, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
         this.userId = userId;
         this.title = title;
         this.content = content;
@@ -33,6 +34,7 @@ public class StudyPostInfo {
         this.major = major;
         this.studyPerson = studyPerson;
         this.penalty = penalty;
+        this.penaltyWay = penaltyWay;
         this.gender = gender;
         this.studyWay = studyWay;
         this.studyStartDate = studyStartDate;
@@ -50,6 +52,7 @@ public class StudyPostInfo {
                 .filteredGender(gender)
                 .studyWay(studyWay)
                 .penalty(penalty)
+                .penaltyWay(penaltyWay)
                 .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
                 .userId(userId)
