@@ -35,4 +35,8 @@ public class AlarmEntity extends BaseTimeEntity {
     public void read() {
         checked = true;
     }
+
+    public boolean isAlarmOfUser(Long userId) {
+        return this.userId.equals(userId);
+    }
 }
