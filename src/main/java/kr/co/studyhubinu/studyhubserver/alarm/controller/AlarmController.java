@@ -1,9 +1,11 @@
 package kr.co.studyhubinu.studyhubserver.alarm.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.studyhubinu.studyhubserver.alarm.dto.response.AlarmResponse;
 import kr.co.studyhubinu.studyhubserver.alarm.service.AlarmService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,4 +30,13 @@ public class AlarmController {
         alarmService.deleteAlarm(alarmId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
+    @Operation(summary = "알림 조회", description = "사용자의 모든 알림 메시지를 조회합니다.")
+    @GetMapping("")
+    public ResponseEntity<Slice<AlarmResponse>> getNotifications(@RequestParam int page, @RequestParam int size, UserId userId) {
+        Slice<AlarmResponse> alarms = alarmService.getAlarms(page, size, userId.getId());
+        return new ResponseEntity(alarms, HttpStatus.OK);
+    }
+
 }
