@@ -32,4 +32,7 @@ public class AlarmEntity extends BaseTimeEntity {
 
     private boolean checked;
 
+    public void read() {
+        checked = true;
+    }
 }
