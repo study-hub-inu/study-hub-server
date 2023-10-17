@@ -14,7 +14,8 @@ public enum StatusType {
     ALREADY_USER_EXIST(409, "ALREADY_USER_EXIST"),
     TOKEN_NOT_EXIST(404, "TOKEN_NOT_EXIST"),
     ACCESS_RIGHT_FAILED(412, "ACCESS_RIGHT_FAILED"),
-    DATA_CONFLICT(409, "DATA_CONFLICT");
+    DATA_CONFLICT(409, "DATA_CONFLICT"),
+    ALARM_NOT_FOUND(404, "ALARM_NOT_FOUND");
 
     private final int statusCode;
     private final String code;
