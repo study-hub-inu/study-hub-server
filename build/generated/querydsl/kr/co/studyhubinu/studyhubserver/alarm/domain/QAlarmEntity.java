@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.study.domain;
+package kr.co.studyhubinu.studyhubserver.alarm.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -15,25 +15,27 @@ import com.querydsl.core.types.Path;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QAlarmEntity extends EntityPathBase<AlarmEntity> {
 
-    private static final long serialVersionUID = 873663913L;
+    private static final long serialVersionUID = 2092893217L;
 
     public static final QAlarmEntity alarmEntity = new QAlarmEntity("alarmEntity");
 
     public final kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity _super = new kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity(this);
 
-    public final EnumPath<kr.co.studyhubinu.studyhubserver.study.enums.AlarmCategoryType> alarmCategory = createEnum("alarmCategory", kr.co.studyhubinu.studyhubserver.study.enums.AlarmCategoryType.class);
+    public final EnumPath<kr.co.studyhubinu.studyhubserver.alarm.enums.AlarmType> alarmCategory = createEnum("alarmCategory", kr.co.studyhubinu.studyhubserver.alarm.enums.AlarmType.class);
+
+    public final BooleanPath checked = createBoolean("checked");
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final NumberPath<Long> Id = createNumber("Id", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final NumberPath<Long> postId = createNumber("postId", Long.class);
 
-    public final StringPath title = createString("title");
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
     public QAlarmEntity(String variable) {
         super(AlarmEntity.class, forVariable(variable));

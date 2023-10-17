@@ -57,10 +57,11 @@ CREATE TABLE study
 
 CREATE TABLE alarm
 (
-    alarm_id                 BIGINT NOT NULL AUTO_INCREMENT,
+    alarm_id           BIGINT NOT NULL AUTO_INCREMENT,
+    user_id            BIGINT        NOT NULL,
     post_id            BIGINT        NOT NULL,
-    alarm_category     VARCHAR(10)   DEFAULT NULL,
-    title              VARCHAR(55)  DEFAULT NULL,
+    alarm_category     VARCHAR(15)   DEFAULT NULL,
+    checked            TINYINT       DEFAULT 0,
     created_date       TIMESTAMP     DEFAULT NULL,
     modified_date      TIMESTAMP     DEFAULT NULL,
     PRIMARY KEY (alarm_id)
