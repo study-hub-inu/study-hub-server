@@ -82,4 +82,8 @@ public class UserEntity extends BaseTimeEntity {
     public void updatePassword(UpdatePasswordInfo info, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.password = bCryptPasswordEncoder.encode(info.getPassword());
     }
+
+    public void updateImage(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 }
