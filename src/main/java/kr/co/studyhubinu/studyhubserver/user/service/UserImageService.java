@@ -27,6 +27,11 @@ public class UserImageService {
         user.updateImage(saveImage(multipartFile));
     }
 
+    public void deleteUserImage(Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        user.updateImage(null);
+    }
+
     private String saveImage(MultipartFile multipartFile) throws IOException {
         String originalFilename = multipartFile.getOriginalFilename();
 
@@ -37,5 +42,6 @@ public class UserImageService {
         amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
         return amazonS3.getUrl(bucket, originalFilename).toString();
     }
+
 
 }

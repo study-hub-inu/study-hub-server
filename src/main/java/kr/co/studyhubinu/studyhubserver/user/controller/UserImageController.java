@@ -3,8 +3,10 @@ package kr.co.studyhubinu.studyhubserver.user.controller;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.service.UserImageService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,5 +27,10 @@ public class UserImageController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping("")
+    public ResponseEntity<HttpStatus> deleteImage(UserId userId) {
+        userImageService.deleteUserImage(userId.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }
