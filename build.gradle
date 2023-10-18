@@ -41,6 +41,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
     // swagger
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
@@ -55,6 +56,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    //s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
     // queryDsl
     implementation 'com.querydsl:querydsl-jpa'
