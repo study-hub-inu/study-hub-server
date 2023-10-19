@@ -14,7 +14,7 @@ public class SignInRequest {
     @InuEmail(message = "이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)")
     private String email;
 
-    @Schema(description = "유저 비밀번호", example = "studyHub123@")
+    @Schema(description = "유저 비밀번호", example = "asdasdasd!!")
     @NotBlank
     private String password;
 
