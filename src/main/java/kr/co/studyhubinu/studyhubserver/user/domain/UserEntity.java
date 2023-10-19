@@ -39,7 +39,7 @@ public class UserEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", length = 1024)
     private String imageUrl;
 
     @OneToMany(mappedBy = "user")
