@@ -21,7 +21,14 @@ public class UserStudyService {
     public void approve(Long userId, Long studyId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(studyId).orElseThrow();
-        UserStudyEntity userStudyEntity = new UserStudyEntity(study, user);
+        UserStudyEntity userStudyEntity = new UserStudyEntity(true, study, user);
+        userStudyRepository.save(userStudyEntity);
+    }
+
+    public void refuse(Long userId, Long studyId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        StudyEntity study = studyRepository.findById(studyId).orElseThrow();
+        UserStudyEntity userStudyEntity = new UserStudyEntity(false, study, user);
         userStudyRepository.save(userStudyEntity);
     }
 }
