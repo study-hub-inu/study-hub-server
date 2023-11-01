@@ -78,6 +78,7 @@ CREATE TABLE bookmark
 
 CREATE TABLE user_study (
       user_post_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+      approve boolean,
       post_id BIGINT,
       user_id BIGINT,
       FOREIGN KEY (post_id) REFERENCES study(study_id),
