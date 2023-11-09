@@ -24,17 +24,17 @@ public class StudyPostController {
             description = "Http 헤더에 JWT accessToken 과 함께 " +
                     "제목, 내용, 채팅방 URI, 관련 학과, 스터디 정원, 벌금, 필터 성별, 스터디 방식, 스터디 시작 날짜, 스터디 종료 날짜를 Json 형식으로 입력해주세요.")
     @PostMapping("")
-    public ResponseEntity<HttpStatus> createPost(@Valid @RequestBody CreatePostRequest request, UserId userId) {
-        studyPostService.createPost(request.toService(userId.getId()));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<Long> createPost(@Valid @RequestBody CreatePostRequest request, UserId userId) {
+        Long postId = studyPostService.createPost(request.toService(userId.getId()));
+        return new ResponseEntity<>(postId, HttpStatus.CREATED);
     }
 
     @Operation(summary = "스터디 게시글 수정", description = "Http 헤더에 JWT accessToken 과 함께 " +
             "게시글 Id, 제목, 내용, 채팅방 URI, 관련 학과, 스터디 정원, 벌금, 필터 성별, 스터디 방식, 스터디 시작 날짜, 스터디 종료 날짜를 Json 형식으로 입력해주세요.")
     @PutMapping("")
-    public ResponseEntity<HttpStatus> updatePost(@Valid @RequestBody UpdatePostRequest request, UserId userId) {
-        studyPostService.updatePost(request.toService(userId.getId()));
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Long> updatePost(@Valid @RequestBody UpdatePostRequest request, UserId userId) {
+        Long postId = studyPostService.updatePost(request.toService(userId.getId()));
+        return new ResponseEntity<>(postId, HttpStatus.OK);
     }
 
     @Operation(summary = "스터디 게시글 삭제",

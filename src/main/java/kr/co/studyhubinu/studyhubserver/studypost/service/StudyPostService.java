@@ -35,19 +35,21 @@ public class StudyPostService {
     private final BookMarkRepository bookMarkRepository;
 
 
-    public void createPost(StudyPostInfo info) {
+    public Long createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
         studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
-        studyPostRepository.save(studyPost);
+        return studyPostRepository.save(studyPost).getId();
+
     }
 
-    public void updatePost(UpdateStudyPostInfo info) {
+    public Long updatePost(UpdateStudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(info.getPostId()).orElseThrow(PostNotFoundException::new);
         studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         studyPostValidator.validIsPostOfUser(user.getId(), post);
         post.update(info);
+        return post.getId();
     }
 
     public void deletePost(Long postId, Long userId) {
