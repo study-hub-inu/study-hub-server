@@ -71,7 +71,7 @@ public class StudyPostService {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         Long totalCount = studyPostRepository.countByPostedUserId(userId);
-        Slice<GetMyPostData> getMyPostData = studyPostRepository.findByPostedUserId(user.getId(), pageable);
+        Slice<GetMyPostData> getMyPostData = studyPostRepository.findSliceByPostedUserId(user.getId(), pageable);
         return new GetMyPostResponse(totalCount, getMyPostData);
     }
 
