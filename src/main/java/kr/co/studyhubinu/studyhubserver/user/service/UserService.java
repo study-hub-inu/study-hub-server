@@ -5,9 +5,9 @@ import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateExce
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.*;
-import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserActivityFinder;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserDeleter;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
@@ -27,6 +27,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserActivityFinder userActivityFinder;
+    private final UserDeleter userDeleter;
 
     @Transactional
     public void registerUser(SignUpInfo signUpInfo) {
@@ -44,7 +45,7 @@ public class UserService {
   
     public void deleteUser(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        userRepository.delete(user);
+        userDeleter.deleteUserRelatedData(user);
     }
   
     public GetUserResponse getUser(Long userId) {

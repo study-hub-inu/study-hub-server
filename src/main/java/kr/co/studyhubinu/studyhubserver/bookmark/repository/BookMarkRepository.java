@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookMarkEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -12,4 +13,6 @@ public interface BookMarkRepository extends JpaRepository<BookMarkEntity, Long>,
     Optional<BookMarkEntity> findByUserIdAndPostId(Long userId, Long postId);
 
     Long countByUserId(Long userId);
+
+    List<BookMarkEntity> findByUserId(Long id);
 }

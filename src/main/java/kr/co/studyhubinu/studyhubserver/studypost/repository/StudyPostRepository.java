@@ -7,12 +7,16 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long>, StudyPostRepositoryCustom {
 
     @Query("SELECT new kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData(sp.id, sp.major, sp.title, sp.content, sp.remainingSeat, sp.close) " +
             "FROM StudyPostEntity sp " +
             "WHERE sp.postedUserId = :userId")
-    Slice<GetMyPostData> findByPostedUserId(Long userId, Pageable pageable);
+    Slice<GetMyPostData> findSliceByPostedUserId(Long userId, Pageable pageable);
 
     Long countByPostedUserId(Long userId);
+
+    List<StudyPostEntity> findByPostedUserId(Long id);
 }
