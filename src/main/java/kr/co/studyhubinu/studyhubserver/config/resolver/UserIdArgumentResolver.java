@@ -32,12 +32,14 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
     public UserId resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                                     NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         try {
-            String jwtToken = Objects.requireNonNull(webRequest.getHeader(JwtProperties.ACCESS_HEADER_STRING)).replace(JwtProperties.TOKEN_PREFIX, "");
-
+            String jwtToken = webRequest.getHeader(JwtProperties.ACCESS_HEADER_STRING);
+            if (jwtToken == null) {
+                return new UserId(null);
+            }
+            jwtToken = jwtToken.replace(JwtProperties.TOKEN_PREFIX, "");
             Long id = (JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id")).asLong();
-
             return new UserId(id);
-        } catch (Exception e) {
+        } catch (NullPointerException e) {
             return null;
         }
     }
