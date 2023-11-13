@@ -2,6 +2,8 @@ package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,4 +21,5 @@ public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long
     Long countByPostedUserId(Long userId);
 
     List<StudyPostEntity> findByPostedUserId(Long id);
+
 }
