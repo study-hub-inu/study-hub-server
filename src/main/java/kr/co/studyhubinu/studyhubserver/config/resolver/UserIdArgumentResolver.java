@@ -39,7 +39,7 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
             jwtToken = jwtToken.replace(JwtProperties.TOKEN_PREFIX, "");
             Long id = (JWT.require(Algorithm.HMAC512(SECRET)).build().verify(jwtToken).getClaim("id")).asLong();
             return new UserId(id);
-        } catch (NullPointerException e) {
+        } catch (Exception e) {
             return null;
         }
     }
