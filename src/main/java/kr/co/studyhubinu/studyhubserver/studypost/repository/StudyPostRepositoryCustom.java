@@ -24,9 +24,11 @@ public interface StudyPostRepositoryCustom {
 
     Slice<FindPostResponseByRemainingSeat> findPostsByRemainingSeat(Pageable pageable);
 
-    Optional<PostData> findPostById(Long postId, Long userId);
+    Optional<PostData> findPostByIdAndUserId(Long postId, Long userId);
 
     List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId);
+
+    Optional<PostData> findPostById(Long postId);
 
     //Slice<StudyPostEntity> findByBookMark(Pageable pageable);
 }

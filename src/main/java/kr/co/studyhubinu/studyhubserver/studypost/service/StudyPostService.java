@@ -86,7 +86,11 @@ public class StudyPostService {
         return studyPostRepository.findPostsByRemainingSeat(pageable);
     }
     public FindPostResponseById findPostById(Long postId, Long userId) {
-        PostData postData = studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
+        if (userId == null) {
+            PostData postData = studyPostRepository.findPostById(postId).orElseThrow(PostNotFoundException::new);
+            return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
+        }
+        PostData postData = studyPostRepository.findPostByIdAndUserId(postId, userId).orElseThrow(PostNotFoundException::new);
         return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
     }
 

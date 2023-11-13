@@ -99,7 +99,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public Optional<PostData> findPostById(Long postId, Long userId) {
+    public Optional<PostData> findPostByIdAndUserId(Long postId, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
         QBookMarkEntity bookmark = bookMarkEntity;
@@ -133,6 +133,44 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .from(post)
                 .leftJoin(user).on(post.postedUserId.eq(user.id))
                 .leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)))
+                .where(post.id.eq(postId));
+        PostData result = data.fetchOne();
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public Optional<PostData> findPostById(Long postId) {
+        QStudyPostEntity post = studyPostEntity;
+        QUserEntity user = userEntity;
+
+        JPAQuery<PostData> data = jpaQueryFactory
+                .select(Projections.constructor(
+                        PostData.class,
+                        post.id.as("postId"),
+                        post.title,
+                        post.createdDate,
+                        post.content,
+                        post.major,
+                        post.studyPerson,
+                        post.filteredGender,
+                        post.studyWay,
+                        post.penalty,
+                        post.penaltyWay,
+                        post.studyStartDate,
+                        post.studyEndDate,
+                        post.remainingSeat,
+                        Expressions.constant(false),
+                        Expressions.constant(false),
+                        Projections.constructor(
+                                UserData.class,
+                                user.id,
+                                user.major,
+                                user.nickname,
+                                user.imageUrl
+                        )
+                ))
+                .from(post)
+                .leftJoin(user).on(post.postedUserId.eq(user.id))
                 .where(post.id.eq(postId));
         PostData result = data.fetchOne();
         return Optional.ofNullable(result);
