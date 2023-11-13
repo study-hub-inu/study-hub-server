@@ -5,10 +5,7 @@ import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -22,6 +19,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -86,9 +85,13 @@ public class StudyPostService {
     public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
         return studyPostRepository.findPostsByRemainingSeat(pageable);
     }
-    public FindPostResponseById findPostById(Long postId) {
-        StudyPostEntity studyPost = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-        FindPostResponseById findPostResponseById = new FindPostResponseById(studyPost);
-        return findPostResponseById;
+    public FindPostResponseById findPostById(Long postId, Long userId) {
+        PostData postData = studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
+        return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
+    }
+
+    private List<RelatedPostData> getRelatedPosts(MajorType major, Long exceptPostId) {
+        List<RelatedPostData> relatedPostDataList = studyPostRepository.findByMajor(major, exceptPostId);
+        return relatedPostDataList;
     }
 }

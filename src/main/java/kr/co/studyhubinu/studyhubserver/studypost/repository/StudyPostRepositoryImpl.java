@@ -1,23 +1,30 @@
 package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByRemainingSeat;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByString;
+import kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity.bookMarkEntity;
 import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.*;
+import static kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity.userEntity;
 
 @Repository
 @RequiredArgsConstructor
@@ -89,6 +96,79 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .limit(pageable.getPageSize());
 
         return toSlice(pageable, studyPostDto.fetch());
+    }
+
+    @Override
+    public Optional<PostData> findPostById(Long postId, Long userId) {
+        QStudyPostEntity post = studyPostEntity;
+        QUserEntity user = userEntity;
+        QBookMarkEntity bookmark = bookMarkEntity;
+
+        JPAQuery<PostData> data = jpaQueryFactory
+                .select(Projections.constructor(
+                        PostData.class,
+                        post.id.as("postId"),
+                        post.title,
+                        post.createdDate,
+                        post.content,
+                        post.major,
+                        post.studyPerson,
+                        post.filteredGender,
+                        post.studyWay,
+                        post.penalty,
+                        post.penaltyWay,
+                        post.studyStartDate,
+                        post.studyEndDate,
+                        post.remainingSeat,
+                        Expressions.booleanTemplate("{0} = {1}", post.postedUserId, userId),
+                        Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId),
+                        Projections.constructor(
+                                UserData.class,
+                                user.id,
+                                user.major,
+                                user.nickname,
+                                user.imageUrl
+                        )
+                ))
+                .from(post)
+                .leftJoin(user).on(post.postedUserId.eq(user.id))
+                .leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)))
+                .where(post.id.eq(postId));
+        PostData result = data.fetchOne();
+        return Optional.ofNullable(result);
+    }
+
+    @Override
+    public List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId) {
+        QStudyPostEntity post = studyPostEntity;
+        QUserEntity user = userEntity;
+        JPAQuery<RelatedPostData> data = jpaQueryFactory.select(
+                        Projections.constructor(RelatedPostData.class,
+                                post.id.as("postId"),
+                                post.title,
+                                post.major,
+                                post.remainingSeat,
+                                Projections.constructor(
+                                        UserData.class,
+                                        user.id.as("userId"),
+                                        user.major,
+                                        user.nickname,
+                                        user.imageUrl
+                                )
+                        )
+                )
+                .from(post)
+                .leftJoin(user).on(post.postedUserId.eq(user.id))
+                .where(post.major.eq(major).and(post.id.ne(exceptPostId)))
+                .orderBy(
+                        post.remainingSeat.asc(),
+                        post.createdDate.desc()
+                )
+                .limit(5);
+
+        List<RelatedPostData> result = data.fetch();
+
+        return result;
     }
 
     public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {

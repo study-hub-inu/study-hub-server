@@ -36,7 +36,7 @@ public class StudyPostEntity extends BaseTimeEntity {
     private MajorType major;
 
     @Column(name = "study_person")
-    private int studyPerson;
+    private Integer studyPerson;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "filtered_gender")
@@ -46,7 +46,7 @@ public class StudyPostEntity extends BaseTimeEntity {
     @Column(name = "study_way")
     private StudyWayType studyWay;
 
-    private int penalty;
+    private Integer penalty;
 
     @Column(name = "penalty_way")
     private String penaltyWay;
@@ -64,7 +64,7 @@ public class StudyPostEntity extends BaseTimeEntity {
     private Long postedUserId;
 
     @Column(name = "remaining_seat")
-    private int remainingSeat;
+    private Integer remainingSeat;
 
     @Builder
     public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {
