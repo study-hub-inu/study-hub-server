@@ -7,6 +7,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByRemainingSeat;
@@ -135,6 +136,39 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .where(post.id.eq(postId));
         PostData result = data.fetchOne();
         return Optional.ofNullable(result);
+    }
+
+    @Override
+    public List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId) {
+        QStudyPostEntity post = studyPostEntity;
+        QUserEntity user = userEntity;
+        JPAQuery<RelatedPostData> data = jpaQueryFactory.select(
+                        Projections.constructor(RelatedPostData.class,
+                                post.id.as("postId"),
+                                post.title,
+                                post.major,
+                                post.remainingSeat,
+                                Projections.constructor(
+                                        UserData.class,
+                                        user.id.as("userId"),
+                                        user.major,
+                                        user.nickname,
+                                        user.imageUrl
+                                )
+                        )
+                )
+                .from(post)
+                .leftJoin(user).on(post.postedUserId.eq(user.id))
+                .where(post.major.eq(major).and(post.id.ne(exceptPostId)))
+                .orderBy(
+                        post.remainingSeat.asc(),
+                        post.createdDate.desc()
+                )
+                .limit(5);
+
+        List<RelatedPostData> result = data.fetch();
+
+        return result;
     }
 
     public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {

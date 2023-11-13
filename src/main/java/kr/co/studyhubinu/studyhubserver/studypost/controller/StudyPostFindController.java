@@ -3,7 +3,6 @@ package kr.co.studyhubinu.studyhubserver.studypost.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
@@ -51,7 +50,7 @@ public class StudyPostFindController {
 
     @Operation(summary = "스터디 단건 조회", description = "url 끝에 postId를 넣어주세요")
     @GetMapping("/{postId}")
-    public ResponseEntity<PostData> findPostById(@PathVariable Long postId, UserId userId) {
+    public ResponseEntity<FindPostResponseById> findPostById(@PathVariable Long postId, UserId userId) {
         return ResponseEntity.ok(studyPostService.findPostById(postId, userId.getId()));
     }
 

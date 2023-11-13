@@ -85,13 +85,13 @@ public class StudyPostService {
     public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
         return studyPostRepository.findPostsByRemainingSeat(pageable);
     }
-    public PostData findPostById(Long postId, Long userId) {
-        PostData studyPost = studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
-        return studyPost;
+    public FindPostResponseById findPostById(Long postId, Long userId) {
+        PostData postData = studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
+        return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
     }
 
-//    private List<RelatedPostData> getRelatedPosts(MajorType major) {
-//        List<RelatedPostData> relatedPostDataList = studyPostRepository.findByMajor(major);
-//        return relatedPostDataList;
-//    }
+    private List<RelatedPostData> getRelatedPosts(MajorType major, Long exceptPostId) {
+        List<RelatedPostData> relatedPostDataList = studyPostRepository.findByMajor(major, exceptPostId);
+        return relatedPostDataList;
+    }
 }

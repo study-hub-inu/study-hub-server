@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
 
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
@@ -9,6 +10,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class FindPostResponseById {
@@ -28,25 +30,25 @@ public class FindPostResponseById {
     private boolean isUsersPost;
     private boolean isBookmarked;
     private UserData postedUser;
-    private RelatedPostData relatedPost;
+    private List<RelatedPostData> relatedPost;
 
-    public FindPostResponseById(Long postId, String title, LocalDateTime createdDate, String content, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, int remainingSeat, boolean isUsersPost, boolean isBookmarked, UserData postedUser, RelatedPostData relatedPost) {
-        this.postId = postId;
-        this.title = title;
-        this.createdDate = createdDate;
-        this.content = content;
-        this.major = major;
-        this.studyPerson = studyPerson;
-        this.filteredGender = filteredGender;
-        this.studyWay = studyWay;
-        this.penalty = penalty;
-        this.penaltyWay = penaltyWay;
-        this.studyStartDate = studyStartDate;
-        this.studyEndDate = studyEndDate;
-        this.remainingSeat = remainingSeat;
-        this.isUsersPost = isUsersPost;
-        this.isBookmarked = isBookmarked;
-        this.postedUser = postedUser;
-        this.relatedPost = relatedPost;
+    public FindPostResponseById(PostData postData, List<RelatedPostData> relatedPosts) {
+        this.postId = postData.getPostId();
+        this.title = postData.getTitle();
+        this.createdDate = postData.getCreatedDate();
+        this.content = postData.getContent();
+        this.major = postData.getMajor();
+        this.studyPerson = postData.getStudyPerson();
+        this.filteredGender = postData.getFilteredGender();
+        this.studyWay = postData.getStudyWay();
+        this.penalty = postData.getPenalty();
+        this.penaltyWay = postData.getPenaltyWay();
+        this.studyStartDate = postData.getStudyStartDate();
+        this.studyEndDate = postData.getStudyEndDate();
+        this.remainingSeat = postData.getRemainingSeat();
+        this.isUsersPost = postData.isUsersPost();
+        this.isBookmarked = postData.isBookmarked();
+        this.postedUser = postData.getPostedUser();
+        this.relatedPost = relatedPosts;
     }
 }

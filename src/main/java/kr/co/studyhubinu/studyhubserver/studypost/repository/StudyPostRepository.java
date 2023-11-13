@@ -22,5 +22,4 @@ public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long
 
     List<StudyPostEntity> findByPostedUserId(Long id);
 
-//    List<RelatedPostData> findByMajor(MajorType major);
 }
