@@ -40,4 +40,8 @@ public class CommentEntity extends BaseTimeEntity {
     public void update(String content) {
         this.content = content;
     }
+
+    public boolean isCommentOfUser(Long userId) {
+        return this.userId.equals(userId);
+    }
 }

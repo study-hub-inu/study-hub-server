@@ -38,6 +38,13 @@ public class CommentService {
     public void updateComment(UpdateCommentRequest request, Long userId) {
         userRepository.findById(userId).orElseThrow(UserNotAccessRightException::new);
         CommentEntity findComment = commentRepository.findById(request.getCommentId()).orElseThrow(CommentNotFoundException::new);
+        validIsCommentOfUser(userId, findComment);
         findComment.update(request.getContent());
     }
+
+    private void validIsCommentOfUser(Long userId, CommentEntity comment) {
+        if (!comment.isCommentOfUser(userId)) throw new UserNotAccessRightException();
+    }
+
+
 }
