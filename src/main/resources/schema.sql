@@ -91,7 +91,7 @@ CREATE TABLE comment (
     comment_id      BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id         BIGINT      NOT NULL,
     post_id         BIGINT      NOT NULL,
-    content         VARCHAR(100),
+    content         VARCHAR(100), DEFAULT NULL
     created_date    TIMESTAMP     DEFAULT NULL,
     modified_date   TIMESTAMP     DEFAULT NULL,
 );
