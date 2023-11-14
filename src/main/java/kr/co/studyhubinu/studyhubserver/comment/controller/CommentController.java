@@ -31,6 +31,11 @@ public class CommentController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
+    @Operation(summary = "댓글 수정")
+    @PutMapping("")
+    public ResponseEntity<HttpStatus> updateComment(@Valid UpdateCommentRequest request, UserId userId) {
+        commentService.updateComment(request, userId.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

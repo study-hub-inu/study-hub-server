@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Getter
@@ -33,6 +34,10 @@ public class CommentEntity extends BaseTimeEntity {
         this.id = id;
         this.userId = userId;
         this.postId = postId;
+        this.content = content;
+    }
+
+    public void update(String content) {
         this.content = content;
     }
 }

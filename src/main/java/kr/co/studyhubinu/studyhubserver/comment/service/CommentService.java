@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.comment.domain.CommentEntity;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
+import kr.co.studyhubinu.studyhubserver.exception.comment.CommentNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
@@ -33,5 +34,10 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-
+    @Transactional
+    public void updateComment(UpdateCommentRequest request, Long userId) {
+        userRepository.findById(userId).orElseThrow(UserNotAccessRightException::new);
+        CommentEntity findComment = commentRepository.findById(request.getCommentId()).orElseThrow(CommentNotFoundException::new);
+        findComment.update(request.getContent());
+    }
 }
