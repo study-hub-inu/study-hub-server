@@ -9,6 +9,7 @@ import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,16 +30,16 @@ public class CommentService {
     @Transactional
     public void createComment(CreateCommentRequest request, Long userId) {
         studyPostRepository.findById(request.getPostId()).orElseThrow(PostNotFoundException::new);
-        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        CommentEntity comment = request.toEntity(userId);
+        UserEntity findUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        CommentEntity comment = request.toEntity(findUser.getId());
         commentRepository.save(comment);
     }
 
     @Transactional
     public void updateComment(UpdateCommentRequest request, Long userId) {
-        userRepository.findById(userId).orElseThrow(UserNotAccessRightException::new);
+        UserEntity findUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         CommentEntity findComment = commentRepository.findById(request.getCommentId()).orElseThrow(CommentNotFoundException::new);
-        validIsCommentOfUser(userId, findComment);
+        validIsCommentOfUser(findUser.getId(), findComment);
         findComment.update(request.getContent());
     }
 
@@ -47,4 +48,10 @@ public class CommentService {
     }
 
 
+    public void deleteComment(Long commentId, Long userId) {
+        UserEntity findUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        CommentEntity findComment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+        validIsCommentOfUser(findUser.getId(), findComment);
+        commentRepository.delete(findComment);
+    }
 }
