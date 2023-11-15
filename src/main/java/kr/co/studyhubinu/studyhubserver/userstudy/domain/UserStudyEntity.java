@@ -20,6 +20,8 @@ public class UserStudyEntity {
     @Column(name = "user_post_id")
     private Long id;
 
+    private boolean approve;
+
     @ManyToOne
     @JoinColumn(name = "post_id")
     private StudyEntity study;
@@ -29,7 +31,8 @@ public class UserStudyEntity {
     private UserEntity user;
 
     @Builder
-    public UserStudyEntity(StudyEntity study, UserEntity user) {
+    public UserStudyEntity(boolean approve, StudyEntity study, UserEntity user) {
+        this.approve = approve;
         this.study = study;
         this.user = user;
     }
