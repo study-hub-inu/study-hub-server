@@ -14,8 +14,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.studyhubinu.studyhubserver.alarm.domain.QAlarmEntity.*;
+import static kr.co.studyhubinu.studyhubserver.alarm.domain.QAlarmEntity.alarmEntity;
 import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.studyPostEntity;
+
 
 @Repository
 @RequiredArgsConstructor

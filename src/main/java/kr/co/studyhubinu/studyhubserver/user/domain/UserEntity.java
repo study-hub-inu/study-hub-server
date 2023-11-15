@@ -39,7 +39,7 @@ public class UserEntity extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", length = 1024)
     private String imageUrl;
 
     @OneToMany(mappedBy = "user")
@@ -81,5 +81,9 @@ public class UserEntity extends BaseTimeEntity {
 
     public void updatePassword(UpdatePasswordInfo info, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.password = bCryptPasswordEncoder.encode(info.getPassword());
+    }
+
+    public void updateImage(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
