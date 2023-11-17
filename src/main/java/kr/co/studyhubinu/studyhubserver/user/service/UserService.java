@@ -42,7 +42,8 @@ public class UserService {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         user.update(info);
     }
-  
+
+    @Transactional
     public void deleteUser(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         userDeleter.deleteUserRelatedData(user);
