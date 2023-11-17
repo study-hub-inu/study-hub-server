@@ -23,14 +23,14 @@ public class CommentController {
 
     @Operation(summary = "댓글 작성")
     @PostMapping("")
-    public ResponseEntity<HttpStatus> createComment(@Valid CreateCommentRequest request, UserId userId) {
+    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody CreateCommentRequest request, UserId userId) {
         commentService.createComment(request, userId.getId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "댓글 수정")
     @PutMapping("")
-    public ResponseEntity<HttpStatus> updateComment(@Valid UpdateCommentRequest request, UserId userId) {
+    public ResponseEntity<HttpStatus> updateComment(@Valid @RequestBody UpdateCommentRequest request, UserId userId) {
         commentService.updateComment(request, userId.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }

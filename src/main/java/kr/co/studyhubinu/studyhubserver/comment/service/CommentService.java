@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.comment.service;
 
 import kr.co.studyhubinu.studyhubserver.comment.domain.CommentEntity;
+import kr.co.studyhubinu.studyhubserver.comment.domain.CommentValidator;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
@@ -24,34 +25,28 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
-    private final StudyPostRepository studyPostRepository;
-    private final UserRepository userRepository;
+    private final CommentValidator commentValidator;
 
     @Transactional
     public void createComment(CreateCommentRequest request, Long userId) {
-        studyPostRepository.findById(request.getPostId()).orElseThrow(PostNotFoundException::new);
-        UserEntity findUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        CommentEntity comment = request.toEntity(findUser.getId());
+        commentValidator.validPostExist(request.getPostId());
+        commentValidator.validUserExist(userId);
+        CommentEntity comment = request.toEntity(userId);
         commentRepository.save(comment);
     }
 
     @Transactional
     public void updateComment(UpdateCommentRequest request, Long userId) {
-        UserEntity findUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        CommentEntity findComment = commentRepository.findById(request.getCommentId()).orElseThrow(CommentNotFoundException::new);
-        validIsCommentOfUser(findUser.getId(), findComment);
+        commentValidator.validUserExist(userId);
+        CommentEntity findComment = commentValidator.validCommentExist(request.getCommentId());
+        commentValidator.validIsCommentOfUser(userId, findComment);
         findComment.update(request.getContent());
     }
 
-    private void validIsCommentOfUser(Long userId, CommentEntity comment) {
-        if (!comment.isCommentOfUser(userId)) throw new UserNotAccessRightException();
-    }
-
-
     public void deleteComment(Long commentId, Long userId) {
-        UserEntity findUser = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        CommentEntity findComment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
-        validIsCommentOfUser(findUser.getId(), findComment);
+        commentValidator.validUserExist(userId);
+        CommentEntity findComment = commentValidator.validCommentExist(commentId);
+        commentValidator.validIsCommentOfUser(commentId, findComment);
         commentRepository.delete(findComment);
     }
 }
