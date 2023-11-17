@@ -1,7 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
+import kr.co.studyhubinu.studyhubserver.common.enums.SortByType;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.study.SortByNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
@@ -62,8 +64,19 @@ public class StudyPostService {
         return studyPostRepository.findByAll(pageable);
     }
 
-    public Slice<FindPostResponseByString> findPostResponseByString(String title, MajorType major, String content, Pageable pageable) {
-        return studyPostRepository.findByString(title, major, content, pageable);
+    public Slice<FindPostResponseByString> findPostResponseByString(String title, MajorType major, SortByType sortBy, Integer page, Integer size) {
+
+        if (SortByType.ByTime == sortBy) {
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortBy.getValue()));
+        }
+
+        if (SortByType.ByPopularity == sortBy) {
+            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortBy.getValue()));
+        }
+
+        throw new SortByNotFoundException();
+
+//        return studyPostRepository.findByString(title, major, content, pageable);
     }
 
     public GetMyPostResponse getMyPosts(int page, int size, Long userId) {

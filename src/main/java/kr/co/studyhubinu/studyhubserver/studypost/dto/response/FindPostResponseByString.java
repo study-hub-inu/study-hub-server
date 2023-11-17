@@ -1,8 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
 
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
+import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
-import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 public class FindPostResponseByString {
@@ -10,19 +14,32 @@ public class FindPostResponseByString {
     private Long postId;
     private MajorType major;
     private String title;
-    private String content;
-    private int leftover;
-    private int studyPerson;
+    private LocalDate studyStartDate;
+    private LocalDate studyEndDate;
+    private LocalDateTime createdDate;
+    private Integer leftover;
+    private Integer studyPerson;
+    private GenderType filteredGender;
+    private Integer penalty;
+    private String penaltyWay;
     private boolean close;
+    private boolean isBookmarked;
+    private UserData userData;
 
-    public FindPostResponseByString(Long postId, MajorType major, String title, String content, int leftover, Integer studyPerson, Boolean close) {
+    public FindPostResponseByString(Long postId, MajorType major, String title, LocalDate studyStartDate, LocalDate studyEndDate, LocalDateTime createdDate, Integer leftover, Integer studyPerson, GenderType filteredGender, Integer penalty, String penaltyWay, boolean close, boolean isBookmarked, UserData userData) {
         this.postId = postId;
         this.major = major;
         this.title = title;
-        this.content = content;
+        this.studyStartDate = studyStartDate;
+        this.studyEndDate = studyEndDate;
+        this.createdDate = createdDate;
         this.leftover = leftover;
         this.studyPerson = studyPerson;
+        this.filteredGender = filteredGender;
+        this.penalty = penalty;
+        this.penaltyWay = penaltyWay;
         this.close = close;
+        this.isBookmarked = isBookmarked;
+        this.userData = userData;
     }
-
 }
