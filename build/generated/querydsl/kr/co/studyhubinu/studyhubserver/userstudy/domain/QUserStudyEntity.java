@@ -22,6 +22,8 @@ public class QUserStudyEntity extends EntityPathBase<UserStudyEntity> {
 
     public static final QUserStudyEntity userStudyEntity = new QUserStudyEntity("userStudyEntity");
 
+    public final BooleanPath approve = createBoolean("approve");
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final kr.co.studyhubinu.studyhubserver.study.domain.QStudyEntity study;
