@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
-public class FindPostResponseByString {
+public class FindPostResponseByInquiry {
 
     private Long postId;
     private MajorType major;
@@ -17,7 +17,6 @@ public class FindPostResponseByString {
     private LocalDate studyStartDate;
     private LocalDate studyEndDate;
     private LocalDateTime createdDate;
-    private Integer leftover;
     private Integer studyPerson;
     private GenderType filteredGender;
     private Integer penalty;
@@ -26,14 +25,13 @@ public class FindPostResponseByString {
     private boolean isBookmarked;
     private UserData userData;
 
-    public FindPostResponseByString(Long postId, MajorType major, String title, LocalDate studyStartDate, LocalDate studyEndDate, LocalDateTime createdDate, Integer leftover, Integer studyPerson, GenderType filteredGender, Integer penalty, String penaltyWay, boolean close, boolean isBookmarked, UserData userData) {
+    public FindPostResponseByInquiry(Long postId, MajorType major, String title, LocalDate studyStartDate, LocalDate studyEndDate, LocalDateTime createdDate, Integer studyPerson, GenderType filteredGender, Integer penalty, String penaltyWay, boolean close, boolean isBookmarked, UserData userData) {
         this.postId = postId;
         this.major = major;
         this.title = title;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.createdDate = createdDate;
-        this.leftover = leftover;
         this.studyPerson = studyPerson;
         this.filteredGender = filteredGender;
         this.penalty = penalty;

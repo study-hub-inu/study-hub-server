@@ -11,7 +11,7 @@ import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByRemainingSeat;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByString;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -32,22 +32,34 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-//    @Override
-//    public Slice<FindPostResponseByString> findByString(final String searchInput, final Pageable pageable) {
-//        QStudyPostEntity post = studyPostEntity;
-//
-//        JPAQuery<FindPostResponseByString> studyPostDto = jpaQueryFactory
-//                .select(Projections.constructor(FindPostResponseByString.class,
-//                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
-//                .from(post)
-//                .orderBy(post.createdDate.desc())
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize() + 1);
-//
-//        insertQuery(studyPostDto, title, major, content);
-//
-//        return toSlice(pageable, studyPostDto.fetch());
-//    }
+    @Override
+    public Slice<FindPostResponseByInquiry> findByInquiry(final String searchInput, final Pageable pageable, Long userId) {
+        QStudyPostEntity post = studyPostEntity;
+        QUserEntity user = userEntity;
+        QBookMarkEntity bookmark = bookMarkEntity;
+
+        JPAQuery<FindPostResponseByInquiry> data = jpaQueryFactory
+                .select(Projections.constructor(FindPostResponseByInquiry.class,
+                        post.id.as("postId"), post.major, post.title, post.studyStartDate, post.studyEndDate,
+                        post.createdDate, post.studyPerson, post.filteredGender,
+                        post.penalty, post.penaltyWay, post.close,
+                        userId != null ? Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId) : Expressions.constant(false),
+                        Projections.constructor(
+                                UserData.class,
+                                user.id, user.major, user.nickname, user.imageUrl
+                        )
+                ))
+                .from(post)
+                .leftJoin(user).on(post.postedUserId.eq(user.id))
+                .where(post.title.contains(searchInput).or(post.major.eq(MajorType.of(searchInput))))
+                .orderBy(post.createdDate.desc());
+
+        if (userId != null) {
+            data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
+        }
+
+        return toSlice(pageable, data.fetch());
+    }
 
     @Override
     public Slice<FindPostResponseByAll> findByAll(Pageable pageable) {
@@ -162,7 +174,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         return result;
     }
 
-    public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {
+    public void insertQuery(JPAQuery<FindPostResponseByInquiry> studyPostDto, String title, MajorType major, String content) {
         QStudyPostEntity post = studyPostEntity;
 
         if (title != null) {

@@ -62,11 +62,9 @@ public class StudyPostService {
         return studyPostRepository.findByAll(pageable);
     }
 
-//    public Slice<FindPostResponseByString> findPostResponseByString(final String searchInput, final int page, final int size) {
-//
-//
-//        return studyPostRepository.findByString(searchInput, PageRequest.of(page, size));
-//    }
+    public Slice<FindPostResponseByInquiry> findPostResponseByInquiry(final String searchInput, final int page, final int size, Long userId) {
+        return studyPostRepository.findByInquiry(searchInput, PageRequest.of(page, size), userId);
+    }
 
     public GetMyPostResponse getMyPosts(int page, int size, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
