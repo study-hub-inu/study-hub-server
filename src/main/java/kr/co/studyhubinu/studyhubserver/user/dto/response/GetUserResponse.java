@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserActivityCountData;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -27,5 +28,17 @@ public class GetUserResponse {
         this.gender = user.getGender();
         this.email = user.getEmail();
         this.imageUrl = user.getImageUrl();
+    }
+
+    @Builder
+    public GetUserResponse(Long postCount, Long participateCount, Long bookmarkCount, String nickname, MajorType major, GenderType gender, String email, String imageUrl) {
+        this.postCount = postCount;
+        this.participateCount = participateCount;
+        this.bookmarkCount = bookmarkCount;
+        this.nickname = nickname;
+        this.major = major;
+        this.gender = gender;
+        this.email = email;
+        this.imageUrl = imageUrl;
     }
 }
