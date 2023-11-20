@@ -32,22 +32,22 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
-    public Slice<FindPostResponseByString> findByString(String title, MajorType major, String content, Pageable pageable) {
-        QStudyPostEntity post = studyPostEntity;
-
-        JPAQuery<FindPostResponseByString> studyPostDto = jpaQueryFactory
-                .select(Projections.constructor(FindPostResponseByString.class,
-                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
-                .from(post)
-                .orderBy(post.createdDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1);
-
-        insertQuery(studyPostDto, title, major, content);
-
-        return toSlice(pageable, studyPostDto.fetch());
-    }
+//    @Override
+//    public Slice<FindPostResponseByString> findByString(final String searchInput, final Pageable pageable) {
+//        QStudyPostEntity post = studyPostEntity;
+//
+//        JPAQuery<FindPostResponseByString> studyPostDto = jpaQueryFactory
+//                .select(Projections.constructor(FindPostResponseByString.class,
+//                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
+//                .from(post)
+//                .orderBy(post.createdDate.desc())
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize() + 1);
+//
+//        insertQuery(studyPostDto, title, major, content);
+//
+//        return toSlice(pageable, studyPostDto.fetch());
+//    }
 
     @Override
     public Slice<FindPostResponseByAll> findByAll(Pageable pageable) {
@@ -88,8 +88,8 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         QStudyPostEntity post = studyPostEntity;
 
         JPAQuery<FindPostResponseByRemainingSeat> studyPostDto = jpaQueryFactory.select(
-                Projections.constructor(FindPostResponseByRemainingSeat.class,
-                        post.id.as("postId"), post.title, post.studyPerson, post.remainingSeat))
+                        Projections.constructor(FindPostResponseByRemainingSeat.class,
+                                post.id.as("postId"), post.title, post.studyPerson, post.remainingSeat))
                 .from(post)
                 .orderBy(post.remainingSeat.asc())
                 .offset(pageable.getOffset())
@@ -99,7 +99,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public Optional<PostData> findPostByIdAndUserId(Long postId, Long userId) {
+    public Optional<PostData> findPostById(Long postId, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
         QBookMarkEntity bookmark = bookMarkEntity;
@@ -107,74 +107,27 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         JPAQuery<PostData> data = jpaQueryFactory
                 .select(Projections.constructor(
                         PostData.class,
-                        post.id.as("postId"),
-                        post.title,
-                        post.createdDate,
-                        post.content,
-                        post.major,
-                        post.studyPerson,
-                        post.filteredGender,
-                        post.studyWay,
-                        post.penalty,
-                        post.penaltyWay,
-                        post.studyStartDate,
-                        post.studyEndDate,
-                        post.remainingSeat,
-                        Expressions.booleanTemplate("{0} = {1}", post.postedUserId, userId),
-                        Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId),
+                        post.id.as("postId"), post.title, post.createdDate, post.content, post.major,
+                        post.studyPerson, post.filteredGender, post.studyWay, post.penalty,
+                        post.penaltyWay, post.studyStartDate, post.studyEndDate, post.remainingSeat,
+                        userId != null ? Expressions.booleanTemplate("{0} = {1}", post.postedUserId, userId) : Expressions.constant(false),
+                        userId != null ? Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId) : Expressions.constant(false),
                         Projections.constructor(
                                 UserData.class,
-                                user.id,
-                                user.major,
-                                user.nickname,
-                                user.imageUrl
+                                user.id, user.major, user.nickname, user.imageUrl
                         )
                 ))
                 .from(post)
-                .leftJoin(user).on(post.postedUserId.eq(user.id))
-                .leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)))
-                .where(post.id.eq(postId));
-        PostData result = data.fetchOne();
+                .leftJoin(user).on(post.postedUserId.eq(user.id));
+
+        if (userId != null) {
+            data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
+        }
+
+        PostData result = data.where(post.id.eq(postId)).fetchOne();
         return Optional.ofNullable(result);
     }
 
-    @Override
-    public Optional<PostData> findPostById(Long postId) {
-        QStudyPostEntity post = studyPostEntity;
-        QUserEntity user = userEntity;
-
-        JPAQuery<PostData> data = jpaQueryFactory
-                .select(Projections.constructor(
-                        PostData.class,
-                        post.id.as("postId"),
-                        post.title,
-                        post.createdDate,
-                        post.content,
-                        post.major,
-                        post.studyPerson,
-                        post.filteredGender,
-                        post.studyWay,
-                        post.penalty,
-                        post.penaltyWay,
-                        post.studyStartDate,
-                        post.studyEndDate,
-                        post.remainingSeat,
-                        Expressions.constant(false),
-                        Expressions.constant(false),
-                        Projections.constructor(
-                                UserData.class,
-                                user.id,
-                                user.major,
-                                user.nickname,
-                                user.imageUrl
-                        )
-                ))
-                .from(post)
-                .leftJoin(user).on(post.postedUserId.eq(user.id))
-                .where(post.id.eq(postId));
-        PostData result = data.fetchOne();
-        return Optional.ofNullable(result);
-    }
 
     @Override
     public List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId) {
@@ -212,20 +165,20 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {
         QStudyPostEntity post = studyPostEntity;
 
-        if(title != null) {
+        if (title != null) {
             studyPostDto.where(post.title.like(title + "%"));
         }
-        if(major != null) {
+        if (major != null) {
             studyPostDto.where(post.major.eq(major));
         }
-        if(content != null) {
+        if (content != null) {
             studyPostDto.where(post.content.like("%" + content + "%"));
         }
     }
 
     public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
         if (items.size() > pageable.getPageSize()) {
-            items.remove(items.size()-1);
+            items.remove(items.size() - 1);
             return new SliceImpl<>(items, pageable, true);
         }
         return new SliceImpl<>(items, pageable, false);

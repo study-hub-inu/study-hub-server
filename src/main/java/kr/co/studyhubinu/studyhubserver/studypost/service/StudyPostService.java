@@ -1,9 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
-import kr.co.studyhubinu.studyhubserver.common.enums.SortByType;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
-import kr.co.studyhubinu.studyhubserver.exception.study.SortByNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
@@ -64,20 +62,11 @@ public class StudyPostService {
         return studyPostRepository.findByAll(pageable);
     }
 
-    public Slice<FindPostResponseByString> findPostResponseByString(String title, MajorType major, SortByType sortBy, Integer page, Integer size) {
-
-        if (SortByType.ByTime == sortBy) {
-            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortBy.getValue()));
-        }
-
-        if (SortByType.ByPopularity == sortBy) {
-            PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sortBy.getValue()));
-        }
-
-        throw new SortByNotFoundException();
-
-//        return studyPostRepository.findByString(title, major, content, pageable);
-    }
+//    public Slice<FindPostResponseByString> findPostResponseByString(final String searchInput, final int page, final int size) {
+//
+//
+//        return studyPostRepository.findByString(searchInput, PageRequest.of(page, size));
+//    }
 
     public GetMyPostResponse getMyPosts(int page, int size, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -98,17 +87,13 @@ public class StudyPostService {
     public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
         return studyPostRepository.findPostsByRemainingSeat(pageable);
     }
+
     public FindPostResponseById findPostById(Long postId, Long userId) {
-        if (userId == null) {
-            PostData postData = studyPostRepository.findPostById(postId).orElseThrow(PostNotFoundException::new);
-            return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
-        }
-        PostData postData = studyPostRepository.findPostByIdAndUserId(postId, userId).orElseThrow(PostNotFoundException::new);
+        PostData postData = studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
         return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
     }
 
     private List<RelatedPostData> getRelatedPosts(MajorType major, Long exceptPostId) {
-        List<RelatedPostData> relatedPostDataList = studyPostRepository.findByMajor(major, exceptPostId);
-        return relatedPostDataList;
+        return studyPostRepository.findByMajor(major, exceptPostId);
     }
 }
