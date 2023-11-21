@@ -1,5 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -8,6 +10,7 @@ import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByRemainingSeat;
@@ -33,7 +36,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<FindPostResponseByInquiry> findByInquiry(final String searchInput, final Pageable pageable, Long userId) {
+    public Slice<FindPostResponseByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
         QBookMarkEntity bookmark = bookMarkEntity;
@@ -43,7 +46,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                         post.id.as("postId"), post.major, post.title, post.studyStartDate, post.studyEndDate,
                         post.createdDate, post.studyPerson, post.filteredGender,
                         post.penalty, post.penaltyWay, post.close,
-                        userId != null ? Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId) : Expressions.constant(false),
+                        bookmarkPredicate(userId, bookmark),
                         Projections.constructor(
                                 UserData.class,
                                 user.id, user.major, user.nickname, user.imageUrl
@@ -51,14 +54,35 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 ))
                 .from(post)
                 .leftJoin(user).on(post.postedUserId.eq(user.id))
-                .where(post.title.contains(searchInput).or(post.major.eq(MajorType.of(searchInput))))
-                .orderBy(post.createdDate.desc());
+                .where(wherePredicate(post, inquiryRequest))
+                .orderBy(hotPredicate(post, inquiryRequest));
 
         if (userId != null) {
             data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
         }
 
         return toSlice(pageable, data.fetch());
+    }
+
+    private OrderSpecifier<?> hotPredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+        if(inquiryRequest.isHot()) {
+            return post.remainingSeat.asc();
+        }
+        return post.createdDate.desc();
+    }
+
+    private Predicate bookmarkPredicate(Long userId, QBookMarkEntity bookmark) {
+        if(userId != null) {
+            return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
+        }
+        return Expressions.asBoolean(Expressions.constant(false));
+    }
+
+    private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+        if (inquiryRequest.isAll()) {
+            return post.major.eq(MajorType.of(inquiryRequest.getInquiryText())).or(post.title.contains(inquiryRequest.getInquiryText()));
+        }
+        return post.major.eq(MajorType.of(inquiryRequest.getInquiryText()));
     }
 
     @Override

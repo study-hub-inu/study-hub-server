@@ -6,6 +6,7 @@ import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -62,8 +63,8 @@ public class StudyPostService {
         return studyPostRepository.findByAll(pageable);
     }
 
-    public Slice<FindPostResponseByInquiry> findPostResponseByInquiry(final String searchInput, final int page, final int size, Long userId) {
-        return studyPostRepository.findByInquiry(searchInput, PageRequest.of(page, size), userId);
+    public Slice<FindPostResponseByInquiry> findPostResponseByInquiry(final InquiryRequest inquiryRequest, final int page, final int size, Long userId) {
+        return studyPostRepository.findByInquiry(inquiryRequest, PageRequest.of(page, size), userId);
     }
 
     public GetMyPostResponse getMyPosts(int page, int size, Long userId) {

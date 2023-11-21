@@ -2,6 +2,7 @@ package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 public interface StudyPostRepositoryCustom {
 
-    Slice<FindPostResponseByInquiry> findByInquiry(String title, Pageable pageable, Long userId);
+    Slice<FindPostResponseByInquiry> findByInquiry(final InquiryRequest inquiryRequest, Pageable pageable, Long userId);
 
     Slice<FindPostResponseByAll> findByAll(Pageable pageable);
 
