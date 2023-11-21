@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
+import kr.co.studyhubinu.studyhubserver.comment.dto.response.CommentResponse;
 import kr.co.studyhubinu.studyhubserver.comment.service.CommentService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +42,13 @@ public class CommentController {
     public ResponseEntity<HttpStatus> deleteComment(@PathVariable("commentId") Long commentId, UserId userId) {
         commentService.deleteComment(commentId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Operation(summary = "댓글 리스트 조회")
+    @GetMapping("/{postId}")
+    public ResponseEntity<Slice<CommentResponse>> getComments(@PathVariable("postId") Long postId, @RequestParam int page, @RequestParam int size, UserId userId) {
+        Slice<CommentResponse> commentResponses = commentService.getComments(postId, page, size, userId.getId());
+        return ResponseEntity.ok().body(commentResponses);
     }
 
 }
