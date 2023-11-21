@@ -3,6 +3,7 @@ package kr.co.studyhubinu.studyhubserver.user.enums;
 import kr.co.studyhubinu.studyhubserver.common.enums.EnumModel;
 
 public enum MajorType implements EnumModel {
+    NONE("전공없음"),
     PERFORMING_ART("공연예술과"),
     IBE("IBE전공"),
     CIVIL_AND_ENVIRONMENTAL_ENGINEERING("건설환경공학"),
@@ -89,5 +90,14 @@ public enum MajorType implements EnumModel {
     @Override
     public String getValue() {
         return value;
+    }
+
+    public static MajorType of(String major) {
+        for (MajorType majorType : MajorType.values()) {
+            if (majorType.getValue().equals(major)) {
+                return majorType;
+            }
+        }
+        return NONE;
     }
 }
