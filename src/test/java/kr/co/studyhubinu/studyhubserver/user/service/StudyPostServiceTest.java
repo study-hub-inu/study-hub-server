@@ -6,6 +6,7 @@ import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
+import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
@@ -42,6 +43,7 @@ public class StudyPostServiceTest {
     void createPost_success() {
         // given
         Long userId = 1L;
+        Long postId = 2L;
         StudyPostInfo info = StudyPostInfo.builder()
                 .userId(userId)
                 .title("정보처리기사")
@@ -57,22 +59,15 @@ public class StudyPostServiceTest {
                 .studyEndDate(LocalDate.of(2023, 12, 25))
                 .build();
         UserEntity user1 = UserEntityFixture.DONGWOO.UserEntity_생성(userId);
+        StudyPostEntity post1 = StudyPostEntityFixture.SQLD.studyPostEntity_생성(postId);
 
         BDDMockito.given(userRepository.findById(info.getUserId())).willReturn(Optional.of(user1));
-        BDDMockito.given(studyPostRepository.save(Mockito.any(StudyPostEntity.class)))
-                .willAnswer(invocation -> {
-                    StudyPostEntity savedPost = invocation.getArgument(0);
+        BDDMockito.given(studyPostRepository.save(any())).willReturn(post1);
 
-                    // 새로운 빌더 객체를 만들어서 기존 속성들을 복사하고 ID를 설정
-                    StudyPostEntity fakeSavedPost = StudyPostEntity.builder()
-                            .id(1L) // 가짜 ID 설정
-                            .build();
-                    return fakeSavedPost;
-                });
         ArgumentCaptor<StudyPostEntity> captor = ArgumentCaptor.forClass(StudyPostEntity.class);
 
         // when
-        Long postId = studyPostService.createPost(info);
+        Long createdPostId = studyPostService.createPost(info);
 
         // then
         verify(studyPostRepository, times(1))
@@ -80,7 +75,7 @@ public class StudyPostServiceTest {
         StudyPostEntity capturedStudyPost = captor.getValue();
         assertEquals("정보처리기사", capturedStudyPost.getTitle());
 
-        assertNotNull(postId);
+        assertNotNull(createdPostId);
 
     }
 }

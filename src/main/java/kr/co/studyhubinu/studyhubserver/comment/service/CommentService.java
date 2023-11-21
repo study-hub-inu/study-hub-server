@@ -4,9 +4,14 @@ import kr.co.studyhubinu.studyhubserver.comment.domain.CommentEntity;
 import kr.co.studyhubinu.studyhubserver.comment.domain.CommentValidator;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
+import kr.co.studyhubinu.studyhubserver.comment.dto.response.CommentResponse;
 import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,5 +45,12 @@ public class CommentService {
         CommentEntity findComment = commentValidator.validCommentExist(commentId);
         commentValidator.validIsCommentOfUser(commentId, findComment);
         commentRepository.delete(findComment);
+    }
+
+    public Slice<CommentResponse> getComments(Long postId, int page, int size, Long userId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        commentValidator.validPostExist(postId);
+        commentValidator.validUserExist(userId);
+        return commentRepository.findSliceByPostIdWithUserId(postId, userId, pageable);
     }
 }
