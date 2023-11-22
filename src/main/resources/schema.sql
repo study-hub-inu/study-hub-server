@@ -4,6 +4,8 @@ DROP TABLE if EXISTS study;
 DROP TABLE if EXISTS alarm;
 DROP TABLE if EXISTS bookmark;
 DROP TABLE if EXISTS user_study;
+DROP TABLE if EXISTS comment;
+
 
 CREATE TABLE users
 (
@@ -84,4 +86,13 @@ CREATE TABLE user_study (
       user_id BIGINT,
       FOREIGN KEY (post_id) REFERENCES study(study_id),
       FOREIGN KEY (user_id) REFERENCES users(user_id)
+);
+
+CREATE TABLE comment (
+    comment_id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id         BIGINT      NOT NULL,
+    post_id         BIGINT      NOT NULL,
+    content         VARCHAR(100)  DEFAULT NULL,
+    created_date    TIMESTAMP     DEFAULT NULL,
+    modified_date   TIMESTAMP     DEFAULT NULL
 );

@@ -67,7 +67,8 @@ public class StudyPostEntity extends BaseTimeEntity {
     private Integer remainingSeat;
 
     @Builder
-    public StudyPostEntity(String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {
+    public StudyPostEntity(Long id, String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.chatUrl = chatUrl;
