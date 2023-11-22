@@ -63,36 +63,7 @@ public class StudyPostService {
         return studyPostRepository.findByAll(pageable);
     }
 
-    public Slice<FindPostResponseByInquiry> findPostResponseByInquiry(final InquiryRequest inquiryRequest, final int page, final int size, Long userId) {
-        return studyPostRepository.findByInquiry(inquiryRequest, PageRequest.of(page, size), userId);
-    }
-
-    public GetMyPostResponse getMyPosts(int page, int size, Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Long totalCount = studyPostRepository.countByPostedUserId(userId);
-        Slice<GetMyPostData> getMyPostData = studyPostRepository.findSliceByPostedUserId(user.getId(), pageable);
-        return new GetMyPostResponse(totalCount, getMyPostData);
-    }
-
-    public GetBookmarkedPostsResponse getBookmarkedPosts(int page, int size, Long userId) {
-        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Long totalCount = bookMarkRepository.countByUserId(userId);
-        Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
-        return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
-    }
-
     public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
         return studyPostRepository.findPostsByRemainingSeat(pageable);
-    }
-
-    public FindPostResponseById findPostById(Long postId, Long userId) {
-        PostData postData = studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
-        return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
-    }
-
-    private List<RelatedPostData> getRelatedPosts(MajorType major, Long exceptPostId) {
-        return studyPostRepository.findByMajor(major, exceptPostId);
     }
 }

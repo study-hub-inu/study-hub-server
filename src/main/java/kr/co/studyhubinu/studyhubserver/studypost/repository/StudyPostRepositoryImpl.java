@@ -55,7 +55,9 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .from(post)
                 .leftJoin(user).on(post.postedUserId.eq(user.id))
                 .where(wherePredicate(post, inquiryRequest))
-                .orderBy(hotPredicate(post, inquiryRequest));
+                .orderBy(hotPredicate(post, inquiryRequest))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1);
 
         if (userId != null) {
             data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
@@ -79,7 +81,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
-        if (inquiryRequest.isAll()) {
+        if (inquiryRequest.isTitleAndMajor()) {
             return post.major.eq(MajorType.of(inquiryRequest.getInquiryText())).or(post.title.contains(inquiryRequest.getInquiryText()));
         }
         return post.major.eq(MajorType.of(inquiryRequest.getInquiryText()));

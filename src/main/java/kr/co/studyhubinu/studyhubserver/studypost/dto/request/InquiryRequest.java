@@ -8,6 +8,6 @@ import lombok.Getter;
 public class InquiryRequest {
 
     private final String inquiryText;
-    private final boolean all;
+    private final boolean titleAndMajor;
     private final boolean hot;
 }
