@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProperties;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor

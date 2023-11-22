@@ -1,7 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.config;
 
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtAuthenticationFilter;
-import kr.co.studyhubinu.studyhubserver.config.jwt.JwtAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,6 @@ public class SecurityConfig {
 
     private final CorsConfig corsConfig;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -39,9 +37,7 @@ public class SecurityConfig {
         public void configure(HttpSecurity http) {
             http
                     .addFilter(corsConfig.corsFilter())
-                    .addFilter(jwtAuthenticationFilter)
-                    .addFilter(jwtAuthorizationFilter);
+                    .addFilter(jwtAuthenticationFilter);
         }
     }
-
 }
