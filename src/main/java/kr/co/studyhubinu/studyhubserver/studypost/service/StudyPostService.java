@@ -6,6 +6,7 @@ import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -62,40 +63,7 @@ public class StudyPostService {
         return studyPostRepository.findByAll(pageable);
     }
 
-    public Slice<FindPostResponseByString> findPostResponseByString(String title, MajorType major, String content, Pageable pageable) {
-        return studyPostRepository.findByString(title, major, content, pageable);
-    }
-
-    public GetMyPostResponse getMyPosts(int page, int size, Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Long totalCount = studyPostRepository.countByPostedUserId(userId);
-        Slice<GetMyPostData> getMyPostData = studyPostRepository.findSliceByPostedUserId(user.getId(), pageable);
-        return new GetMyPostResponse(totalCount, getMyPostData);
-    }
-
-    public GetBookmarkedPostsResponse getBookmarkedPosts(int page, int size, Long userId) {
-        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Long totalCount = bookMarkRepository.countByUserId(userId);
-        Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
-        return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
-    }
-
     public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
         return studyPostRepository.findPostsByRemainingSeat(pageable);
-    }
-    public FindPostResponseById findPostById(Long postId, Long userId) {
-        if (userId == null) {
-            PostData postData = studyPostRepository.findPostById(postId).orElseThrow(PostNotFoundException::new);
-            return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
-        }
-        PostData postData = studyPostRepository.findPostByIdAndUserId(postId, userId).orElseThrow(PostNotFoundException::new);
-        return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
-    }
-
-    private List<RelatedPostData> getRelatedPosts(MajorType major, Long exceptPostId) {
-        List<RelatedPostData> relatedPostDataList = studyPostRepository.findByMajor(major, exceptPostId);
-        return relatedPostDataList;
     }
 }
