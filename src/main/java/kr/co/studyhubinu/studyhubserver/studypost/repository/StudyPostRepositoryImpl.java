@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
@@ -56,6 +57,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .leftJoin(user).on(post.postedUserId.eq(user.id))
                 .where(wherePredicate(post, inquiryRequest))
                 .orderBy(hotPredicate(post, inquiryRequest))
+                .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
 
@@ -64,6 +66,26 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         }
 
         return toSlice(pageable, data.fetch());
+    }
+
+    private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if(inquiryRequest.getInquiryText() != null) {
+            addMajorPredicate(post, predicate, inquiryRequest.getInquiryText());
+            addTitlePredicate(post, predicate, inquiryRequest);
+        }
+        return predicate.getValue();
+    }
+
+    private void addMajorPredicate(QStudyPostEntity post, BooleanBuilder predicate, String inquiryText) {
+        predicate.and(post.major.eq(MajorType.of(inquiryText)));
+    }
+
+    private void addTitlePredicate(QStudyPostEntity post, BooleanBuilder predicate, InquiryRequest inquiryRequest) {
+        if(inquiryRequest.isTitleAndMajor()) {
+            predicate.or(post.title.contains(inquiryRequest.getInquiryText()));
+        }
     }
 
     private OrderSpecifier<?> hotPredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
@@ -78,13 +100,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
             return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
         }
         return Expressions.asBoolean(Expressions.constant(false));
-    }
-
-    private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
-        if (inquiryRequest.isTitleAndMajor()) {
-            return post.major.eq(MajorType.of(inquiryRequest.getInquiryText())).or(post.title.contains(inquiryRequest.getInquiryText()));
-        }
-        return post.major.eq(MajorType.of(inquiryRequest.getInquiryText()));
     }
 
     @Override
@@ -198,20 +213,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         List<RelatedPostData> result = data.fetch();
 
         return result;
-    }
-
-    public void insertQuery(JPAQuery<FindPostResponseByInquiry> studyPostDto, String title, MajorType major, String content) {
-        QStudyPostEntity post = studyPostEntity;
-
-        if (title != null) {
-            studyPostDto.where(post.title.like(title + "%"));
-        }
-        if (major != null) {
-            studyPostDto.where(post.major.eq(major));
-        }
-        if (content != null) {
-            studyPostDto.where(post.content.like("%" + content + "%"));
-        }
     }
 
     public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
