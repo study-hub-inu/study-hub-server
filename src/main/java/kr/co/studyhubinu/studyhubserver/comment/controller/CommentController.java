@@ -17,35 +17,35 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/comments")
+@RequestMapping("/api")
 @Tag(name = "comment", description = "comment api")
 public class CommentController {
 
     private final CommentService commentService;
 
     @Operation(summary = "댓글 작성")
-    @PostMapping("")
+    @PostMapping("/v1/comments")
     public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody CreateCommentRequest request, UserId userId) {
         commentService.createComment(request, userId.getId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "댓글 수정")
-    @PutMapping("")
+    @PutMapping("/v1/comments")
     public ResponseEntity<HttpStatus> updateComment(@Valid @RequestBody UpdateCommentRequest request, UserId userId) {
         commentService.updateComment(request, userId.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "댓글 삭제")
-    @DeleteMapping("/{commentId}")
+    @DeleteMapping("/v1/comments/{commentId}")
     public ResponseEntity<HttpStatus> deleteComment(@PathVariable("commentId") Long commentId, UserId userId) {
         commentService.deleteComment(commentId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "댓글 리스트 조회")
-    @GetMapping("/{postId}")
+    @GetMapping("/v1/comments/{postId}")
     public ResponseEntity<Slice<CommentResponse>> getComments(@PathVariable("postId") Long postId, @RequestParam int page, @RequestParam int size, UserId userId) {
         Slice<CommentResponse> commentResponses = commentService.getComments(postId, page, size, userId.getId());
         return ResponseEntity.ok().body(commentResponses);

@@ -22,7 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/study-posts")
+@RequestMapping("/api")
 public class StudyPostController {
 
     private final StudyPostService studyPostService;
@@ -31,7 +31,7 @@ public class StudyPostController {
     @Operation(summary = "스터디 게시글 생성",
             description = "Http 헤더에 JWT accessToken 과 함께 " +
                     "제목, 내용, 채팅방 URI, 관련 학과, 스터디 정원, 벌금, 필터 성별, 스터디 방식, 스터디 시작 날짜, 스터디 종료 날짜를 Json 형식으로 입력해주세요.")
-    @PostMapping("")
+    @PostMapping("/v1/study-posts")
     public ResponseEntity<Long> createPost(@Valid @RequestBody CreatePostRequest request, UserId userId) {
         Long postId = studyPostService.createPost(request.toService(userId.getId()));
         return new ResponseEntity<>(postId, HttpStatus.CREATED);
@@ -39,7 +39,7 @@ public class StudyPostController {
 
     @Operation(summary = "스터디 게시글 수정", description = "Http 헤더에 JWT accessToken 과 함께 " +
             "게시글 Id, 제목, 내용, 채팅방 URI, 관련 학과, 스터디 정원, 벌금, 필터 성별, 스터디 방식, 스터디 시작 날짜, 스터디 종료 날짜를 Json 형식으로 입력해주세요.")
-    @PutMapping("")
+    @PutMapping("/v1/study-posts")
     public ResponseEntity<Long> updatePost(@Valid @RequestBody UpdatePostRequest request, UserId userId) {
         Long postId = studyPostService.updatePost(request.toService(userId.getId()));
         return new ResponseEntity<>(postId, HttpStatus.OK);
@@ -47,7 +47,7 @@ public class StudyPostController {
 
     @Operation(summary = "스터디 게시글 삭제",
             description = "Http 헤더에 JWT accessToken 과 함께 게시글 Id를 보내주시면 됩니다.")
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("/v1/study-posts/{postId}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("postId") Long postId, UserId userId) {
         studyPostService.deletePost(postId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -55,13 +55,13 @@ public class StudyPostController {
 
 
     @Operation(summary = "내가 북마크한 스터디 조회")
-    @GetMapping("/find/bookmarked")
+    @GetMapping("/v1/study-posts/bookmarked")
     public ResponseEntity<GetBookmarkedPostsResponse> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
         return ResponseEntity.ok().body(studyPostFindService.getBookmarkedPosts(page, size, userId.getId()));
     }
 
     @Operation(summary = "스터디 단건 조회", description = "url 끝에 postId를 넣어주세요")
-    @GetMapping("/find/{postId}")
+    @GetMapping("/v1/study-posts/{postId}")
     public ResponseEntity<FindPostResponseById> findPostById(@PathVariable Long postId, UserId userId) {
         return ResponseEntity.ok(studyPostFindService.findPostById(postId, userId.getId()));
     }
@@ -71,7 +71,7 @@ public class StudyPostController {
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
-    @GetMapping("/find/mypost")
+    @GetMapping("/v1/study-posts/mypost")
     public ResponseEntity<GetMyPostResponse> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
         return ResponseEntity.ok(studyPostFindService.getMyPosts(page, size, userId.getId()));
     }
@@ -84,7 +84,7 @@ public class StudyPostController {
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
-    @GetMapping("/find")
+    @GetMapping("/v1/study-posts")
     public ResponseEntity<Slice<FindPostResponseByInquiry>> findPostByAllString(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
         return ResponseEntity.ok(studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId()));
     }

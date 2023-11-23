@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/alarm")
+@RequestMapping("/api")
 public class AlarmController {
 
     private final AlarmService alarmService;
 
     @Operation(summary = "알림 읽음 처리", description = "사용자가 클릭한 알림을 읽음 처리 합니다.")
-    @PostMapping("/{alarm_id}/read")
+    @PutMapping("/v1/alarm/{alarm_id}")
     public ResponseEntity<HttpStatus> readAlarm(@PathVariable("alarm_id") Long alarm_id, UserId userId) {
         alarmService.readAlarm(alarm_id, userId.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "알람 삭제", description = "사용자가 알람을 삭제 합니다.")
-    @DeleteMapping("/{alarmId}")
+    @DeleteMapping("/v1/alarm/{alarmId}")
     public ResponseEntity<HttpStatus> deleteAlarm(@PathVariable("alarmId") Long alarmId, UserId userId) {
         alarmService.deleteAlarm(alarmId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -33,7 +33,7 @@ public class AlarmController {
 
 
     @Operation(summary = "알림 조회", description = "사용자의 모든 알림 메시지를 조회합니다.")
-    @GetMapping("")
+    @GetMapping("v1/alarm")
     public ResponseEntity<Slice<AlarmResponse>> getNotifications(@RequestParam int page, @RequestParam int size, UserId userId) {
         Slice<AlarmResponse> alarms = alarmService.getAlarms(page, size, userId.getId());
         return new ResponseEntity(alarms, HttpStatus.OK);
