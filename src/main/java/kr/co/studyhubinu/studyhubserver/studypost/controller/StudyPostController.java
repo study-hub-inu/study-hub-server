@@ -1,13 +1,20 @@
 package kr.co.studyhubinu.studyhubserver.studypost.controller;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetMyPostResponse;
+import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +26,7 @@ import javax.validation.Valid;
 public class StudyPostController {
 
     private final StudyPostService studyPostService;
+    private final StudyPostFindService studyPostFindService;
 
     @Operation(summary = "스터디 게시글 생성",
             description = "Http 헤더에 JWT accessToken 과 함께 " +
@@ -47,8 +55,37 @@ public class StudyPostController {
 
 
     @Operation(summary = "내가 북마크한 스터디 조회")
-    @GetMapping("/bookmarked")
+    @GetMapping("/find/bookmarked")
     public ResponseEntity<GetBookmarkedPostsResponse> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
-        return ResponseEntity.ok().body(studyPostService.getBookmarkedPosts(page, size, userId.getId()));
+        return ResponseEntity.ok().body(studyPostFindService.getBookmarkedPosts(page, size, userId.getId()));
+    }
+
+    @Operation(summary = "스터디 단건 조회", description = "url 끝에 postId를 넣어주세요")
+    @GetMapping("/find/{postId}")
+    public ResponseEntity<FindPostResponseById> findPostById(@PathVariable Long postId, UserId userId) {
+        return ResponseEntity.ok(studyPostFindService.findPostById(postId, userId.getId()));
+    }
+
+    @Operation(summary = "내가 쓴 스터디 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "페이지", required = true),
+            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
+    })
+    @GetMapping("/find/mypost")
+    public ResponseEntity<GetMyPostResponse> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
+        return ResponseEntity.ok(studyPostFindService.getMyPosts(page, size, userId.getId()));
+    }
+
+    @Operation(summary = "스터디 게시글 전체 조회", description = "parameter 칸에 조회할 내용을 입력해주세요")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "inquiry", value = "검색 값"),
+            @ApiImplicitParam(name = "titleAndMajor", value = "true = 제목, 학과 중 하나만 일치할 경우, false = 학과만 일치"),
+            @ApiImplicitParam(name = "hot", value = "true = 인기순 O, false = 인기순 X"),
+            @ApiImplicitParam(name = "page", value = "페이지", required = true),
+            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
+    })
+    @GetMapping("/find")
+    public ResponseEntity<Slice<FindPostResponseByInquiry>> findPostByAllString(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
+        return ResponseEntity.ok(studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId()));
     }
 }

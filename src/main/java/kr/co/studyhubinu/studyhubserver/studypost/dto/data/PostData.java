@@ -11,22 +11,22 @@ import java.time.LocalDateTime;
 
 @Getter
 public class PostData {
-    private Long postId;
-    private String title;
-    private LocalDateTime createdDate;
-    private String content;
-    private MajorType major;
-    private int studyPerson;
-    private GenderType filteredGender;
-    private StudyWayType studyWay;
-    private int penalty;
-    private String penaltyWay;
-    private LocalDate studyStartDate;
-    private LocalDate studyEndDate;
-    private int remainingSeat;
-    private boolean isUsersPost;
-    private boolean isBookmarked;
-    private UserData postedUser;
+    private final Long postId;
+    private final String title;
+    private final LocalDateTime createdDate;
+    private final String content;
+    private final MajorType major;
+    private final int studyPerson;
+    private final GenderType filteredGender;
+    private final StudyWayType studyWay;
+    private final int penalty;
+    private final String penaltyWay;
+    private final LocalDate studyStartDate;
+    private final LocalDate studyEndDate;
+    private final int remainingSeat;
+    private final boolean isUsersPost;
+    private final boolean isBookmarked;
+    private final UserData postedUser;
 
     public PostData(Long postId, String title, LocalDateTime createdDate, String content, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, int remainingSeat, boolean isUsersPost, boolean isBookmarked, UserData postedUser) {
         this.postId = postId;

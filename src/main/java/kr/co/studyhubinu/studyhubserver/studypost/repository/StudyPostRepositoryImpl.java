@@ -1,5 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
+import com.querydsl.core.types.OrderSpecifier;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
@@ -8,10 +10,11 @@ import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByRemainingSeat;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByString;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -33,20 +36,55 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<FindPostResponseByString> findByString(String title, MajorType major, String content, Pageable pageable) {
+    public Slice<FindPostResponseByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
         QStudyPostEntity post = studyPostEntity;
+        QUserEntity user = userEntity;
+        QBookMarkEntity bookmark = bookMarkEntity;
 
-        JPAQuery<FindPostResponseByString> studyPostDto = jpaQueryFactory
-                .select(Projections.constructor(FindPostResponseByString.class,
-                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
+        JPAQuery<FindPostResponseByInquiry> data = jpaQueryFactory
+                .select(Projections.constructor(FindPostResponseByInquiry.class,
+                        post.id.as("postId"), post.major, post.title, post.studyStartDate, post.studyEndDate,
+                        post.createdDate, post.studyPerson, post.filteredGender,
+                        post.penalty, post.penaltyWay, post.close,
+                        bookmarkPredicate(userId, bookmark),
+                        Projections.constructor(
+                                UserData.class,
+                                user.id, user.major, user.nickname, user.imageUrl
+                        )
+                ))
                 .from(post)
-                .orderBy(post.createdDate.desc())
+                .leftJoin(user).on(post.postedUserId.eq(user.id))
+                .where(wherePredicate(post, inquiryRequest))
+                .orderBy(hotPredicate(post, inquiryRequest))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
 
-        insertQuery(studyPostDto, title, major, content);
+        if (userId != null) {
+            data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
+        }
 
-        return toSlice(pageable, studyPostDto.fetch());
+        return toSlice(pageable, data.fetch());
+    }
+
+    private OrderSpecifier<?> hotPredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+        if(inquiryRequest.isHot()) {
+            return post.remainingSeat.asc();
+        }
+        return post.createdDate.desc();
+    }
+
+    private Predicate bookmarkPredicate(Long userId, QBookMarkEntity bookmark) {
+        if(userId != null) {
+            return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
+        }
+        return Expressions.asBoolean(Expressions.constant(false));
+    }
+
+    private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+        if (inquiryRequest.isTitleAndMajor()) {
+            return post.major.eq(MajorType.of(inquiryRequest.getInquiryText())).or(post.title.contains(inquiryRequest.getInquiryText()));
+        }
+        return post.major.eq(MajorType.of(inquiryRequest.getInquiryText()));
     }
 
     @Override
@@ -88,8 +126,8 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         QStudyPostEntity post = studyPostEntity;
 
         JPAQuery<FindPostResponseByRemainingSeat> studyPostDto = jpaQueryFactory.select(
-                Projections.constructor(FindPostResponseByRemainingSeat.class,
-                        post.id.as("postId"), post.title, post.studyPerson, post.remainingSeat))
+                        Projections.constructor(FindPostResponseByRemainingSeat.class,
+                                post.id.as("postId"), post.title, post.studyPerson, post.remainingSeat))
                 .from(post)
                 .orderBy(post.remainingSeat.asc())
                 .offset(pageable.getOffset())
@@ -99,7 +137,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public Optional<PostData> findPostByIdAndUserId(Long postId, Long userId) {
+    public Optional<PostData> findPostById(Long postId, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
         QBookMarkEntity bookmark = bookMarkEntity;
@@ -107,74 +145,27 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         JPAQuery<PostData> data = jpaQueryFactory
                 .select(Projections.constructor(
                         PostData.class,
-                        post.id.as("postId"),
-                        post.title,
-                        post.createdDate,
-                        post.content,
-                        post.major,
-                        post.studyPerson,
-                        post.filteredGender,
-                        post.studyWay,
-                        post.penalty,
-                        post.penaltyWay,
-                        post.studyStartDate,
-                        post.studyEndDate,
-                        post.remainingSeat,
-                        Expressions.booleanTemplate("{0} = {1}", post.postedUserId, userId),
-                        Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId),
+                        post.id.as("postId"), post.title, post.createdDate, post.content, post.major,
+                        post.studyPerson, post.filteredGender, post.studyWay, post.penalty,
+                        post.penaltyWay, post.studyStartDate, post.studyEndDate, post.remainingSeat,
+                        userId != null ? Expressions.booleanTemplate("{0} = {1}", post.postedUserId, userId) : Expressions.constant(false),
+                        userId != null ? Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId) : Expressions.constant(false),
                         Projections.constructor(
                                 UserData.class,
-                                user.id,
-                                user.major,
-                                user.nickname,
-                                user.imageUrl
+                                user.id, user.major, user.nickname, user.imageUrl
                         )
                 ))
                 .from(post)
-                .leftJoin(user).on(post.postedUserId.eq(user.id))
-                .leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)))
-                .where(post.id.eq(postId));
-        PostData result = data.fetchOne();
+                .leftJoin(user).on(post.postedUserId.eq(user.id));
+
+        if (userId != null) {
+            data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
+        }
+
+        PostData result = data.where(post.id.eq(postId)).fetchOne();
         return Optional.ofNullable(result);
     }
 
-    @Override
-    public Optional<PostData> findPostById(Long postId) {
-        QStudyPostEntity post = studyPostEntity;
-        QUserEntity user = userEntity;
-
-        JPAQuery<PostData> data = jpaQueryFactory
-                .select(Projections.constructor(
-                        PostData.class,
-                        post.id.as("postId"),
-                        post.title,
-                        post.createdDate,
-                        post.content,
-                        post.major,
-                        post.studyPerson,
-                        post.filteredGender,
-                        post.studyWay,
-                        post.penalty,
-                        post.penaltyWay,
-                        post.studyStartDate,
-                        post.studyEndDate,
-                        post.remainingSeat,
-                        Expressions.constant(false),
-                        Expressions.constant(false),
-                        Projections.constructor(
-                                UserData.class,
-                                user.id,
-                                user.major,
-                                user.nickname,
-                                user.imageUrl
-                        )
-                ))
-                .from(post)
-                .leftJoin(user).on(post.postedUserId.eq(user.id))
-                .where(post.id.eq(postId));
-        PostData result = data.fetchOne();
-        return Optional.ofNullable(result);
-    }
 
     @Override
     public List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId) {
@@ -209,23 +200,23 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         return result;
     }
 
-    public void insertQuery(JPAQuery<FindPostResponseByString> studyPostDto, String title, MajorType major, String content) {
+    public void insertQuery(JPAQuery<FindPostResponseByInquiry> studyPostDto, String title, MajorType major, String content) {
         QStudyPostEntity post = studyPostEntity;
 
-        if(title != null) {
+        if (title != null) {
             studyPostDto.where(post.title.like(title + "%"));
         }
-        if(major != null) {
+        if (major != null) {
             studyPostDto.where(post.major.eq(major));
         }
-        if(content != null) {
+        if (content != null) {
             studyPostDto.where(post.content.like("%" + content + "%"));
         }
     }
 
     public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
         if (items.size() > pageable.getPageSize()) {
-            items.remove(items.size()-1);
+            items.remove(items.size() - 1);
             return new SliceImpl<>(items, pageable, true);
         }
         return new SliceImpl<>(items, pageable, false);
