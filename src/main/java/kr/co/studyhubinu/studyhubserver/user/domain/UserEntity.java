@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
+import kr.co.studyhubinu.studyhubserver.config.PasswordEncoder;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdatePasswordInfo;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdateUserInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
@@ -10,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.List;
@@ -79,8 +79,8 @@ public class UserEntity extends BaseTimeEntity {
         this.major = major;
     }
 
-    public void updatePassword(UpdatePasswordInfo info, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.password = bCryptPasswordEncoder.encode(info.getPassword());
+    public void updatePassword(String password) {
+        this.password = password;
     }
 
     public void updateImage(String imageUrl) {

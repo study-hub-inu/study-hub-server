@@ -1,5 +1,8 @@
 package kr.co.studyhubinu.studyhubserver.user.service;
 
+import kr.co.studyhubinu.studyhubserver.config.PasswordEncoder;
+import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProvider;
+import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
@@ -9,11 +12,11 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserActivityFinder;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserDeleter;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,16 +28,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final UserActivityFinder userActivityFinder;
     private final UserDeleter userDeleter;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public void registerUser(SignUpInfo signUpInfo) {
         if (userRepository.existsByEmail(signUpInfo.getEmail())) {
             throw new AlreadyExistUserException();
         }
-        UserEntity userEntity = signUpInfo.toEntity(bCryptPasswordEncoder);
+        UserEntity userEntity = signUpInfo.toEntity(passwordEncoder);
         userRepository.save(userEntity);
     }
 
@@ -76,16 +80,36 @@ public class UserService {
     @Transactional
     public void updatePassword(UpdatePasswordInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+
         if(!info.isAuth()) {
             throw new UserNotAccessRightException();
         }
-        user.updatePassword(info, bCryptPasswordEncoder);
+        user.updatePassword(passwordEncoder.encode(user.getEmail(), info.getPassword()));
     }
 
     public void verifyPassword(Long userId, String password) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotAccessRightException::new);
-        if(!bCryptPasswordEncoder.matches(password, user.getPassword())) {
+        if(!passwordEncoder.matches(passwordEncoder.encode(user.getEmail(), password), user.getPassword())) {
             throw new PasswordNotFoundException();
         }
+    }
+
+    public JwtResponseDto loginUser(SignInRequest signInRequest) {
+        UserEntity userEntity = findUser(signInRequest);
+        userVerify(userEntity, signInRequest);
+
+        return jwtProvider.createJwtResponseDto(userEntity.getId());
+    }
+
+    private void userVerify(UserEntity userEntity, SignInRequest signInRequest) {
+        String userPassword = passwordEncoder.encode(signInRequest.getEmail(), signInRequest.getPassword());
+
+        if(!passwordEncoder.matches(userPassword, userEntity.getPassword())) {
+            throw new PasswordNotFoundException();
+        }
+    }
+
+    private UserEntity findUser(SignInRequest signInRequest) {
+        return userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(UserNotFoundException::new);
     }
 }
