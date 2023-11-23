@@ -1,6 +1,5 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
-import kr.co.studyhubinu.studyhubserver.config.jwt.JwtAuthenticationFilter;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
