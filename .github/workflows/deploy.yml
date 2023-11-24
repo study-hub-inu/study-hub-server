@@ -40,18 +40,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build
 
-      - name: Stop workflow if tests failed
-        if: step.buildAndTests.outcome == 'failure'
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-results
-          path: |
-            **/build/reports/tests/test/
-
-      - name: Stop workflow if tests failed
-        if: steps.buildAndTest.outcome == 'failure'
-        run: exit 1
-
       # UTC가 기준이기 때문에 한국시간으로 맞추려면 +9시간 해야 한다
       - name: Get current time
         uses: 1466587594/get-current-time@v2
