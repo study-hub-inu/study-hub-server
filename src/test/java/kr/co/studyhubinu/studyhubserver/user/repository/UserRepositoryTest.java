@@ -58,7 +58,7 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // when
-        UserEntity findUserByEmail = userRepository.findByEmail("xxx@inu.ac.kr").orElseThrow(UserNotFoundException::new);
+        UserEntity findUserByEmail = userRepository.findByEmail("yeongjae@inu.ac.kr").orElseThrow(UserNotFoundException::new);
 
         // then
         assertAll(
@@ -90,7 +90,7 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // when
-        boolean exist = userRepository.existsByEmail("xxx@inu.ac.kr");
+        boolean exist = userRepository.existsByEmail("yeongjae@inu.ac.kr");
         boolean nonExist = userRepository.existsByEmail("나는아니야@inu.ac.kr");
 
         // then
