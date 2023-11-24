@@ -18,6 +18,7 @@ build/bootJarMainClassName
 !application.yml
 !application-prod.yml
 !deploy.yml
+!application-ci.yml
 
 ### STS ###
 .apt_generated
