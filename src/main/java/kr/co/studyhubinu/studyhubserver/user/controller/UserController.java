@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
@@ -30,10 +31,10 @@ public class UserController {
     }
 
     @Operation(summary = "로그인", description = "바디에 {email, password} 를 json 형식으로 보내주시면 됩니다. " +
-            "email 은 꼭 email 형식으로 보내주셔야 합니다")
+            "email 은 꼭 inu email 형식으로 보내주셔야 합니다")
     @PostMapping("/v1/users/login")
-    public ResponseEntity<JwtLoginResponse> login(@RequestBody SignInRequest request) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<JwtResponseDto> login(@RequestBody SignInRequest signInRequest) {
+        return ResponseEntity.ok(userService.loginUser(signInRequest));
     }
 
     @Operation(summary = "회원 정보 수정", description = "바디에 {nickname, major} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
