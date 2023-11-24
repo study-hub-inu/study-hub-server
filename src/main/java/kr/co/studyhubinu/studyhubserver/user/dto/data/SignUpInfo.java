@@ -1,12 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.user.dto.data;
 
+import kr.co.studyhubinu.studyhubserver.config.PasswordEncoder;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Getter
 @NoArgsConstructor
@@ -21,10 +21,10 @@ public class SignUpInfo {
 
     private String refreshToken;
 
-    public UserEntity toEntity(BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserEntity toEntity(PasswordEncoder passwordEncoder) {
         return UserEntity.builder()
                 .email(email)
-                .password(bCryptPasswordEncoder.encode(password))
+                .password(passwordEncoder.encode(email, password))
                 .nickname(nickname)
                 .major(major)
                 .gender(gender)
@@ -47,13 +47,4 @@ public class SignUpInfo {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
-
-    public SignUpInfo(SignUpRequest signUpRequest, String accessToken) {
-        this.nickname = signUpRequest.getNickname();
-        this.email = signUpRequest.getEmail();
-        this.password = signUpRequest.getPassword();
-        this.gender = signUpRequest.getGender();
-        this.accessToken = accessToken;
-    }
-
 }

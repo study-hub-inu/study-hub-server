@@ -40,7 +40,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     // swagger
@@ -49,8 +48,6 @@ dependencies {
     // DB
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'mysql:mysql-connector-java'
-    // spring-security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     // jwt
     implementation 'com.auth0:java-jwt:4.0.0'
     // mail

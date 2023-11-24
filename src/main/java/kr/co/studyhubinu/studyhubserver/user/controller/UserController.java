@@ -1,10 +1,10 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
-import kr.co.studyhubinu.studyhubserver.user.dto.response.JwtLoginResponse;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

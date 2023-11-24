@@ -28,7 +28,5 @@ public interface StudyPostRepositoryCustom {
     List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId);
 
     Optional<PostData> findPostById(Long postId, Long userId);
-
-    //Slice<StudyPostEntity> findByBookMark(Pageable pageable);
 }
 

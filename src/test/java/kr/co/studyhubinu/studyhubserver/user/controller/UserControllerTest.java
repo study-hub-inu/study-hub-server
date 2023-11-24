@@ -12,17 +12,6 @@ public class UserControllerTest {
     @Autowired
     MockMvc mvc;
 
-    @MockBean
-    private UserService userService;
-
-//    @MockBean
-//    private JwtAuthenticationFilter jwtAuthenticationFilter;
-//
-//    @MockBean
-//    private JwtAuthorizationFilter jwtAuthorizationFilter;
-
-
-
 
 //    @Test
 //    void 닉네임을_중복검사한다() throws Exception {
