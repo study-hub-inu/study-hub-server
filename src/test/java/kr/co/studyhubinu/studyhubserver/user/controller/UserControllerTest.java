@@ -1,10 +1,16 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
+import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.UpdateUserRequest;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -23,6 +29,8 @@ import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -132,5 +140,51 @@ public class UserControllerTest {
                 .andDo(print());
         assertTrue(responseBody.contains("이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)"));
     }
+
+    @Test
+    void 로그인_성공시_토큰을_반환한다() throws Exception {
+        // given
+        SignInRequest signInRequest = SignInRequest.builder()
+                .email("kdw@inu.ac.kr")
+                .password("dwdwdwdwdwdw@")
+                .build();
+        when(userService.loginUser(any())).thenReturn(JwtResponseDto.builder()
+                .accessToken("Bearer AccessToken")
+                .refreshToken("Bearer RefreshToken")
+                .build());
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                post("/api/v1/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(signInRequest))
+                        .characterEncoding("UTF-8")
+        );
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+        assertTrue(responseBody.contains("Bearer AccessToken"));
+        assertTrue(responseBody.contains("Bearer RefreshToken"));
+    }
+
+//    @Test
+//    void 회원정보_수정_실패_잘못된_() {
+//        // given
+//        UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+//                .nickname("폰노이만")
+//                .major(MajorType.COMPUTER_SCIENCE_ENGINEERING)
+//                .imageUrl("adasdasdasdasda")
+//                .build();
+//
+//
+//        // when
+//
+//
+//
+//        // then
+//    }
 
 }

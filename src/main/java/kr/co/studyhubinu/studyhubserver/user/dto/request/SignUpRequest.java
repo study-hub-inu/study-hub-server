@@ -17,7 +17,7 @@ import javax.validation.constraints.Pattern;
 public class SignUpRequest {
 
     @Schema(description = "유저 이메일", example = "studyHub@inu.ac.kr")
-    @InuEmail(message = "이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)")
+    @InuEmail
     @NotBlank
     private String email;
 
