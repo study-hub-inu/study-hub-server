@@ -7,13 +7,11 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @RepositoryTest
-@ActiveProfiles("dev")
 class UserRepositoryTest {
 
     @Autowired
@@ -58,7 +56,7 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // when
-        UserEntity findUserByEmail = userRepository.findByEmail("xxxx@inu.ac.kr").orElseThrow(UserNotFoundException::new);
+        UserEntity findUserByEmail = userRepository.findByEmail("xxx@inu.ac.kr").orElseThrow(UserNotFoundException::new);
 
         // then
         assertAll(
