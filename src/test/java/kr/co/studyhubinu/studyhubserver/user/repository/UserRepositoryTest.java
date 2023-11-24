@@ -58,7 +58,7 @@ class UserRepositoryTest {
         userRepository.save(user);
 
         // when
-        UserEntity findUserByEmail = userRepository.findByEmail("xxx@inu.ac.kr").orElseThrow(UserNotFoundException::new);
+        UserEntity findUserByEmail = userRepository.findByEmail("xxxx@inu.ac.kr").orElseThrow(UserNotFoundException::new);
 
         // then
         assertAll(
