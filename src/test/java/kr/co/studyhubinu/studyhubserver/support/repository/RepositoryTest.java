@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@DataJpaTest(showSql = false)
+@DataJpaTest
 @Import(TestQueryDslConfig.class)
 public @interface RepositoryTest {
 }
