@@ -4,7 +4,6 @@ import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
@@ -21,7 +20,6 @@ class UserRepositoryTest {
     private UserRepository userRepository;
 
     @Test
-    @DisplayName("유저 회원가입")
     void 유저가_회원가입한다() {
         // given
         UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
@@ -36,7 +34,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 식별자 값으로 조회")
     void 식별자값으로_유저를_조회한다() {
         // given
         UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
@@ -52,14 +49,13 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 이메일로 조회")
     void 이메일로_유저를_조회한다() {
         // given
         UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
         userRepository.save(user);
 
         // when
-        UserEntity findUserByEmail = userRepository.findByEmail("yeongjae@inu.ac.kr").orElseThrow(UserNotFoundException::new);
+        UserEntity findUserByEmail = userRepository.findByEmail("yeongxjae@inu.ac.kr").orElseThrow(UserNotFoundException::new);
 
         // then
         assertAll(
@@ -68,7 +64,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 닉네임으로 조회")
     void 닉네임으로_유저를_조회한다() {
         // given
         UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
@@ -84,7 +79,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("유저 닉네임으로 조회")
     void 이메일로_유저_존재여부를_확인한다() {
         // given
         UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
