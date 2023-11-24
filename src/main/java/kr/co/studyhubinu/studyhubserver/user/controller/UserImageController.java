@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users/image")
+@RequestMapping("/api")
 @Slf4j
 public class UserImageController {
 
@@ -23,14 +23,14 @@ public class UserImageController {
 
     @Operation(summary = "회원 사진 저장", description = "jwt 토큰 bearer 헤더에" +
             "보내주시면 됩니다")
-    @PostMapping("")
+    @PostMapping("/v1/users/image")
     public ResponseEntity<HttpStatus> uploadImage(UserId userId, @RequestPart(name = "image", required = false) MultipartFile image) throws IOException {
         userImageService.uploadUserImage(userId.getId() ,image);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/v1/users/image")
     public ResponseEntity<HttpStatus> deleteImage(UserId userId) {
         userImageService.deleteUserImage(userId.getId());
         return new ResponseEntity<>(HttpStatus.OK);

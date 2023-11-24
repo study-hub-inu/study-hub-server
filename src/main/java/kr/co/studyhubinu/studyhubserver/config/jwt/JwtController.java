@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/jwt")
+@RequestMapping("/api")
 public class JwtController {
 
     private final JwtProvider jwtProvider;
 
-    @PostMapping("/accessToken")
+    @PostMapping("/jwt/v1/accessToken")
     public ResponseEntity<JwtResponseDto> accessTokenIssued(@RequestBody JwtDto jwtDto) {
         String accessToken =  jwtProvider.reissuedAccessToken(jwtDto);
         String refreshToken = jwtProvider.reissuedRefreshToken(jwtDto);
