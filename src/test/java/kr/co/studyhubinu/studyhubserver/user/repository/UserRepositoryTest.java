@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @RepositoryTest
-@ActiveProfiles("ci")
+@ActiveProfiles("dev")
 class UserRepositoryTest {
 
 
