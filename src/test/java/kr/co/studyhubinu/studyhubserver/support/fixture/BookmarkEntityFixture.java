@@ -4,22 +4,20 @@ import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookmarkEntity;
 
 public enum BookmarkEntityFixture {
 
-    BOOKMARK_POST1_USER1(1L, 1L),
-    BOOKMARK_POST2_USER1(2L, 1L);
+    BOOKMARK_POST1(1L),
+    BOOKMARK_POST2(2L);
 
     private final Long postId;
-    private final Long userId;
 
-    BookmarkEntityFixture(Long postId, Long userId) {
+    BookmarkEntityFixture(Long postId) {
         this.postId = postId;
-        this.userId = userId;
     }
 
-    public BookmarkEntity bookMarkEntity_생성 (Long bookmarkId) {
+    public BookmarkEntity bookMarkEntity_생성 (Long bookmarkId, Long userId) {
         return BookmarkEntity.builder()
                 .id(bookmarkId)
                 .postId(this.postId)
-                .userId(this.userId)
+                .userId(userId)
                 .build();
     }
 }
