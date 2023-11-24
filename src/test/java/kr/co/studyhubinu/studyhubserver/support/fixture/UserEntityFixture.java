@@ -5,9 +5,9 @@ import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 
 public enum UserEntityFixture {
-    DONGWOO("xxx@inu.ac.kr", "asd123", "DongWoo", MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.MALE),
-    YEONGJAE("xxx@inu.ac.kr", "asd123", "LilJay", MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.MALE),
-    JOOWON("xxx@inu.ac.kr", "asd123", "Juser0", MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.MALE);
+    DONGWOO("dongwoo@inu.ac.kr", "asd12345!!", "DongWoo", MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.MALE),
+    YEONGJAE("yeongjae@inu.ac.kr", "asd12345@@", "LilJay", MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.MALE),
+    JOOWON("joowon@inu.ac.kr", "asd12345??", "Juser0", MajorType.COMPUTER_SCIENCE_ENGINEERING, GenderType.MALE);
 
 
     private final String email;
