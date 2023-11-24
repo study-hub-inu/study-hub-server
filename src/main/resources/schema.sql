@@ -9,7 +9,7 @@ DROP TABLE if EXISTS comment;
 
 CREATE TABLE users
 (
-    user_id            BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id            BIGINT NOT NULL AUTO_INCREMENT ,
     email              VARCHAR(55)  DEFAULT NULL,
     nickname           VARCHAR(20)  DEFAULT NULL,
     password           VARCHAR(100)  DEFAULT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE post
 
 CREATE TABLE study
 (
-    study_id                 BIGINT NOT NULL AUTO_INCREMENT,
+    study_id           BIGINT NOT NULL AUTO_INCREMENT,
     posted_user_id     BIGINT        NOT NULL,
     title              VARCHAR(55)   DEFAULT NULL,
     content            VARCHAR(255)  DEFAULT NULL,
