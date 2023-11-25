@@ -33,11 +33,11 @@ public class CommentRepositoryTest {
         commentRepository.save(comment2);
 
         // when
-        Pageable pageable = PageRequest.of(0, 10); // 예제에서는 페이지 처리를 사용하고 있으므로 Pageable을 설정
+        Pageable pageable = PageRequest.of(0, 10);
         Slice<CommentResponse> comments = commentRepository.findSliceByPostIdWithUserId(1L, userId, pageable);
 
         // then
-        assertThat(comments.getContent()).hasSize(2); // 두 개의 댓글을 기대한다고 가정합니다.
+        assertThat(comments.getContent()).hasSize(2);
 
         CommentResponse commentResponse1 = comments.getContent().get(1);
         CommentResponse commentResponse2 = comments.getContent().get(0);
