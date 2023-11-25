@@ -10,14 +10,14 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QBookMarkEntity is a Querydsl query type for BookMarkEntity
+ * QBookmarkEntity is a Querydsl query type for BookmarkEntity
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QBookMarkEntity extends EntityPathBase<BookMarkEntity> {
+public class QBookmarkEntity extends EntityPathBase<BookmarkEntity> {
 
-    private static final long serialVersionUID = 1763927877L;
+    private static final long serialVersionUID = -229536987L;
 
-    public static final QBookMarkEntity bookMarkEntity = new QBookMarkEntity("bookMarkEntity");
+    public static final QBookmarkEntity bookmarkEntity = new QBookmarkEntity("bookmarkEntity");
 
     public final kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity _super = new kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity(this);
 
@@ -33,16 +33,16 @@ public class QBookMarkEntity extends EntityPathBase<BookMarkEntity> {
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
-    public QBookMarkEntity(String variable) {
-        super(BookMarkEntity.class, forVariable(variable));
+    public QBookmarkEntity(String variable) {
+        super(BookmarkEntity.class, forVariable(variable));
     }
 
-    public QBookMarkEntity(Path<? extends BookMarkEntity> path) {
+    public QBookmarkEntity(Path<? extends BookmarkEntity> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QBookMarkEntity(PathMetadata metadata) {
-        super(BookMarkEntity.class, metadata);
+    public QBookmarkEntity(PathMetadata metadata) {
+        super(BookmarkEntity.class, metadata);
     }
 
 }

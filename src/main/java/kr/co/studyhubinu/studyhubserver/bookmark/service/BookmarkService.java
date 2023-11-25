@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.bookmark.service;
 
-import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookMarkEntity;
-import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
+import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookmarkEntity;
+import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
@@ -15,9 +15,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class BookMarkService {
+public class BookmarkService {
 
-    private final BookMarkRepository bookMarkRepository;
+    private final BookmarkRepository bookMarkRepository;
     private final UserRepository userRepository;
     private final StudyPostRepository studyPostRepository;
 
@@ -32,7 +32,7 @@ public class BookMarkService {
                     created.set(false);
                 },
                 () -> {
-                    BookMarkEntity bookmark = new BookMarkEntity(postId, userId);
+                    BookmarkEntity bookmark = new BookmarkEntity(postId, userId);
                     bookMarkRepository.save(bookmark);
                     created.set(true);
                 }

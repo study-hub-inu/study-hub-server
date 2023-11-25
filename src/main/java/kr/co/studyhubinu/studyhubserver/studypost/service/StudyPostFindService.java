@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 
-import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
+import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
@@ -34,7 +34,7 @@ public class StudyPostFindService {
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
-    private final BookMarkRepository bookMarkRepository;
+    private final BookmarkRepository bookMarkRepository;
 
     public Slice<FindPostResponseByInquiry> findPostResponseByInquiry(final InquiryRequest inquiryRequest, final int page, final int size, Long userId) {
         return studyPostRepository.findByInquiry(inquiryRequest, PageRequest.of(page, size), userId);

@@ -7,7 +7,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity;
+import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookmarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-import static kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookMarkEntity.bookMarkEntity;
+import static kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookmarkEntity.bookmarkEntity;
 import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.*;
 import static kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity.userEntity;
 
@@ -40,7 +40,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     public Slice<FindPostResponseByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
-        QBookMarkEntity bookmark = bookMarkEntity;
+        QBookmarkEntity bookmark = bookmarkEntity;
 
         JPAQuery<FindPostResponseByInquiry> data = jpaQueryFactory
                 .select(Projections.constructor(FindPostResponseByInquiry.class,
@@ -95,7 +95,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         return post.createdDate.desc();
     }
 
-    private Predicate bookmarkPredicate(Long userId, QBookMarkEntity bookmark) {
+    private Predicate bookmarkPredicate(Long userId, QBookmarkEntity bookmark) {
         if(userId != null) {
             return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
         }
@@ -120,15 +120,15 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     @Override
     public Slice<GetBookmarkedPostsData> findPostsByBookmarked(Long userId, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
-        QBookMarkEntity bookMark = bookMarkEntity;
+        QBookmarkEntity bookmark = bookmarkEntity;
 
         JPAQuery<GetBookmarkedPostsData> studyPostDto = jpaQueryFactory.select(
                         Projections.constructor(GetBookmarkedPostsData.class,
                                 post.id.as("postId"), post.major, post.title, post.content, post.remainingSeat, post.close))
                 .from(post)
-                .innerJoin(bookMark)
-                .on(bookMark.postId.eq(post.id))
-                .where(bookMark.userId.eq(userId))
+                .innerJoin(bookmark)
+                .on(bookmark.postId.eq(post.id))
+                .where(bookmark.userId.eq(userId))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
@@ -155,7 +155,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     public Optional<PostData> findPostById(Long postId, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
-        QBookMarkEntity bookmark = bookMarkEntity;
+        QBookmarkEntity bookmark = bookmarkEntity;
 
         JPAQuery<PostData> data = jpaQueryFactory
                 .select(Projections.constructor(
