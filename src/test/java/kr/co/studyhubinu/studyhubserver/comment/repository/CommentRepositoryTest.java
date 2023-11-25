@@ -12,6 +12,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RepositoryTest
@@ -30,9 +31,11 @@ public class CommentRepositoryTest {
         CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(2L, userId, postId);
         commentRepository.save(comment1);
         commentRepository.save(comment2);
+
         // when
         Pageable pageable = PageRequest.of(0, 10); // 예제에서는 페이지 처리를 사용하고 있으므로 Pageable을 설정
         Slice<CommentResponse> comments = commentRepository.findSliceByPostIdWithUserId(1L, userId, pageable);
+
         // then
         assertThat(comments.getContent()).hasSize(2); // 두 개의 댓글을 기대한다고 가정합니다.
 
@@ -41,11 +44,12 @@ public class CommentRepositoryTest {
 
         System.out.println(commentResponse1.getContent());
 
-        assertEquals(comment1.getId(), commentResponse1.getCommentId());
-        assertEquals(comment1.getContent(), commentResponse1.getContent());
-
-        assertEquals(comment2.getId(), commentResponse2.getCommentId());
-        assertEquals(comment2.getContent(), commentResponse2.getContent());
+        assertAll(
+                () -> assertEquals(comment1.getId(), commentResponse1.getCommentId()),
+                () -> assertEquals(comment1.getContent(), commentResponse1.getContent()),
+                () -> assertEquals(comment2.getId(), commentResponse2.getCommentId()),
+                () -> assertEquals(comment2.getContent(), commentResponse2.getContent())
+        );
     }
 
 }
