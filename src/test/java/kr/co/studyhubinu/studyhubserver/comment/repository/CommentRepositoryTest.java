@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RepositoryTest
 @ActiveProfiles("dev")
-public class CommentRepositoryTest {
+class CommentRepositoryTest {
 
     @Autowired
     private CommentRepository commentRepository;
