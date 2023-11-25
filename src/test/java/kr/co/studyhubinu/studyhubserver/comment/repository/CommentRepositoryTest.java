@@ -39,8 +39,8 @@ class CommentRepositoryTest {
         // then
         assertThat(comments.getContent()).hasSize(2);
 
-        CommentResponse commentResponse1 = comments.getContent().get(1);
-        CommentResponse commentResponse2 = comments.getContent().get(0);
+        CommentResponse commentResponse1 = comments.getContent().get(0);
+        CommentResponse commentResponse2 = comments.getContent().get(1);
 
         System.out.println(commentResponse1.getContent());
 
