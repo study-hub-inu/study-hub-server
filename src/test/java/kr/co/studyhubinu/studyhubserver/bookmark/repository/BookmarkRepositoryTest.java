@@ -29,6 +29,7 @@ public class BookmarkRepositoryTest {
         BookmarkEntity bookmark2 = BookmarkEntityFixture.BOOKMARK_POST2.bookMarkEntity_생성(2L, userId);
         bookMarkRepository.save(bookmark1);
         bookMarkRepository.save(bookmark2);
+
         // when
         List<BookmarkEntity> saveBookmark = bookMarkRepository.findByUserId(userId);
 
@@ -47,9 +48,11 @@ public class BookmarkRepositoryTest {
         BookmarkEntity bookmark2 = BookmarkEntityFixture.BOOKMARK_POST2.bookMarkEntity_생성(2L, userId);
         bookMarkRepository.save(bookmark1);
         bookMarkRepository.save(bookmark2);
+
         // when
         Long actualCount = bookMarkRepository.countByUserId(userId);
         Long expectedCount = 2L;
+
         // then
         assertEquals(expectedCount, actualCount);
     }
@@ -60,8 +63,10 @@ public class BookmarkRepositoryTest {
         Long userId = 1L;
         BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(1L, userId);
         bookMarkRepository.save(bookmark);
+
         // when
         BookmarkEntity findBookmarkByUserIdAndPostId = bookMarkRepository.findByUserIdAndPostId(userId, 1L).orElseThrow(BookMarkNotFoundException::new);
+
         // then
         assertThat(bookmark.equals(findBookmarkByUserIdAndPostId));
     }
