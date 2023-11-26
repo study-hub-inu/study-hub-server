@@ -4,12 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
+import kr.co.studyhubinu.studyhubserver.exception.common.CustomExceptionHandler;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
-import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,6 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -29,9 +31,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,10 +43,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = UserController.class, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebConfig.class)
 })
+@Import(CustomExceptionHandler.class)
 public class UserControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @Autowired
+    CustomExceptionHandler customExceptionHandler;
 
     @MockBean
     UserService userService;
@@ -146,7 +154,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void 로그인_성공시_토큰을_반환한다() throws Exception {
+    void 로그인_성공시_토큰_반환() throws Exception {
         // given
         SignInRequest signInRequest = SignInRequest.builder()
                 .email("kdw@inu.ac.kr")
@@ -199,4 +207,30 @@ public class UserControllerTest {
                 .andDo(print());
         assertTrue(responseBody.contains("김동우동"));
     }
+
+    @Test
+    void 닉네임_중복검사_중복X() throws Exception {
+        // given
+        doNothing().when(userService).nicknameDuplicationValid(any());
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/users/duplication-nickname")
+                        .param("nickname", "dw")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    /**
+     * 닉네임 중복인 경우 ExceptionHandler 어노테이션을 목킹할 수 없음
+     */
+
+
+
+
 }
