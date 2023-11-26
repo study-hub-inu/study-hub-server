@@ -36,14 +36,6 @@ public class UserController {
         return ResponseEntity.ok(userService.loginUser(signInRequest));
     }
 
-    @Operation(summary = "회원 정보 수정", description = "바디에 {nickname, major} 를 json 형식으로 보내주시고 jwt 토큰 bearer 헤더에" +
-            "보내주시면 됩니다")
-    @PutMapping("/v1/users")
-    public ResponseEntity<HttpStatus> updateUser(@RequestBody UpdateUserRequest request, UserId userId) {
-        userService.updateUser(request.toService(userId.getId()));
-        return ResponseEntity.ok().build();
-    }
-
     @Operation(summary = "회원 단건 조회(상세정보)", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다 마이페이지에 사용됩니다")
     @GetMapping("/v1/users")
     public ResponseEntity<GetUserResponse> getUser(UserId userId) {
