@@ -1,16 +1,16 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
+import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
-import kr.co.studyhubinu.studyhubserver.user.dto.request.UpdateUserRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -24,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.stream.Stream;
 
@@ -45,6 +46,9 @@ public class UserControllerTest {
 
     @MockBean
     UserService userService;
+
+    @MockBean
+    UserIdArgumentResolver userIdArgumentResolver;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -170,21 +174,29 @@ public class UserControllerTest {
         assertTrue(responseBody.contains("Bearer RefreshToken"));
     }
 
-//    @Test
-//    void 회원정보_수정_실패_잘못된_() {
-//        // given
-//        UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
-//                .nickname("폰노이만")
-//                .major(MajorType.COMPUTER_SCIENCE_ENGINEERING)
-//                .imageUrl("adasdasdasdasda")
-//                .build();
-//
-//
-//        // when
-//
-//
-//
-//        // then
-//    }
 
+    @Test
+    void 회원_단건조회_성공() throws Exception {
+        // given
+        when(userIdArgumentResolver.supportsParameter(any())).thenReturn(true);
+        when(userIdArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(new UserId(1L));
+        when(userService.getUser(any())).thenReturn(GetUserResponse.builder()
+                .email("dw@inu.ac.kr")
+                .nickname("김동우동")
+                .build());
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+        assertTrue(responseBody.contains("김동우동"));
+    }
 }
