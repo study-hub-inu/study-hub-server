@@ -12,14 +12,12 @@ import javax.validation.constraints.NotBlank;
 public class UpdateUserRequest {
 
     @Schema(description = "수정할 닉네임", example = "닉네임")
-    @NotBlank
     private String nickname;
 
     @Schema(description = "수정할 이미지 Url")
     private String imageUrl;
 
     @Schema(description = "수정할 전공", example = "컴퓨터공학부")
-    @NotBlank
     private MajorType major;
 
     @Builder
