@@ -28,27 +28,31 @@ class CommentRepositoryTest {
         Long userId = 1L;
         Long postId = 3L;
         CommentEntity comment1 = CommentEntityFixture.COMMENT_1.commentEntity_생성(1L, userId, postId);
-//        CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(2L, userId, postId);
+        CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(2L, userId, postId);
         commentRepository.save(comment1);
-//        commentRepository.save(comment2);
-
+        commentRepository.save(comment2);
         // when
         Pageable pageable = PageRequest.of(0, 10);
         Slice<CommentResponse> comments = commentRepository.findSliceByPostIdWithUserId(1L, userId, pageable);
 
         // then
-//        assertThat(comments.getContent()).hasSize(2);
+        assertThat(comments.getContent()).hasSize(2);
 
-        CommentResponse commentResponse1 = comments.getContent().get(0);
-//        CommentResponse commentResponse2 = comments.getContent().get(0);
+        System.out.println(comments);
 
-        System.out.println(commentResponse1.getContent());
+        CommentResponse commentResponse1 = comments.getContent().get(1);
+        CommentResponse commentResponse2 = comments.getContent().get(0);
+
+        System.out.println("**************commentResponse1: " + commentResponse1.getCreatedDate());
+        System.out.println("**************commentResponse2: " + commentResponse2.getCreatedDate());
+        System.out.println("**************commentResponse1: " + commentResponse1.getContent());
+        System.out.println("**************commentResponse2: " + commentResponse2.getContent());
 
         assertAll(
                 () -> assertEquals(comment1.getId(), commentResponse1.getCommentId()),
-                () -> assertEquals(comment1.getContent(), commentResponse1.getContent())
-//                () -> assertEquals(comment2.getId(), commentResponse2.getCommentId()),
-//                () -> assertEquals(comment2.getContent(), commentResponse2.getContent())
+                () -> assertEquals(comment1.getContent(), commentResponse1.getContent()),
+                () -> assertEquals(comment2.getId(), commentResponse2.getCommentId()),
+                () -> assertEquals(comment2.getContent(), commentResponse2.getContent())
         );
     }
 

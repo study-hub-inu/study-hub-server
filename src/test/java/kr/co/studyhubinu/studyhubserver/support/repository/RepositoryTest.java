@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.support.repository;
 
+import kr.co.studyhubinu.studyhubserver.config.JpaAuditingConfig;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -13,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@DataJpaTest
-@Import(TestQueryDslConfig.class)
+@DataJpaTest(properties = {"spring.jpa.properties.hibernate.jdbc.time_zone=Asia/Seoul"})
+@Import({TestQueryDslConfig.class, JpaAuditingConfig.class})
 public @interface RepositoryTest {
 }
