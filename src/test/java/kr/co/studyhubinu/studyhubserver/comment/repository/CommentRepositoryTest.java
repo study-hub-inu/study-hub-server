@@ -31,23 +31,15 @@ class CommentRepositoryTest {
         CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(2L, userId, postId);
         commentRepository.save(comment1);
         commentRepository.save(comment2);
+
         // when
         Pageable pageable = PageRequest.of(0, 10);
         Slice<CommentResponse> comments = commentRepository.findSliceByPostIdWithUserId(1L, userId, pageable);
 
         // then
         assertThat(comments.getContent()).hasSize(2);
-
-        System.out.println(comments);
-
         CommentResponse commentResponse1 = comments.getContent().get(1);
         CommentResponse commentResponse2 = comments.getContent().get(0);
-
-        System.out.println("**************commentResponse1: " + commentResponse1.getCreatedDate());
-        System.out.println("**************commentResponse2: " + commentResponse2.getCreatedDate());
-        System.out.println("**************commentResponse1: " + commentResponse1.getContent());
-        System.out.println("**************commentResponse2: " + commentResponse2.getContent());
-
         assertAll(
                 () -> assertEquals(comment1.getId(), commentResponse1.getCommentId()),
                 () -> assertEquals(comment1.getContent(), commentResponse1.getContent()),
