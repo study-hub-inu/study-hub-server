@@ -35,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -226,11 +227,24 @@ public class UserControllerTest {
                 .andDo(print());
     }
 
-    /**
-     * 닉네임 중복인 경우 ExceptionHandler 어노테이션을 목킹할 수 없음
-     */
+    @Test
+    void 닉네임_중복검사_중복O() throws Exception {
+        // given
+        willThrow(new UserNicknameDuplicateException()).given(userService).nicknameDuplicationValid(any());
 
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.get("/api/v1/users/duplication-nickname")
+                        .param("nickname", "dw")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .characterEncoding("UTF-8")
+        );
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
-
-
+        // then
+        resultActions.andExpect(status().is4xxClientError())
+                .andDo(print());
+        assertTrue(responseBody.contains("이미 사용중인 닉네임 입니다"));
+    }
 }
