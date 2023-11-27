@@ -7,6 +7,7 @@ import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.exception.common.CustomExceptionHandler;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
@@ -33,6 +34,7 @@ import static java.nio.charset.StandardCharsets.*;
 import static kr.co.studyhubinu.studyhubserver.user.enums.MajorType.COMPUTER_SCIENCE_ENGINEERING;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -350,5 +352,38 @@ public class UserControllerTest {
         resultActions.andExpect(status().is4xxClientError())
                 .andDo(print());
         assertTrue(responseBody.contains("접근권한이 없는 유저입니다"));
+    }
+
+    @Test
+    void 회원_탈퇴_성공() throws Exception {
+        // given
+        doNothing().when(userService).deleteUser(any());
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.delete("/api/v1/users")
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 회원_탈퇴_실패() throws Exception {
+        // given
+        willThrow(new UserNotFoundException()).given(userService).deleteUser(any());
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.delete("/api/v1/users")
+        );
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+
+        // then
+        resultActions.andExpect(status().is4xxClientError())
+                .andDo(print());
+        assertTrue(responseBody.contains("해당 아이디를 가진 유저가 없습니다. 아이디 값을 다시 한번 확인하세요."));
     }
 }
