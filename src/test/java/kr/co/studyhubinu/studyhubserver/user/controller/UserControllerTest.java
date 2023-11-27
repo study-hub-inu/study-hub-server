@@ -6,11 +6,11 @@ import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.exception.common.CustomExceptionHandler;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
-import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,9 +21,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -307,5 +305,50 @@ public class UserControllerTest {
         // then
         resultActions.andExpect(status().isOk())
                 .andDo(print());
+    }
+
+    @Test
+    void 비밀번호_중복_검증_중복X() throws Exception {
+        doNothing().when(userService).verifyPassword(any(), any());
+
+        VerifyPasswordRequest verifyPasswordRequest = VerifyPasswordRequest.builder()
+                .password("liljayjayjay@")
+                .build();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/users/password/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(verifyPasswordRequest))
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 비밀번호_중복_검증_중복O() throws Exception {
+        willThrow(new UserNotAccessRightException()).given(userService).verifyPassword(any(), any());
+
+        VerifyPasswordRequest verifyPasswordRequest = VerifyPasswordRequest.builder()
+                .password("liljayjayjay@")
+                .build();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.post("/api/v1/users/password/verify")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(verifyPasswordRequest))
+        );
+
+        // then
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+
+        // then
+        resultActions.andExpect(status().is4xxClientError())
+                .andDo(print());
+        assertTrue(responseBody.contains("접근권한이 없는 유저입니다"));
     }
 }
