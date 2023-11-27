@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "비밀번호 중복 검증", description = "jwt 토큰 bearer 헤더에 넣어주시고 parameter 칸에 비밀번호 넣어주세요")
+    @Operation(summary = "비밀번호 검증", description = "jwt 토큰 bearer 헤더에 넣어주시고 parameter 칸에 비밀번호 넣어주세요")
     @PostMapping("/v1/users/password/verify")
     public ResponseEntity<HttpStatus> verifyPassword(@RequestBody VerifyPasswordRequest request, UserId userId) {
         userService.verifyPassword(userId.getId(), request.getPassword());
