@@ -269,6 +269,29 @@ public class UserControllerTest {
     }
 
     @Test
+    void 닉네임_수정_실패_10자_이상_닉네임() throws Exception {
+        doNothing().when(userService).updateNickname(any());
+
+        UpdateNicknameRequest updateNicknameRequest = UpdateNicknameRequest.builder()
+                .nickname("helloImliljay")
+                .build();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/nickname")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateNicknameRequest))
+        );
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+
+        // then
+        resultActions.andExpect(status().is4xxClientError())
+                .andDo(print());
+        assertTrue(responseBody.contains("닉네임은 10자 이하여야 합니다"));
+    }
+
+    @Test
     void 비밀번호_수정_성공() throws Exception {
         doNothing().when(userService).updatePassword(any());
 
@@ -286,6 +309,28 @@ public class UserControllerTest {
 
         // then
         resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @ParameterizedTest(name = "{0}")
+    @MethodSource("passwordParameters")
+    void 비밀번호_수정_실패_잘못된형식(String testName, String password) throws Exception {
+        doNothing().when(userService).updatePassword(any());
+
+        UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.builder()
+                .password(password)
+                .auth(true)
+                .build();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatePasswordRequest))
+        );
+
+        // then
+        resultActions.andExpect(status().is4xxClientError())
                 .andDo(print());
     }
 
