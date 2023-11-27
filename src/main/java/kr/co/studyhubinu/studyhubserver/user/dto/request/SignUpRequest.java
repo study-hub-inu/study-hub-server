@@ -38,7 +38,6 @@ public class SignUpRequest {
     private String nickname;
 
     @Schema(description = "전공", example = "COMPUTER_SCIENCE_ENGINEERING")
-    @Major
     private MajorType major;
 
     @Schema(description = "유저 성별", example = "FEMALE")

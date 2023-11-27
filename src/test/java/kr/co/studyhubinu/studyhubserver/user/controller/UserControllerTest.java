@@ -7,10 +7,10 @@ import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.exception.common.CustomExceptionHandler;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
-import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
-import kr.co.studyhubinu.studyhubserver.user.dto.request.SignUpRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -31,10 +32,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static kr.co.studyhubinu.studyhubserver.user.enums.MajorType.COMPUTER_SCIENCE_ENGINEERING;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,7 +44,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(value = UserController.class, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebConfig.class)
 })
-@Import(CustomExceptionHandler.class)
 public class UserControllerTest {
 
     @Autowired
@@ -94,7 +93,7 @@ public class UserControllerTest {
         );
 
         // then
-        resultActions.andExpect(status().isCreated())
+        resultActions.andExpect(status().isOk())
                 .andDo(print());
     }
 
@@ -161,6 +160,7 @@ public class UserControllerTest {
                 .email("kdw@inu.ac.kr")
                 .password("dwdwdwdwdwdw@")
                 .build();
+
         when(userService.loginUser(any())).thenReturn(JwtResponseDto.builder()
                 .accessToken("Bearer AccessToken")
                 .refreshToken("Bearer RefreshToken")
@@ -246,5 +246,66 @@ public class UserControllerTest {
         resultActions.andExpect(status().is4xxClientError())
                 .andDo(print());
         assertTrue(responseBody.contains("이미 사용중인 닉네임 입니다"));
+    }
+
+    @Test
+    void 닉네임_수정_성공() throws Exception {
+        doNothing().when(userService).updateNickname(any());
+
+        UpdateNicknameRequest updateNicknameRequest = UpdateNicknameRequest.builder()
+                .nickname("studyDDD")
+                .build();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/nickname")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateNicknameRequest))
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 비밀번호_수정_성공() throws Exception {
+        doNothing().when(userService).updatePassword(any());
+
+        UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.builder()
+                .password("liljayjayjay@")
+                .auth(true)
+                .build();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/password")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatePasswordRequest))
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 전공_수정_성공() throws Exception {
+        doNothing().when(userService).updateMajor(any());
+
+        UpdateMajorRequest updateMajorRequest = UpdateMajorRequest.builder()
+                .major(COMPUTER_SCIENCE_ENGINEERING)
+                .build();
+
+        // when
+        ResultActions resultActions = mockMvc.perform(
+                MockMvcRequestBuilders.put("/api/v1/users/major")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateMajorRequest))
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
     }
 }
