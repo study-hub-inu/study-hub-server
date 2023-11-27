@@ -12,6 +12,7 @@ import kr.co.studyhubinu.studyhubserver.exception.StatusType;
 
 @RestControllerAdvice
 public class CustomExceptionHandler {
+
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ExceptionMessage> handle(CustomException e) {
         int statusCode = e.getStatus().getStatusCode();
