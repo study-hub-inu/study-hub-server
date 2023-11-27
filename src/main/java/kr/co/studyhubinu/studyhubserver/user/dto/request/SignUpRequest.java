@@ -1,10 +1,10 @@
 package kr.co.studyhubinu.studyhubserver.user.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.studyhubinu.studyhubserver.email.validate.InuEmail;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.SignUpInfo;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import kr.co.studyhubinu.studyhubserver.user.validate.Major;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,10 @@ import javax.validation.constraints.Pattern;
 public class SignUpRequest {
 
     @Schema(description = "유저 이메일", example = "studyHub@inu.ac.kr")
-    @InuEmail(message = "이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)")
+    @Pattern(
+            regexp = "^[A-Za-z0-9._%+-]+@inu\\.ac\\.kr$",
+            message = "이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)"
+    )
     @NotBlank
     private String email;
 

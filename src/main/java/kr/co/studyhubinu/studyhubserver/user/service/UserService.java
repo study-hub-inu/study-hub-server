@@ -3,6 +3,7 @@ package kr.co.studyhubinu.studyhubserver.user.service;
 import kr.co.studyhubinu.studyhubserver.config.PasswordEncoder;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProvider;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
+import kr.co.studyhubinu.studyhubserver.exception.common.CustomException;
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
@@ -35,33 +36,31 @@ public class UserService {
 
     @Transactional
     public void registerUser(SignUpInfo signUpInfo) {
-        if (userRepository.existsByEmail(signUpInfo.getEmail())) {
-            throw new AlreadyExistUserException();
-        }
+        validateExistUserEmail(signUpInfo);
         UserEntity userEntity = signUpInfo.toEntity(passwordEncoder);
         userRepository.save(userEntity);
     }
 
     public void updateUser(UpdateUserInfo info) {
-        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+        UserEntity user = getUserById(info.getUserId(), new UserNotFoundException());
         user.update(info);
     }
 
     @Transactional
     public void deleteUser(Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UserEntity user = getUserById(userId, new UserNotFoundException());
         userDeleter.deleteUserRelatedData(user);
     }
   
     public GetUserResponse getUser(Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        UserEntity user = getUserById(userId, new UserNotFoundException());
         UserActivityCountData data = userActivityFinder.countUserActivity(userId);
         return new GetUserResponse(user, data);
     }
 
     @Transactional
     public void updateNickname(UpdateNicknameInfo info) {
-        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+        UserEntity user = getUserById(info.getUserId(), new UserNotFoundException());
         user.updateNickname(info.getNickname());
     }
 
@@ -73,13 +72,13 @@ public class UserService {
 
     @Transactional
     public void updateMajor(UpdateMajorInfo info) {
-        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+        UserEntity user = getUserById(info.getUserId(), new UserNotFoundException());
         user.updateMajor(info.getMajor());
     }
 
     @Transactional
     public void updatePassword(UpdatePasswordInfo info) {
-        UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
+        UserEntity user = getUserById(info.getUserId(), new UserNotFoundException());
 
         if(!info.isAuth()) {
             throw new UserNotAccessRightException();
@@ -95,7 +94,7 @@ public class UserService {
     }
 
     public JwtResponseDto loginUser(SignInRequest signInRequest) {
-        UserEntity userEntity = findUser(signInRequest);
+        UserEntity userEntity = getUserByEmail(signInRequest, new UserNotFoundException());
         userVerify(userEntity, signInRequest);
 
         return jwtProvider.createJwtResponseDto(userEntity.getId());
@@ -109,7 +108,17 @@ public class UserService {
         }
     }
 
-    private UserEntity findUser(SignInRequest signInRequest) {
-        return userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(UserNotFoundException::new);
+    private UserEntity getUserByEmail(SignInRequest signInRequest, CustomException customException) {
+        return userRepository.findByEmail(signInRequest.getEmail()).orElseThrow(() -> customException);
+    }
+
+    private UserEntity getUserById(Long userId, CustomException customException) {
+        return userRepository.findById(userId).orElseThrow(() -> customException);
+    }
+
+    private void validateExistUserEmail(SignUpInfo signUpInfo) {
+        if (userRepository.existsByEmail(signUpInfo.getEmail())) {
+            throw new AlreadyExistUserException();
+        }
     }
 }
