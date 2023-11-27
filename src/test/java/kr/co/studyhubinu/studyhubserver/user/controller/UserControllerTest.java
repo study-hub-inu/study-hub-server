@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
-import kr.co.studyhubinu.studyhubserver.exception.common.CustomExceptionHandler;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
@@ -34,7 +33,6 @@ import static java.nio.charset.StandardCharsets.*;
 import static kr.co.studyhubinu.studyhubserver.user.enums.MajorType.COMPUTER_SCIENCE_ENGINEERING;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -48,9 +46,6 @@ public class UserControllerTest {
 
     @Autowired
     MockMvc mockMvc;
-
-    @Autowired
-    CustomExceptionHandler customExceptionHandler;
 
     @MockBean
     UserService userService;
