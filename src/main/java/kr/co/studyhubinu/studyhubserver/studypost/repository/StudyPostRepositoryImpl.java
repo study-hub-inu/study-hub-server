@@ -46,7 +46,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(FindPostResponseByInquiry.class,
                         post.id.as("postId"), post.major, post.title, post.studyStartDate, post.studyEndDate,
                         post.createdDate, post.studyPerson, post.filteredGender,
-                        post.penalty, post.penaltyWay, post.close,
+                        post.penalty, post.penaltyWay, post.remainingSeat, post.close,
                         bookmarkPredicate(userId, bookmark),
                         Projections.constructor(
                                 UserData.class,

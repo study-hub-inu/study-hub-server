@@ -21,11 +21,12 @@ public class FindPostResponseByInquiry {
     private GenderType filteredGender;
     private Integer penalty;
     private String penaltyWay;
+    private Integer remainingSeat;
     private boolean close;
     private boolean isBookmarked;
     private UserData userData;
 
-    public FindPostResponseByInquiry(Long postId, MajorType major, String title, LocalDate studyStartDate, LocalDate studyEndDate, LocalDateTime createdDate, Integer studyPerson, GenderType filteredGender, Integer penalty, String penaltyWay, boolean close, boolean isBookmarked, UserData userData) {
+    public FindPostResponseByInquiry(Long postId, MajorType major, String title, LocalDate studyStartDate, LocalDate studyEndDate, LocalDateTime createdDate, Integer studyPerson, GenderType filteredGender, Integer penalty, String penaltyWay, Integer remainingSeat, boolean close, boolean isBookmarked, UserData userData) {
         this.postId = postId;
         this.major = major;
         this.title = title;
@@ -36,6 +37,7 @@ public class FindPostResponseByInquiry {
         this.filteredGender = filteredGender;
         this.penalty = penalty;
         this.penaltyWay = penaltyWay;
+        this.remainingSeat = remainingSeat;
         this.close = close;
         this.isBookmarked = isBookmarked;
         this.userData = userData;
