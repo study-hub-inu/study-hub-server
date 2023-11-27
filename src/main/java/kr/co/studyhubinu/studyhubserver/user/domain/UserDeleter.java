@@ -1,8 +1,8 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.alarm.repository.AlarmRepository;
-import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookMarkEntity;
-import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookMarkRepository;
+import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookmarkEntity;
+import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
@@ -19,7 +19,7 @@ public class UserDeleter {
     private final UserRepository userRepository;
     private final StudyPostRepository studyPostRepository;
     private final StudyRepository studyRepository;
-    private final BookMarkRepository bookMarkRepository;
+    private final BookmarkRepository bookMarkRepository;
     private final AlarmRepository alarmRepository;
 
     public void deleteUserRelatedData(UserEntity user) {
@@ -33,8 +33,8 @@ public class UserDeleter {
     }
 
     private void deleteBookmark(UserEntity user) {
-        List<BookMarkEntity> bookMarks = bookMarkRepository.findByUserId(user.getId());
-        bookMarkRepository.deleteAll(bookMarks);
+        List<BookmarkEntity> bookmarks = bookMarkRepository.findByUserId(user.getId());
+        bookMarkRepository.deleteAll(bookmarks);
     }
 
     private void deleteStudyPost(UserEntity user) {

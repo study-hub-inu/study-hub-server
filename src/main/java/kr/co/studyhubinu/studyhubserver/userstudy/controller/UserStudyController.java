@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/study")
+@RequestMapping("/api")
 public class UserStudyController {
 
     private final UserStudyService userStudyService;
 
-    @PostMapping("/approve")
+    @PostMapping("/v1/study/approve")
     public ResponseEntity<HttpStatus> approveUser(ApproveUserStudyRequestDto approveUserStudyRequestDto) {
         userStudyService.approve(approveUserStudyRequestDto.getUserId(), approveUserStudyRequestDto.getPostId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/refuse")
+    @PostMapping("/v1/study/refuse")
     public ResponseEntity<HttpStatus> refuseUser(RefuseUserStudyRequestDto refuseUserStudyRequestDto) {
         userStudyService.refuse(refuseUserStudyRequestDto.getUserId(), refuseUserStudyRequestDto.getStudyId());
         return new ResponseEntity<>(HttpStatus.OK);

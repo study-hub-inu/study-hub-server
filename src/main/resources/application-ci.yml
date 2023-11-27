@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost3306/studyHub;
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: admin
+    password: root
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      '[hibernate.format_sql]': true
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: inustudyhub@gmail.com
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+logging:
+  level:
+    '[org.springframework.boot.web]': DEBUG
+    org:
+      springframework:
+        cache: DEBUG
+
+
+# debug info warn error
+
+jwt:
+  secret: ${JWT_SECRET}

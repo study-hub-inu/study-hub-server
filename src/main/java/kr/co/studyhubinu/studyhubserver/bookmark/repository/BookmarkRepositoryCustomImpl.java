@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 @Repository
-public class BookMarkRepositoryCustomImpl implements BookMarkRepositoryCustom {
+public class BookmarkRepositoryCustomImpl implements BookmarkRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 

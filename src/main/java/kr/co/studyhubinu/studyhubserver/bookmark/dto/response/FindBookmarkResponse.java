@@ -3,7 +3,7 @@ package kr.co.studyhubinu.studyhubserver.bookmark.dto.response;
 import lombok.Getter;
 
 @Getter
-public class FindBookMarkResponse {
+public class FindBookmarkResponse {
 
     private Long postId;
 
@@ -12,7 +12,7 @@ public class FindBookMarkResponse {
     private int leftover;
 
 
-    public FindBookMarkResponse(Long postId, String title, String content, int leftover) {
+    public FindBookmarkResponse(Long postId, String title, String content, int leftover) {
         this.postId = postId;
         this.title = title;
         this.content = content;
