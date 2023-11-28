@@ -17,7 +17,7 @@ public class UpdatePostRequest {
     @Schema(description = "수정할 투표 게시글 id", example = "1")
     private Long postId;
 
-    @Schema(description = "수정할 제목", example = "정보처리기사")
+    @Schema(description = "수정할 제목", example = "수정된 정보처리기사")
     @NotBlank
     private String title;
 
