@@ -27,6 +27,7 @@ public class CreatePostRequest {
     private String chatUrl;
 
     @Schema(description = "관련 학과", example = "COMPUTER_SCIENCE_ENGINEERING")
+    @NotNull
     private MajorType major;
 
     @Schema(description = "스터디 정원", example = "10")
