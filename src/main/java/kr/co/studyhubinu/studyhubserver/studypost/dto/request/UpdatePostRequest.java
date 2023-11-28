@@ -37,7 +37,7 @@ public class UpdatePostRequest {
     @NotNull
     private int studyPerson;
 
-    @Schema(description = "수정할 벌금", example = "10000 (벌금이 없다면 null 보내주세요!)")
+    @Schema(description = "수정할 벌금", example = "10000 (벌금이 없다면 0 보내주세요!)")
     @NotNull
     private int penalty;
 
