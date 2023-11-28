@@ -33,7 +33,7 @@ public class UpdatePostRequest {
     @NotNull
     private MajorType major;
 
-    @Schema(description = "수정할 스터디 정원", example = "10")
+    @Schema(description = "수정할 스터디 정원", example = "16")
     @NotNull
     private int studyPerson;
 
