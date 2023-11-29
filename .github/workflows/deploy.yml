@@ -15,18 +15,18 @@ jobs:
       JWT_SERCRET: ${{ secrets.JWT_SECRET }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup MySQL #mysql 설정
-        uses: samin/mysql-action@v1
-        with:
-          host port: 3306
-          container port: 3306
-          mysql database: sh_db
-          mysql user: 'admin'
-          mysql password: 'root'
-          character set server: 'utf8'
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#
+#      - name: Setup MySQL #mysql 설정
+#        uses: samin/mysql-action@v1
+#        with:
+#          host port: 3306
+#          container port: 3306
+#          mysql database: sh_db
+#          mysql user: 'admin'
+#          mysql password: 'root'
+#          character set server: 'utf8'
 
       - name: Set up JDK 11
         uses: actions/setup-java@v3
