@@ -15,8 +15,8 @@ jobs:
       JWT_SERCRET: ${{ secrets.JWT_SECRET }}
 
     steps:
-#      - name: Checkout
-#        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 #
 #      - name: Setup MySQL #mysql 설정
 #        uses: samin/mysql-action@v1
