@@ -9,7 +9,9 @@ import java.time.LocalDate;
 
 public enum StudyPostEntityFixture {
 
-    SQLD("SQLD딸사람 구해요", "열심히 할 사람만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 5, GenderType.MALE, StudyWayType.MIX, 10000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2023, 12, 25), 10);
+    SQLD("SQLD딸사람 구해요", "열심히 할 사람만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 5, GenderType.MALE, StudyWayType.MIX, 10000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2023, 12, 25), 5),
+    ENGINEER_INFORMATION_PROCESSING("정처기 딸사람 구해요", "심장을 바칠 사람만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 8, GenderType.FEMALE, StudyWayType.MIX, 5000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2024, 2, 13), 8),
+    TOEIC("토익 딸사람 구해요", "800점 이상 목표인 사람들만", MajorType.NONE, 3, GenderType.NULL, StudyWayType.MIX, 50000, "800 달성 실패시", LocalDate.of(2023, 4, 30), LocalDate.of(2023, 8, 25), 3);
 
     private final String title;
     private final String content;
@@ -37,9 +39,9 @@ public enum StudyPostEntityFixture {
         this.remainingSeat = remainingSeat;
     }
 
-    public StudyPostEntity studyPostEntity_생성(Long id) {
+    public StudyPostEntity studyPostEntity_생성(Long postId, Long userId) {
         return StudyPostEntity.builder()
-                .id(id)
+                .id(postId)
                 .title(this.title)
                 .content(this.content)
                 .major(this.major)
@@ -50,6 +52,7 @@ public enum StudyPostEntityFixture {
                 .penaltyWay(this.penaltyWay)
                 .studyStartDate(this.studyStartDate)
                 .studyEndDate(this.studyEndDate)
+                .userId(userId)
                 .remainingSeat(this.remainingSeat)
                 .build();
     }
