@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RepositoryTest
-@ActiveProfiles("dev")
+@ActiveProfiles("ci")
 class CommentRepositoryTest {
 
     @Autowired
