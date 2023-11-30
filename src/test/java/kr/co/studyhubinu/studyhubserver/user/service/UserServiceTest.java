@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.config.PasswordEncoder;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProvider;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
+import kr.co.studyhubinu.studyhubserver.exception.user.PasswordNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
@@ -155,6 +156,16 @@ class UserServiceTest {
         // then
         Assertions.assertThat(jwtResponseDto.getAccessToken()).isEqualTo("Bearer access");
         Assertions.assertThat(jwtResponseDto.getRefreshToken()).isEqualTo("Bearer refresh");
+    }
+
+    @Test
+    void 비밀번호_검증_실패() {
+        // given
+        given(passwordEncoder.matches(any(), any())).willReturn(false);
+        given(userRepository.findById(any())).willReturn(Optional.ofNullable(UserEntity.builder().build()));
+
+        // when, then
+        assertThatThrownBy(() -> userService.verifyPassword(1L, "liljay")).isInstanceOf(PasswordNotFoundException.class);
     }
 
 }
