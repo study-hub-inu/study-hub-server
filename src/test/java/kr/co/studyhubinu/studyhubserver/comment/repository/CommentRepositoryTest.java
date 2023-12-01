@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +24,7 @@ class CommentRepositoryTest {
     private CommentRepository commentRepository;
 
     @Test
-    void 게시글과_유저의_식별자로_댓글을_조회한다() {
+    void 게시글과_유저의_식별자로_댓글을_최신순으로_조회한다() {
         // given
         Long userId = 1L;
         Long postId = 3L;
@@ -33,7 +34,7 @@ class CommentRepositoryTest {
         commentRepository.save(comment2);
 
         // when
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
         Slice<CommentResponse> comments = commentRepository.findSliceByPostIdWithUserId(1L, userId, pageable);
 
         // then
