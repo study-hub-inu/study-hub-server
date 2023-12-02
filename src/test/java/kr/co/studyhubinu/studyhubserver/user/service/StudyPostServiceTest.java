@@ -43,7 +43,6 @@ public class StudyPostServiceTest {
     void createPost_success() {
         // given
         Long userId = 1L;
-        Long postId = 2L;
         StudyPostInfo info = StudyPostInfo.builder()
                 .userId(userId)
                 .title("정보처리기사")
@@ -59,7 +58,7 @@ public class StudyPostServiceTest {
                 .studyEndDate(LocalDate.of(2023, 12, 25))
                 .build();
         UserEntity user1 = UserEntityFixture.DONGWOO.UserEntity_생성(userId);
-        StudyPostEntity post1 = StudyPostEntityFixture.SQLD.studyPostEntity_생성(postId, userId);
+        StudyPostEntity post1 = StudyPostEntityFixture.SQLD.studyPostEntity_생성(userId);
 
         BDDMockito.given(userRepository.findById(info.getUserId())).willReturn(Optional.of(user1));
         BDDMockito.given(studyPostRepository.save(any())).willReturn(post1);

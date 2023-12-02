@@ -39,9 +39,8 @@ public enum StudyPostEntityFixture {
         this.remainingSeat = remainingSeat;
     }
 
-    public StudyPostEntity studyPostEntity_생성(Long postId, Long userId) {
+    public StudyPostEntity studyPostEntity_생성(Long userId) {
         return StudyPostEntity.builder()
-                .id(postId)
                 .title(this.title)
                 .content(this.content)
                 .major(this.major)
