@@ -75,4 +75,7 @@ public class StudyPostRepositoryTest {
         );
     }
 
+    @Test
+    void
+
 }

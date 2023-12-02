@@ -122,21 +122,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public Slice<FindPostResponseByRemainingSeat> findPostsByRemainingSeat(Pageable pageable) {
-        QStudyPostEntity post = studyPostEntity;
-
-        JPAQuery<FindPostResponseByRemainingSeat> studyPostDto = jpaQueryFactory.select(
-                        Projections.constructor(FindPostResponseByRemainingSeat.class,
-                                post.id.as("postId"), post.title, post.studyPerson, post.remainingSeat))
-                .from(post)
-                .orderBy(post.remainingSeat.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
-
-        return toSlice(pageable, studyPostDto.fetch());
-    }
-
-    @Override
     public Optional<PostData> findPostById(Long postId, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
