@@ -103,21 +103,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public Slice<FindPostResponseByAll> findByAll(Pageable pageable) {
-        QStudyPostEntity post = studyPostEntity;
-
-        JPAQuery<FindPostResponseByAll> studyPostDto = jpaQueryFactory
-                .select(Projections.constructor(FindPostResponseByAll.class,
-                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
-                .from(post)
-                .orderBy(post.createdDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1);
-
-        return toSlice(pageable, studyPostDto.fetch());
-    }
-
-    @Override
     public Slice<GetBookmarkedPostsData> findPostsByBookmarked(Long userId, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
         QBookmarkEntity bookmark = bookmarkEntity;
