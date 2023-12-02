@@ -28,8 +28,8 @@ class CommentRepositoryTest {
         // given
         Long userId = 1L;
         Long postId = 3L;
-        CommentEntity comment1 = CommentEntityFixture.COMMENT_1.commentEntity_생성(1L, userId, postId);
-        CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(2L, userId, postId);
+        CommentEntity comment1 = CommentEntityFixture.COMMENT_1.commentEntity_생성(userId, postId);
+        CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(userId, postId);
         commentRepository.save(comment1);
         commentRepository.save(comment2);
 

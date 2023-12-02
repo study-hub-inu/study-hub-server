@@ -13,9 +13,8 @@ public enum BookmarkEntityFixture {
         this.postId = postId;
     }
 
-    public BookmarkEntity bookMarkEntity_생성 (Long bookmarkId, Long userId) {
+    public BookmarkEntity bookMarkEntity_생성 (Long userId) {
         return BookmarkEntity.builder()
-                .id(bookmarkId)
                 .postId(this.postId)
                 .userId(userId)
                 .build();

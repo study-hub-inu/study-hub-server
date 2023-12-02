@@ -25,8 +25,8 @@ public class BookmarkRepositoryTest {
     void 유저의_식별자로_북마크_리스트를_조회한다() {
         // given
         Long userId = 1L;
-        BookmarkEntity bookmark1 = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(1L, userId);
-        BookmarkEntity bookmark2 = BookmarkEntityFixture.BOOKMARK_POST2.bookMarkEntity_생성(2L, userId);
+        BookmarkEntity bookmark1 = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(userId);
+        BookmarkEntity bookmark2 = BookmarkEntityFixture.BOOKMARK_POST2.bookMarkEntity_생성(userId);
         bookMarkRepository.save(bookmark1);
         bookMarkRepository.save(bookmark2);
 
@@ -44,8 +44,8 @@ public class BookmarkRepositoryTest {
     void 유저의_식별자로_북마크_개수를_조회한다() {
         // given
         Long userId = 1L;
-        BookmarkEntity bookmark1 = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(1L, userId);
-        BookmarkEntity bookmark2 = BookmarkEntityFixture.BOOKMARK_POST2.bookMarkEntity_생성(2L, userId);
+        BookmarkEntity bookmark1 = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(userId);
+        BookmarkEntity bookmark2 = BookmarkEntityFixture.BOOKMARK_POST2.bookMarkEntity_생성(userId);
         bookMarkRepository.save(bookmark1);
         bookMarkRepository.save(bookmark2);
 
@@ -61,7 +61,7 @@ public class BookmarkRepositoryTest {
     void 유저와_게시글의_식별자로_북마크를_조회한다() {
         // given
         Long userId = 1L;
-        BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(1L, userId);
+        BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(userId);
         bookMarkRepository.save(bookmark);
 
         // when
