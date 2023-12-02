@@ -1,19 +1,16 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
-import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostValidator;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +23,6 @@ public class StudyPostService {
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
     private final StudyPostValidator studyPostValidator;
-    private final BookmarkRepository bookMarkRepository;
 
 
     public Long createPost(StudyPostInfo info) {
