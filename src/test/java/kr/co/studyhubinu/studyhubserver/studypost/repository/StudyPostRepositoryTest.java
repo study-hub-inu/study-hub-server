@@ -51,7 +51,7 @@ public class StudyPostRepositoryTest {
     }
 
     @Test
-    void 유저의_식별자로_게시글을_조회한다() {
+    void 유저의_식별자로_게시글을_최신순으로_조회한다() {
         // given
         Long userId1 = 1L;
         StudyPostEntity post1 = StudyPostEntityFixture.SQLD.studyPostEntity_생성(userId1);
@@ -76,7 +76,7 @@ public class StudyPostRepositoryTest {
     }
 
     @Test
-    void 유저의_식별자로_북마크된_게시글을_조회한다() {
+    void 유저의_식별자로_북마크된_게시글을_최신순으로_조회한다() {
         // given
         Long postedUserId = 1L;
         Long bookmarkedUserId = 2L;
