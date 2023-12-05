@@ -10,7 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
-@Builder
 public class UpdatePasswordRequest {
 
     @Schema(description = "유저 비밀번호", example = "asd123")
@@ -24,6 +23,12 @@ public class UpdatePasswordRequest {
     @Schema(description = "해당 유저가 기존 비밀번호를 확인했는지")
     @NotNull(message = "접근권한이 없는 유저입니다")
     private boolean auth;
+
+    @Builder
+    public UpdatePasswordRequest(String password, boolean auth) {
+        this.password = password;
+        this.auth = auth;
+    }
 
     public UpdatePasswordInfo toService(Long userId) {
         return UpdatePasswordInfo.builder()
