@@ -8,6 +8,8 @@ import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsDat
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.support.fixture.BookmarkEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
@@ -192,10 +194,6 @@ public class StudyPostRepositoryTest {
         // when
         List<RelatedPostData> dataList = studyPostRepository.findByMajor(mainPost.getMajor(), mainPost.getId());
         RelatedPostData data = dataList.get(0);
-        System.out.println("***************" + relatedPost.getId());
-        System.out.println("***************" + data.getPostId());
-        System.out.println("***************" + postedUserId);
-        System.out.println("***************" + data.getPostedUser().getUserId());
 
         // then
         assertAll(
@@ -206,4 +204,36 @@ public class StudyPostRepositoryTest {
         );
     }
 
+    @Test
+    void 유저의_식별자가_존재하면_검색어와_인기순_여부로_게시글을_조회한다() {
+        // given
+        Long authUserId = 2L;
+        boolean isBookmarked;
+        UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성();
+        userRepository.save(user);
+        StudyPostEntity post1 = StudyPostEntityFixture.SQLD.studyPostEntity_생성(user.getId());
+        StudyPostEntity post2 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성(user.getId());
+        studyPostRepository.save(post1);
+        studyPostRepository.save(post2);
+        BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(post1.getId(), authUserId);
+        bookmarkRepository.save(bookmark);
+        if (authUserId == bookmark.getUserId()) {
+            isBookmarked = true;
+        } else {
+            isBookmarked = false;
+        }
+        InquiryRequest request = new InquiryRequest("SQLD", true, true);
+
+        // when
+        Slice<FindPostResponseByInquiry> dataSlice = studyPostRepository.findByInquiry(request, PageRequest.of(0, 3), authUserId);
+        FindPostResponseByInquiry data = dataSlice.getContent().get(0);
+
+        // then
+        assertAll(
+                () -> assertEquals(post1.getId(), data.getPostId()),
+                () -> assertEquals(post1.getTitle(), data.getTitle()),
+                () -> assertEquals(isBookmarked, data.isBookmarked()),
+                () -> assertEquals(user.getId(), data.getUserData().getUserId())
+        );
+    }
 }
