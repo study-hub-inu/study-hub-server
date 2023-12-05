@@ -150,5 +150,29 @@ public class StudyPostRepositoryTest {
         );
     }
 
+    @Test
+    void 유저의_식별자가_존재하지_않으면_게시글의_식별자로_상세_조회한다() {
+        // given
+        Long authUserId = null;
+        boolean isUsersPost = false;
+        boolean isBookmarked = false;
+        UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성();
+        userRepository.save(user);
+        StudyPostEntity post = StudyPostEntityFixture.SQLD.studyPostEntity_생성(user.getId());
+        studyPostRepository.save(post);
+        BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(post.getId(), user.getId());
+        bookmarkRepository.save(bookmark);
+
+        // when
+        PostData data = studyPostRepository.findPostById(post.getId(), authUserId).orElseThrow(PostNotFoundException::new);
+
+        // then
+        assertAll(
+                () -> assertEquals(post.getId(), data.getPostId()),
+                () -> assertEquals(post.getContent(), data.getContent()),
+                () -> assertEquals(isUsersPost, data.isUsersPost()),
+                () -> assertEquals(isBookmarked, data.isBookmarked())
+        );
+    }
 
 }
