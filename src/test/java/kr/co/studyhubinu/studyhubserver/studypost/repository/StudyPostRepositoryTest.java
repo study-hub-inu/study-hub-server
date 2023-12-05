@@ -7,6 +7,7 @@ import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
 import kr.co.studyhubinu.studyhubserver.support.fixture.BookmarkEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
@@ -20,6 +21,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -172,6 +175,34 @@ public class StudyPostRepositoryTest {
                 () -> assertEquals(post.getContent(), data.getContent()),
                 () -> assertEquals(isUsersPost, data.isUsersPost()),
                 () -> assertEquals(isBookmarked, data.isBookmarked())
+        );
+    }
+
+    @Test
+    void 관련_전공과_조회에_제외할_게시글_식별자로_게시글을_조회한다() {
+        // given
+        Long postedUserId = 1L;
+        UserEntity relatedPostUser = UserEntityFixture.DONGWOO.UserEntity_생성();
+        userRepository.save(relatedPostUser);
+        StudyPostEntity mainPost = StudyPostEntityFixture.SQLD.studyPostEntity_생성(postedUserId);
+        StudyPostEntity relatedPost = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성(relatedPostUser.getId());
+        studyPostRepository.save(mainPost);
+        studyPostRepository.save(relatedPost);
+
+        // when
+        List<RelatedPostData> dataList = studyPostRepository.findByMajor(mainPost.getMajor(), mainPost.getId());
+        RelatedPostData data = dataList.get(0);
+        System.out.println("***************" + relatedPost.getId());
+        System.out.println("***************" + data.getPostId());
+        System.out.println("***************" + postedUserId);
+        System.out.println("***************" + data.getPostedUser().getUserId());
+
+        // then
+        assertAll(
+                () -> assertEquals(relatedPost.getId(), data.getPostId()),
+                () -> assertEquals(relatedPost.getTitle(), data.getTitle()),
+                () -> assertEquals(relatedPostUser.getId(), data.getPostedUser().getUserId()),
+                () -> assertEquals(relatedPost.getMajor(), data.getMajor())
         );
     }
 
