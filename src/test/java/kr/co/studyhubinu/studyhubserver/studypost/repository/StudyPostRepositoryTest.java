@@ -2,12 +2,17 @@ package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookmarkEntity;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.support.fixture.BookmarkEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
+import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +33,8 @@ public class StudyPostRepositoryTest {
     private StudyPostRepository studyPostRepository;
     @Autowired
     private BookmarkRepository bookmarkRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     void 유저의_식별자로_게시글_개수를_조회한다() {
@@ -106,5 +113,42 @@ public class StudyPostRepositoryTest {
                 () -> assertEquals(post2.getContent(), data2.getContent())
         );
     }
+
+    @Test
+    void 유저의_식별자가_존재하면_게시시글과_유저의_식별자로_상세_조회한다() {
+        // given
+        Long authUserId = 2L;
+        boolean isUsersPost;
+        boolean isBookmarked;
+        UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성();
+        userRepository.save(user);
+        StudyPostEntity post = StudyPostEntityFixture.SQLD.studyPostEntity_생성(user.getId());
+        studyPostRepository.save(post);
+        BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(post.getId(), authUserId);
+        bookmarkRepository.save(bookmark);
+        if (authUserId == user.getId()) {
+            isUsersPost = true;
+        } else {
+            isUsersPost = false;
+        }
+
+        if (authUserId == bookmark.getUserId()) {
+            isBookmarked = true;
+        } else {
+            isBookmarked = false;
+        }
+
+        // when
+        PostData data = studyPostRepository.findPostById(post.getId(), authUserId).orElseThrow(PostNotFoundException::new);
+
+        // then
+        assertAll(
+                () -> assertEquals(post.getId(), data.getPostId()),
+                () -> assertEquals(post.getContent(), data.getContent()),
+                () -> assertEquals(isUsersPost, data.isUsersPost()),
+                () -> assertEquals(isBookmarked, data.isBookmarked())
+        );
+    }
+
 
 }
