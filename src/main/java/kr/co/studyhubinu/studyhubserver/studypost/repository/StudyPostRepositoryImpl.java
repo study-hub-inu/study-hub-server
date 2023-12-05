@@ -10,24 +10,24 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookmarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByAll;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByRemainingSeat;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 import static kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookmarkEntity.bookmarkEntity;
-import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.*;
+import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.studyPostEntity;
 import static kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity.userEntity;
 
 @Repository
