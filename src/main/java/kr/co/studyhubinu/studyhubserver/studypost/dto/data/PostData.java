@@ -23,13 +23,13 @@ public class PostData {
     private final String penaltyWay;
     private final LocalDate studyStartDate;
     private final LocalDate studyEndDate;
-    private final String charUrl;
     private final int remainingSeat;
+    private final String charUrl;
     private final boolean isUsersPost;
     private final boolean isBookmarked;
     private final UserData postedUser;
 
-    public PostData(Long postId, String title, LocalDateTime createdDate, String content, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, String charUrl, int remainingSeat, boolean isUsersPost, boolean isBookmarked, UserData postedUser) {
+    public PostData(Long postId, String title, LocalDateTime createdDate, String content, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, int remainingSeat, String charUrl, boolean isUsersPost, boolean isBookmarked, UserData postedUser) {
         this.postId = postId;
         this.title = title;
         this.createdDate = createdDate;
@@ -42,8 +42,8 @@ public class PostData {
         this.penaltyWay = penaltyWay;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
-        this.charUrl = charUrl;
         this.remainingSeat = remainingSeat;
+        this.charUrl = charUrl;
         this.isUsersPost = isUsersPost;
         this.isBookmarked = isBookmarked;
         this.postedUser = postedUser;

@@ -13,9 +13,8 @@ public enum CommentEntityFixture {
         this.content = content;
     }
 
-    public CommentEntity commentEntity_생성(Long commentId, Long userId, Long postId) {
+    public CommentEntity commentEntity_생성(Long userId, Long postId) {
         return CommentEntity.builder()
-                .id(commentId)
                 .postId(postId)
                 .userId(userId)
                 .content(this.content)
