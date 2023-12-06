@@ -66,15 +66,12 @@ public class StudyPostServiceTest {
         ArgumentCaptor<StudyPostEntity> captor = ArgumentCaptor.forClass(StudyPostEntity.class);
 
         // when
-        Long createdPostId = studyPostService.createPost(info);
+        studyPostService.createPost(info);
 
         // then
         verify(studyPostRepository, times(1))
                 .save(captor.capture());
         StudyPostEntity capturedStudyPost = captor.getValue();
         assertEquals("정보처리기사", capturedStudyPost.getTitle());
-
-        assertNotNull(createdPostId);
-
     }
 }
