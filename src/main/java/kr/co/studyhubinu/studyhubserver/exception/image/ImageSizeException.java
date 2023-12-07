@@ -7,7 +7,7 @@ public class ImageSizeException extends CustomException {
 
     private final StatusType status;
 
-    private static final String message = "이미지의 크기는 1MB 미만이어야 합니다.";
+    private static final String message = "이미지의 크기는 20MB 미만이어야 합니다.";
 
     public ImageSizeException() {
         super(message);

@@ -29,7 +29,7 @@ public class UserImageService {
 
     public void uploadUserImage(Long userId, MultipartFile multipartFile) throws IOException {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        if(multipartFile.getSize() >= 1024 * 1024) { throw new ImageSizeException(); }
+        if(multipartFile.getSize() >= 20 * 1024 * 1024) { throw new ImageSizeException(); }
         user.updateImage(saveImage(multipartFile));
     }
 
