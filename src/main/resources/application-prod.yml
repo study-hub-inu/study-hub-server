@@ -26,6 +26,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
 
   mail:
     host: smtp.gmail.com
