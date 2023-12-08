@@ -18,14 +18,14 @@ public class SignUpInfo {
     private MajorType major;
     private GenderType gender;
     private String accessToken;
-
     private String refreshToken;
 
-    public UserEntity toEntity(PasswordEncoder passwordEncoder) {
+    public UserEntity toEntity(PasswordEncoder passwordEncoder, String basicProfileImage) {
         return UserEntity.builder()
                 .email(email)
                 .password(passwordEncoder.encode(email, password))
                 .nickname(nickname)
+                .imageUrl(basicProfileImage)
                 .major(major)
                 .gender(gender)
                 .build();
