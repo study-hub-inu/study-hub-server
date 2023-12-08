@@ -1,7 +1,5 @@
 package kr.co.studyhubinu.studyhubserver.user.validate;
 
-import kr.co.studyhubinu.studyhubserver.email.validate.InuEmailValidator;
-
 import javax.validation.Constraint;
 import java.lang.annotation.*;
 
