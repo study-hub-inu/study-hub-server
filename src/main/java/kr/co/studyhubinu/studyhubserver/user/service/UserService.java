@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
+    private static final String BASIC_PROFILE_IMAGE = "https://studyhub-s3.s3.ap-northeast-2.amazonaws.com/avatar_l%401x.png";
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserActivityFinder userActivityFinder;
@@ -37,7 +38,7 @@ public class UserService {
     @Transactional
     public void registerUser(SignUpInfo signUpInfo) {
         validateExistUserEmail(signUpInfo);
-        UserEntity userEntity = signUpInfo.toEntity(passwordEncoder);
+        UserEntity userEntity = signUpInfo.toEntity(passwordEncoder, BASIC_PROFILE_IMAGE);
         userRepository.save(userEntity);
     }
 
