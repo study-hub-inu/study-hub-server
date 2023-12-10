@@ -43,6 +43,7 @@ public class CreatePostRequest {
     private Integer studyPerson;
 
     @Schema(description = "벌금", example = "10000 (벌금이 없다면 0 보내주세요!)")
+    @NotNull
     private Integer penalty;
 
     @Schema(description = "벌금 방식 없으면 null 보내주시면 됩니다", example = "지각비")

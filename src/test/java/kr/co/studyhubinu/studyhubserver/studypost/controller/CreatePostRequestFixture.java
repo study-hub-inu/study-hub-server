@@ -2,6 +2,7 @@ package kr.co.studyhubinu.studyhubserver.studypost.controller;
 
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 
@@ -48,6 +49,24 @@ public enum CreatePostRequestFixture {
 
     public static CreatePostRequest createPostRequest_생성(CreatePostRequestFixture fixture) {
         return CreatePostRequest.builder()
+                .title(fixture.getTitle())
+                .content(fixture.getContent())
+                .chatUrl(fixture.getChatUrl())
+                .major(fixture.getMajor())
+                .studyPerson(fixture.getStudyPerson())
+                .penalty(fixture.getPenalty())
+                .penaltyWay(fixture.getPenaltyWay())
+                .close(fixture.isClose())
+                .gender(fixture.getGender())
+                .studyWay(fixture.getStudyWay())
+                .studyStartDate(fixture.getStudyStartDate())
+                .studyEndDate(fixture.getStudyEndDate())
+                .build();
+    }
+
+    public static UpdatePostRequest updatePostRequest_생성(CreatePostRequestFixture fixture) {
+        return UpdatePostRequest.builder()
+                .postId(1L)
                 .title(fixture.getTitle())
                 .content(fixture.getContent())
                 .chatUrl(fixture.getChatUrl())
