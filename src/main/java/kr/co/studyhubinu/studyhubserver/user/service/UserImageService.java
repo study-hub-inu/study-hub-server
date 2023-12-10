@@ -20,22 +20,22 @@ import java.io.IOException;
 @Slf4j
 @Transactional
 public class UserImageService {
+
     private final UserRepository userRepository;
     private final AmazonS3 amazonS3;
-
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-
+    private static final String BASIC_PROFILE_IMAGE = "https://studyhub-s3.s3.ap-northeast-2.amazonaws.com/avatar_l%401x.png";
 
     public void uploadUserImage(Long userId, MultipartFile multipartFile) throws IOException {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        if(multipartFile.getSize() >= 1024 * 1024) { throw new ImageSizeException(); }
+        if(multipartFile.getSize() >= 20 * 1024 * 1024) { throw new ImageSizeException(); }
         user.updateImage(saveImage(multipartFile));
     }
 
     public void deleteUserImage(Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        user.updateImage(null);
+        user.updateImage(BASIC_PROFILE_IMAGE);
     }
 
     private String saveImage(MultipartFile multipartFile) throws IOException {
@@ -48,6 +48,5 @@ public class UserImageService {
         amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
         return amazonS3.getUrl(bucket, originalFilename).toString();
     }
-
 
 }

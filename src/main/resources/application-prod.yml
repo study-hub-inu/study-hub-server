@@ -13,6 +13,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${rds.username}
     password: ${rds.password}
+  servlet:
+    multipart:
+      max-file-size: 20MB
 
   jpa:
     open-in-view: true
@@ -23,6 +26,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+  batch:
+    jdbc:
+      initialize-schema: ALWAYS
 
   mail:
     host: smtp.gmail.com

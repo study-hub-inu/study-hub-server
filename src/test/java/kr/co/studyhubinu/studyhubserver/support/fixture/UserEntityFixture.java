@@ -35,4 +35,14 @@ public enum UserEntityFixture {
                 .build();
     }
 
+    public UserEntity UserEntity_생성() {
+        return UserEntity.builder()
+                .email(this.email)
+                .password(this.password)
+                .nickname(this.nickname)
+                .major(this.majorType)
+                .gender(this.genderType)
+                .build();
+    }
+
 }

@@ -8,15 +8,17 @@ import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
 public class UpdatePostRequest {
 
     @Schema(description = "수정할 투표 게시글 id", example = "1")
+    @NotNull
     private Long postId;
 
-    @Schema(description = "수정할 제목", example = "정보처리기사")
+    @Schema(description = "수정할 제목", example = "수정된 정보처리기사")
     @NotBlank
     private String title;
 
@@ -28,34 +30,35 @@ public class UpdatePostRequest {
     @NotBlank
     private String chatUrl;
 
-    @Schema(description = "수정할 관련 학과", example = "COMPUTER_SCIENCE")
+    @Schema(description = "수정할 관련 학과", example = "COMPUTER_SCIENCE_ENGINEERING")
+    @NotNull
     private MajorType major;
 
-    @Schema(description = "수정할 스터디 정원", example = "10")
-    @NotBlank
+    @Schema(description = "수정할 스터디 정원", example = "16")
+    @NotNull
     private int studyPerson;
 
-    @Schema(description = "수정할 벌금", example = "10000 (벌금이 없다면 null 보내주세요!)")
-    @NotBlank
+    @Schema(description = "수정할 벌금", example = "10000 (벌금이 없다면 0 보내주세요!)")
+    @NotNull
     private int penalty;
 
-    @Schema(description = "수정할 벌금 방식", example = "지각비")
+    @Schema(description = "수정할 벌금 방식 없으면 null 보내주시면 됩니다", example = "지각비")
     private String penaltyWay;
 
     @Schema(description = "수정할 필터 성별", example = "FEMALE")
-    @NotBlank
+    @NotNull
     private GenderType gender;
 
     @Schema(description = "수정할 스터디 방식", example = "CONTACT")
-    @NotBlank
+    @NotNull
     private StudyWayType studyWay;
 
     @Schema(description = "수정할 스터디 시작 날짜(ISO 8601)", example = "2023-08-23")
-    @NotBlank
+    @NotNull
     private LocalDate studyStartDate;
 
     @Schema(description = "수정할 스터디 종료 날짜(ISO 8601)", example = "2023-12-25")
-    @NotBlank
+    @NotNull
     private LocalDate studyEndDate;
 
     public UpdateStudyPostInfo toService(Long userId) {

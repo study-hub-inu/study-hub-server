@@ -27,6 +27,7 @@ public class FindPostResponseById {
     private LocalDate studyStartDate;
     private LocalDate studyEndDate;
     private int remainingSeat;
+    private String chatUrl;
     private boolean isUsersPost;
     private boolean isBookmarked;
     private UserData postedUser;
@@ -46,6 +47,7 @@ public class FindPostResponseById {
         this.studyStartDate = postData.getStudyStartDate();
         this.studyEndDate = postData.getStudyEndDate();
         this.remainingSeat = postData.getRemainingSeat();
+        this.chatUrl = postData.getCharUrl();
         this.isUsersPost = postData.isUsersPost();
         this.isBookmarked = postData.isBookmarked();
         this.postedUser = postData.getPostedUser();
