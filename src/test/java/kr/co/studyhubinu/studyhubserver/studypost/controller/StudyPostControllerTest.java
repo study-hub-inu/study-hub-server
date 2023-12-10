@@ -124,6 +124,38 @@ class StudyPostControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    void 스터디_게시글_삭제_성공() throws Exception {
+        // given
+        doNothing().when(studyPostService).deletePost(any(), any());
+
+        // when, then
+        ResultActions resultActions = mockMvc.perform(
+                delete("/api/v1/study-posts/1")
+                        .contentType(APPLICATION_JSON)
+        );
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 스터디_게시글_삭제_실패() throws Exception {
+        // given
+        doNothing().when(studyPostService).deletePost(any(), any());
+
+        // when, then
+        ResultActions resultActions = mockMvc.perform(
+                delete("/api/v1/study-post")
+                        .contentType(APPLICATION_JSON)
+        );
+
+        // then
+        resultActions.andExpect(status().is4xxClientError())
+                .andDo(print());
+    }
+
 
 
     @Test
