@@ -23,7 +23,7 @@ jobs:
         with:
           host port: 3306
           container port: 3306
-          mysql database: sh_db
+          mysql database: 'sh_db'
           mysql user: 'admin'
           mysql password: 'root'
           character set server: 'utf8'
