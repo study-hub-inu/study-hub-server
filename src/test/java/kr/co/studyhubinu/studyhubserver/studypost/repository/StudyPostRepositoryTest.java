@@ -236,4 +236,25 @@ public class StudyPostRepositoryTest {
                 () -> assertEquals(user.getId(), data.getUserData().getUserId())
         );
     }
+
+    @Test
+    void 스터디_시작_날짜와_마감이_안된_게시글은_마감으로_수정한다() {
+        // given
+        Long postedUserId = 1L;
+        StudyPostEntity post1 = StudyPostEntityFixture.SQLD.studyPostEntity_생성(postedUserId);
+        StudyPostEntity post2 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성(postedUserId);
+        studyPostRepository.save(post1);
+        studyPostRepository.save(post2);
+
+        // when
+        studyPostRepository.closeStudyPostsByStartDate(post1.getStudyStartDate());
+
+        List<StudyPostEntity> findPost = studyPostRepository.findAllById(List.of(post1.getId(), post2.getId()));
+
+        // then
+        assertAll(
+                () -> assertEquals(findPost.get(0).isClose(), true),
+                () -> assertEquals(findPost.get(1).isClose(), true)
+        );
+    }
 }

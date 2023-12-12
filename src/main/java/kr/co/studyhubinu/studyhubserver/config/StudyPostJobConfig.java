@@ -2,17 +2,20 @@ package kr.co.studyhubinu.studyhubserver.config;
 
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.*;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.JobScope;
+import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Slf4j
+import java.time.LocalDate;
+
 @Configuration
 @RequiredArgsConstructor
 public class StudyPostJobConfig {
@@ -24,7 +27,7 @@ public class StudyPostJobConfig {
     private final StudyPostRepository studyPostRepository;
 
     @Bean("studyPostJob")
-    public Job studyPostJob() {             // 빌더로 초기화하는 과정
+    public Job studyPostJob() {
         return jobBuilderFactory.get("studyPostJob")
                 .incrementer(new RunIdIncrementer())
                 .start(changeStudyPostCloseByDeadline())
@@ -39,7 +42,7 @@ public class StudyPostJobConfig {
     @JobScope
     @Bean("changeStudyPostCloseByDeadline")
     public Step changeStudyPostCloseByDeadline() {
-        return stepBuilderFactory.get("changeBoardStatus")
+        return stepBuilderFactory.get("changeStudyPostCloseByDeadline")
                 .tasklet(studyPostTasklet())
                 .build();
     }
@@ -48,7 +51,7 @@ public class StudyPostJobConfig {
     @Bean("studyPostTasklet")
     public Tasklet studyPostTasklet() {
         return (contribution, chunkContext) -> {
-            log.info("***********실행중 실행중 실행중**************");
+            studyPostRepository.closeStudyPostsByStartDate(LocalDate.now());
             return RepeatStatus.FINISHED;
         };
     }
