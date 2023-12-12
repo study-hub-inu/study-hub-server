@@ -1,14 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.studypost.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
-import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import kr.co.studyhubinu.studyhubserver.support.controller.ControllerRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -22,37 +20,34 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static kr.co.studyhubinu.studyhubserver.studypost.controller.CreatePostRequestFixture.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = StudyPostController.class, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebConfig.class)
 })
-class StudyPostControllerTest {
+class StudyPostControllerTest extends ControllerRequest {
 
-    @Autowired
-    MockMvc mockMvc;
 
     @MockBean
     StudyPostService studyPostService;
+
+    @Autowired
+    MockMvc mockMvc;
 
     @MockBean
     StudyPostFindService studyPostFindService;
 
     @MockBean
     UserIdArgumentResolver userIdArgumentResolver;
-
-    ObjectMapper objectMapper = new ObjectMapper();
 
     static Stream<Arguments> requestParameters() {
         return Stream.of(
@@ -74,14 +69,10 @@ class StudyPostControllerTest {
         when(studyPostService.createPost(any())).thenReturn(1L);
 
         // when, then
-        ResultActions resultActions = mockMvc.perform(
-                post("/api/v1/study-posts")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createPostRequest))
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/study-posts", createPostRequest);
 
         MvcResult mvcResult = resultActions.andReturn();
-        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+        String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         // then
         resultActions.andExpect(status().is4xxClientError())
@@ -95,11 +86,7 @@ class StudyPostControllerTest {
         when(studyPostService.createPost(any())).thenReturn(1L);
 
         // when, then
-        ResultActions resultActions = mockMvc.perform(
-                post("/api/v1/study-posts")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(CreatePostRequestFixture.createPostRequest_생성(CORRECT_POST)))
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/study-posts", CreatePostRequestFixture.createPostRequest_생성(CORRECT_POST));
 
         // then
         resultActions.andExpect(status().isOk())
@@ -113,11 +100,7 @@ class StudyPostControllerTest {
         UpdatePostRequest updatePostRequest = CreatePostRequestFixture.updatePostRequest_생성(CORRECT_POST);
 
         // when, then
-        ResultActions resultActions = mockMvc.perform(
-                put("/api/v1/study-posts")
-                        .contentType(APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatePostRequest))
-        );
+        ResultActions resultActions = performPutRequest("/api/v1/study-posts", updatePostRequest);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -130,10 +113,7 @@ class StudyPostControllerTest {
         doNothing().when(studyPostService).deletePost(any(), any());
 
         // when, then
-        ResultActions resultActions = mockMvc.perform(
-                delete("/api/v1/study-posts/1")
-                        .contentType(APPLICATION_JSON)
-        );
+        ResultActions resultActions = performDeleteRequest("/api/v1/study-posts/1");
 
         // then
         resultActions.andExpect(status().isOk())
@@ -146,17 +126,30 @@ class StudyPostControllerTest {
         doNothing().when(studyPostService).deletePost(any(), any());
 
         // when, then
-        ResultActions resultActions = mockMvc.perform(
-                delete("/api/v1/study-post")
-                        .contentType(APPLICATION_JSON)
-        );
+        ResultActions resultActions = performDeleteRequest("/api/v1/study-post");
 
         // then
         resultActions.andExpect(status().is4xxClientError())
                 .andDo(print());
     }
 
-
+//    @Test
+//    void 북마크한_스터디_조회_성공() throws Exception {
+//        // given
+//        when(studyPostFindService.getBookmarkedPosts(0, 3, any())).thenReturn(new GetBookmarkedPostsResponse(null, null));
+//
+//        // when, then
+//        ResultActions resultActions = mockMvc.perform(
+//                get("/api/v1/study-posts/bookmarked")
+//                        .contentType(APPLICATION_JSON)
+//                        .param("page", "0")
+//                        .param("size", "3")
+//        );
+//
+//        // then
+//        resultActions.andExpect(status().isOk())
+//                .andDo(print());
+//    }
 
     @Test
     void 북마크한_스터디_조회_실패() {
