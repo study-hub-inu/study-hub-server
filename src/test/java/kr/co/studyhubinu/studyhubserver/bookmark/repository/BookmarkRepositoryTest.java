@@ -6,7 +6,6 @@ import kr.co.studyhubinu.studyhubserver.support.fixture.BookmarkEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -15,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RepositoryTest
-@ActiveProfiles("dev")
 public class BookmarkRepositoryTest {
 
     @Autowired
