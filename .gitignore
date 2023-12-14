@@ -15,7 +15,7 @@ build/bootJarMainClassName
 
 
 *.yml
-!application.yml
+application.yml
 !application-prod.yml
 !deploy.yml
 !application-ci.yml
