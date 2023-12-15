@@ -170,6 +170,16 @@ class StudyPostControllerTest extends ControllerRequest {
 
     @Test
     void 스터디_단건_조회_성공() throws Exception{
+        // given
+        when(studyPostFindService.findPostById(any(), any())).thenReturn(null);
 
+        // when, then
+        ResultActions resultActions = performGetRequest("/api/v1/study-posts/1", null);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
     }
+
+
 }
