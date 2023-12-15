@@ -101,4 +101,8 @@ public class StudyPostEntity extends BaseTimeEntity {
     public boolean isPostOfUser(Long userId) {
         return this.postedUserId.equals(userId);
     }
+
+    public void close() {
+        this.close = true;
+    }
 }

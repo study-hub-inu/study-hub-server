@@ -88,4 +88,10 @@ public class StudyPostController {
     public ResponseEntity<Slice<FindPostResponseByInquiry>> findPostByAllString(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
         return ResponseEntity.ok(studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId()));
     }
+
+    @PutMapping("/v1/study-posts/{post-id}/close")
+    public ResponseEntity<HttpStatus> closePost(@PathVariable("post-id") Long postId, UserId userId) {
+        studyPostService.closePost(postId, userId.getId());
+        return ResponseEntity.ok().build();
+    }
 }
