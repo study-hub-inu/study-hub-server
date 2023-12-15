@@ -21,11 +21,14 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static kr.co.studyhubinu.studyhubserver.studypost.controller.CreatePostRequestFixture.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -133,29 +136,40 @@ class StudyPostControllerTest extends ControllerRequest {
                 .andDo(print());
     }
 
-//    @Test
-//    void 북마크한_스터디_조회_성공() throws Exception {
-//        // given
-//        when(studyPostFindService.getBookmarkedPosts(0, 3, any())).thenReturn(new GetBookmarkedPostsResponse(null, null));
-//
-//        // when, then
-//        ResultActions resultActions = mockMvc.perform(
-//                get("/api/v1/study-posts/bookmarked")
-//                        .contentType(APPLICATION_JSON)
-//                        .param("page", "0")
-//                        .param("size", "3")
-//        );
-//
-//        // then
-//        resultActions.andExpect(status().isOk())
-//                .andDo(print());
-//    }
-
     @Test
-    void 북마크한_스터디_조회_실패() {
+    void 북마크한_스터디_조회_성공() throws Exception {
+        // given
+        when(studyPostFindService.getBookmarkedPosts(anyInt(), anyInt(), any())).thenReturn(null);
+        Map<String, String> params = new HashMap<>();
+        params.put("page", "0");
+        params.put("size", "3");
+
+        // when, then
+        ResultActions resultActions = performGetRequest("/api/v1/study-posts/bookmarked", params);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
-    void findPostByAllString() {
+    void 북마크한_스터디_조회_실패() throws Exception {
+        // given
+        when(studyPostFindService.getBookmarkedPosts(anyInt(), anyInt(), any())).thenReturn(null);
+        Map<String, String> params = new HashMap<>();
+        params.put("page", "0");
+
+        // when, then
+        ResultActions resultActions = performGetRequest("/api/v1/study-posts/bookmarked", params);
+
+        // then
+        resultActions.andExpect(status().is4xxClientError())
+                .andDo(print());
+
+    }
+
+    @Test
+    void 스터디_단건_조회_성공() throws Exception{
+
     }
 }
