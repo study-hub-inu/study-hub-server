@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -29,6 +30,7 @@ public class PostData {
     private final boolean isBookmarked;
     private final UserData postedUser;
 
+    @Builder
     public PostData(Long postId, String title, LocalDateTime createdDate, String content, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, String charUrl, int remainingSeat, boolean isUsersPost, boolean isBookmarked, UserData postedUser) {
         this.postId = postId;
         this.title = title;

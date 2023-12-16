@@ -2,11 +2,16 @@ package kr.co.studyhubinu.studyhubserver.studypost.controller;
 
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.support.controller.ControllerRequest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -16,21 +21,24 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static kr.co.studyhubinu.studyhubserver.studypost.controller.CreatePostRequestFixture.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,7 +83,7 @@ class StudyPostControllerTest extends ControllerRequest {
         ResultActions resultActions = performPostRequest("/api/v1/study-posts", createPostRequest);
 
         MvcResult mvcResult = resultActions.andReturn();
-        String responseBody = mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
         // then
         resultActions.andExpect(status().is4xxClientError())
@@ -139,17 +147,25 @@ class StudyPostControllerTest extends ControllerRequest {
     @Test
     void 북마크한_스터디_조회_성공() throws Exception {
         // given
-        when(studyPostFindService.getBookmarkedPosts(anyInt(), anyInt(), any())).thenReturn(null);
+        Slice<GetBookmarkedPostsData> data = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
+        when(studyPostFindService.getBookmarkedPosts(anyInt(), anyInt(), any())).
+                thenReturn(new GetBookmarkedPostsResponse(1L, data));
+
         Map<String, String> params = new HashMap<>();
         params.put("page", "0");
         params.put("size", "3");
 
         // when, then
         ResultActions resultActions = performGetRequest("/api/v1/study-posts/bookmarked", params);
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
         // then
         resultActions.andExpect(status().isOk())
                 .andDo(print());
+
+        Assertions.assertThat(responseBody).contains("\"totalCount\":1");
+        Assertions.assertThat(responseBody).contains("getBookmarkedPostsData");
     }
 
     @Test
@@ -165,21 +181,22 @@ class StudyPostControllerTest extends ControllerRequest {
         // then
         resultActions.andExpect(status().is4xxClientError())
                 .andDo(print());
-
     }
 
     @Test
-    void 스터디_단건_조회_성공() throws Exception{
+    void 스터디_단건_조회_성공() throws Exception {
         // given
-        when(studyPostFindService.findPostById(any(), any())).thenReturn(null);
+        PostData postData = PostData.builder().build();
+        when(studyPostFindService.findPostById(any(), any())).thenReturn(new FindPostResponseById(postData, new ArrayList<>()));
 
         // when, then
         ResultActions resultActions = performGetRequest("/api/v1/study-posts/1", null);
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
         // then
         resultActions.andExpect(status().isOk())
                 .andDo(print());
+        Assertions.assertThat(responseBody).contains("postId", "title", "createdDate", "content", "major", "studyPerson", "filteredGender", "studyWay", "penalty");
     }
-
-
 }
