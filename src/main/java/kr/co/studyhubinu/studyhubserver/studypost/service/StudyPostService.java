@@ -52,12 +52,4 @@ public class StudyPostService {
         studyPostValidator.validIsPostOfUser(user.getId(), post);
         studyPostRepository.delete(post);
     }
-
-    public Slice<FindPostResponseByAll> findPostResponseByAll(Pageable pageable) {
-        return studyPostRepository.findByAll(pageable);
-    }
-
-    public Slice<FindPostResponseByRemainingSeat> findPostResponseByBookMark(Pageable pageable) {
-        return studyPostRepository.findPostsByRemainingSeat(pageable);
-    }
 }

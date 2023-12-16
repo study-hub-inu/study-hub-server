@@ -15,7 +15,8 @@ public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long
 
     @Query("SELECT new kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData(sp.id, sp.major, sp.title, sp.content, sp.remainingSeat, sp.close) " +
             "FROM StudyPostEntity sp " +
-            "WHERE sp.postedUserId = :userId")
+            "WHERE sp.postedUserId = :userId " +
+            "order by sp.createdDate desc")
     Slice<GetMyPostData> findSliceByPostedUserId(Long userId, Pageable pageable);
 
     Long countByPostedUserId(Long userId);
