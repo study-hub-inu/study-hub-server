@@ -41,8 +41,8 @@ class CommentRepositoryTest {
         CommentResponse commentResponse1 = comments.getContent().get(1);
         CommentResponse commentResponse2 = comments.getContent().get(0);
 
-        System.out.println("***********************" + commentResponse1.getContent() + commentResponse1.getCreatedDate());
-        System.out.println("***********************" + commentResponse2.getContent() + commentResponse2.getCreatedDate());
+        System.out.println("***********************" + commentResponse1.getContent() + commentResponse1.getCreatedDate().getNano());
+        System.out.println("***********************" + commentResponse2.getContent() + commentResponse2.getCreatedDate().getNano());
 
         assertAll(
                 () -> assertEquals(comment1.getId(), commentResponse1.getCommentId()),
