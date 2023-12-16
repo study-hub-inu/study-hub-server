@@ -17,14 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class StudyPostService {
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
     private final StudyPostValidator studyPostValidator;
 
-
+    @Transactional
     public Long createPost(StudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity studyPost = info.toEntity(user.getId());
@@ -33,6 +33,7 @@ public class StudyPostService {
 
     }
 
+    @Transactional
     public Long updatePost(UpdateStudyPostInfo info) {
         UserEntity user = userRepository.findById(info.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(info.getPostId()).orElseThrow(PostNotFoundException::new);
@@ -42,10 +43,19 @@ public class StudyPostService {
         return post.getId();
     }
 
+    @Transactional
     public void deletePost(Long postId, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyPostEntity post = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
         studyPostValidator.validIsPostOfUser(user.getId(), post);
         studyPostRepository.delete(post);
+    }
+
+    @Transactional
+    public void closePost(Long postId, Long userId) {
+        final UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        final StudyPostEntity post = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        studyPostValidator.validIsPostOfUser(user.getId(), post);
+        post.close();
     }
 }
