@@ -1,13 +1,15 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/sh_db;
     driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sh_db
     username: admin
     password: root
+
   sql:
     init:
       mode: always
       schema-locations: classpath:schema.sql
+
   jpa:
     open-in-view: true
     hibernate:
@@ -37,7 +39,6 @@ logging:
     org:
       springframework:
         cache: DEBUG
-
 
 # debug info warn error
 
