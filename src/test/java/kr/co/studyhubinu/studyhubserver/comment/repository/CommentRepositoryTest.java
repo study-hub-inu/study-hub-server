@@ -29,7 +29,6 @@ class CommentRepositoryTest {
         CommentEntity comment1 = CommentEntityFixture.COMMENT_1.commentEntity_생성(userId, postId);
         CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(userId, postId);
         commentRepository.save(comment1);
-        Thread.sleep(1000 * 3);
         commentRepository.save(comment2);
 
         // when
