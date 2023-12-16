@@ -39,6 +39,10 @@ class CommentRepositoryTest {
         assertThat(comments.getContent()).hasSize(2);
         CommentResponse commentResponse1 = comments.getContent().get(1);
         CommentResponse commentResponse2 = comments.getContent().get(0);
+
+        System.out.println("***********************" + commentResponse1.getContent() + commentResponse1.getCreatedDate());
+        System.out.println("***********************" + commentResponse2.getContent() + commentResponse2.getCreatedDate());
+
         assertAll(
                 () -> assertEquals(comment1.getId(), commentResponse1.getCommentId()),
                 () -> assertEquals(comment1.getContent(), commentResponse1.getContent()),
