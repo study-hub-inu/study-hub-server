@@ -67,7 +67,7 @@ public class StudyPostController {
         return ResponseEntity.ok(findPostResponseById);
     }
 
-    @Operation(summary = "내가 쓴 스터디 조회")
+    @Operation(summary = "내가 작성한 스터디 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
