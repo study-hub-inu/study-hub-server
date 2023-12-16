@@ -19,9 +19,7 @@ public interface StudyPostRepositoryCustom {
 
     Slice<FindPostResponseByInquiry> findByInquiry(final InquiryRequest inquiryRequest, Pageable pageable, Long userId);
 
-
     Slice<GetBookmarkedPostsData> findPostsByBookmarked(Long userId, Pageable pageable);
-
 
     List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId);
 

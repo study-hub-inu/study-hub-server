@@ -22,7 +22,7 @@ class UserRepositoryTest {
     @Test
     void 유저가_회원가입한다() {
         // given
-        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
+        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
 
         // when
         UserEntity saveUser = userRepository.save(user);
@@ -36,11 +36,11 @@ class UserRepositoryTest {
     @Test
     void 식별자값으로_유저를_조회한다() {
         // given
-        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
+        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
         userRepository.save(user);
 
         // when
-        UserEntity findUserById = userRepository.findById(1L).orElseThrow(UserNotFoundException::new);
+        UserEntity findUserById = userRepository.findById(user.getId()).orElseThrow(UserNotFoundException::new);
 
         // then
         assertAll(
@@ -51,7 +51,7 @@ class UserRepositoryTest {
     @Test
     void 이메일로_유저를_조회한다() {
         // given
-        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
+        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
         userRepository.save(user);
 
         // when
@@ -66,7 +66,7 @@ class UserRepositoryTest {
     @Test
     void 닉네임으로_유저를_조회한다() {
         // given
-        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
+        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
         userRepository.save(user);
 
         // when
@@ -81,7 +81,7 @@ class UserRepositoryTest {
     @Test
     void 이메일로_유저_존재여부를_확인한다() {
         // given
-        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성(1L);
+        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
         userRepository.save(user);
 
         // when
