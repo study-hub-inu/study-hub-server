@@ -1,12 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
+import kr.co.studyhubinu.studyhubserver.support.controller.ControllerRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
@@ -27,6 +27,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.*;
@@ -35,14 +37,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(value = UserController.class, excludeFilters = {
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebConfig.class)
 })
-public class UserControllerTest {
+public class UserControllerTest extends ControllerRequest {
 
     @Autowired
     MockMvc mockMvc;
@@ -53,7 +54,6 @@ public class UserControllerTest {
     @MockBean
     UserIdArgumentResolver userIdArgumentResolver;
 
-    ObjectMapper objectMapper = new ObjectMapper();
 
     static Stream<Arguments> passwordParameters() {
         return Stream.of(
@@ -81,11 +81,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                post("/api/v1/users/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signUpRequest))
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/users/signup", signUpRequest);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -104,12 +100,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                post("/api/v1/users/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signUpRequest))
-                        .characterEncoding("UTF-8")
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/users/signup", signUpRequest);
 
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
@@ -132,12 +123,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                post("/api/v1/users/signup")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signUpRequest))
-                        .characterEncoding("UTF-8")
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/users/signup", signUpRequest);
 
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
@@ -162,12 +148,8 @@ public class UserControllerTest {
                 .build());
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                post("/api/v1/users/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signInRequest))
-                        .characterEncoding("UTF-8")
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/users/login", signInRequest);
+
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
@@ -190,11 +172,7 @@ public class UserControllerTest {
                 .build());
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-        );
+        ResultActions resultActions = performGetRequest("/api/v1/users", null);
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
@@ -208,14 +186,11 @@ public class UserControllerTest {
     void 닉네임_중복검사_중복X() throws Exception {
         // given
         doNothing().when(userService).nicknameDuplicationValid(any());
+        Map<String, String> params = new HashMap<>();
+        params.put("nickname", "dw");
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.get("/api/v1/users/duplication-nickname")
-                        .param("nickname", "dw")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding("UTF-8")
-        );
+        ResultActions resultActions = performGetRequest("/api/v1/users/duplication-nickname", params);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -252,11 +227,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/users/nickname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateNicknameRequest))
-        );
+        ResultActions resultActions = performPutRequest("/api/v1/users/nickname", updateNicknameRequest);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -272,11 +243,8 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/users/nickname")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateNicknameRequest))
-        );
+        ResultActions resultActions = performPutRequest("/api/v1/users/nickname", updateNicknameRequest);
+
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
@@ -296,11 +264,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/users/password")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatePasswordRequest))
-        );
+        ResultActions resultActions = performPutRequest("/api/v1/users/password", updatePasswordRequest);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -318,11 +282,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/users/password")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatePasswordRequest))
-        );
+        ResultActions resultActions = performPutRequest("/api/v1/users/password", updatePasswordRequest);
 
         // then
         resultActions.andExpect(status().is4xxClientError())
@@ -338,11 +298,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.put("/api/v1/users/major")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updateMajorRequest))
-        );
+        ResultActions resultActions = performPutRequest("/api/v1/users/major", updateMajorRequest);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -358,11 +314,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/users/password/verify")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(verifyPasswordRequest))
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/users/password/verify", verifyPasswordRequest);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -378,11 +330,7 @@ public class UserControllerTest {
                 .build();
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/api/v1/users/password/verify")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(verifyPasswordRequest))
-        );
+        ResultActions resultActions = performPostRequest("/api/v1/users/password/verify", verifyPasswordRequest);
 
         // then
         MvcResult mvcResult = resultActions.andReturn();
@@ -400,9 +348,7 @@ public class UserControllerTest {
         doNothing().when(userService).deleteUser(any());
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/v1/users")
-        );
+        ResultActions resultActions = performDeleteRequest("/api/v1/users");
 
         // then
         resultActions.andExpect(status().isOk())
@@ -415,9 +361,8 @@ public class UserControllerTest {
         willThrow(new UserNotFoundException()).given(userService).deleteUser(any());
 
         // when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.delete("/api/v1/users")
-        );
+        ResultActions resultActions = performDeleteRequest("/api/v1/users");
+
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
