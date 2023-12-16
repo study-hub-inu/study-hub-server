@@ -22,13 +22,14 @@ class CommentRepositoryTest {
     private CommentRepository commentRepository;
 
     @Test
-    void 게시글과_유저의_식별자로_댓글을_최신순으로_조회한다() {
+    void 게시글과_유저의_식별자로_댓글을_최신순으로_조회한다() throws InterruptedException {
         // given
         Long userId = 1L;
         Long postId = 3L;
         CommentEntity comment1 = CommentEntityFixture.COMMENT_1.commentEntity_생성(userId, postId);
         CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(userId, postId);
         commentRepository.save(comment1);
+        Thread.sleep(1000 * 3);
         commentRepository.save(comment2);
 
         // when
