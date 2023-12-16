@@ -8,6 +8,7 @@ import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetMyPostResponse;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
@@ -116,10 +117,13 @@ class StudyPostControllerTest extends ControllerRequest {
 
         // when, then
         ResultActions resultActions = performPutRequest("/api/v1/study-posts", updatePostRequest);
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
         // then
         resultActions.andExpect(status().isOk())
                 .andDo(print());
+        assertThat(responseBody).contains("1");
     }
 
     @Test
@@ -224,6 +228,31 @@ class StudyPostControllerTest extends ControllerRequest {
 
         assertThat(responseBody).contains("\"totalCount\":3");
         assertThat(responseBody).contains("\"getMyPostData\"");
+    }
 
+    @Test
+    void 스터디_게시글_전체_조회_성공() throws Exception {
+        // given
+        SliceImpl<FindPostResponseByInquiry> slice = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
+        Map<String, String> params = new HashMap<>();
+        params.put("page", "0");
+        params.put("size", "3");
+        params.put("inquiry", "true");
+        params.put("titleAndMajor", "true");
+        params.put("hot", "true");
+
+        when(studyPostFindService.findPostResponseByInquiry(any(), anyInt(), anyInt(), any())).thenReturn(slice);
+
+        // when
+        ResultActions resultActions = performGetRequest("/api/v1/study-posts", params);
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+
+        assertThat(responseBody).contains("\"pageNumber\":1");
+        assertThat(responseBody).contains("\"pageSize\":3");
     }
 }

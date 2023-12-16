@@ -42,7 +42,7 @@ public class StudyPostController {
     @PutMapping("/v1/study-posts")
     public ResponseEntity<Long> updatePost(@Valid @RequestBody UpdatePostRequest request, UserId userId) {
         Long postId = studyPostService.updatePost(request.toService(userId.getId()));
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(postId);
     }
 
     @Operation(summary = "스터디 게시글 삭제", description = "Http 헤더에 JWT accessToken 과 함께 게시글 Id를 보내주시면 됩니다.")
