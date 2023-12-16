@@ -103,21 +103,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public Slice<FindPostResponseByAll> findByAll(Pageable pageable) {
-        QStudyPostEntity post = studyPostEntity;
-
-        JPAQuery<FindPostResponseByAll> studyPostDto = jpaQueryFactory
-                .select(Projections.constructor(FindPostResponseByAll.class,
-                        post.id, post.major, post.title, post.content, post.studyPerson, post.studyPerson, post.close))
-                .from(post)
-                .orderBy(post.createdDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1);
-
-        return toSlice(pageable, studyPostDto.fetch());
-    }
-
-    @Override
     public Slice<GetBookmarkedPostsData> findPostsByBookmarked(Long userId, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
         QBookmarkEntity bookmark = bookmarkEntity;
@@ -132,21 +117,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
-
-        return toSlice(pageable, studyPostDto.fetch());
-    }
-
-    @Override
-    public Slice<FindPostResponseByRemainingSeat> findPostsByRemainingSeat(Pageable pageable) {
-        QStudyPostEntity post = studyPostEntity;
-
-        JPAQuery<FindPostResponseByRemainingSeat> studyPostDto = jpaQueryFactory.select(
-                        Projections.constructor(FindPostResponseByRemainingSeat.class,
-                                post.id.as("postId"), post.title, post.studyPerson, post.remainingSeat))
-                .from(post)
-                .orderBy(post.remainingSeat.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize());
 
         return toSlice(pageable, studyPostDto.fetch());
     }

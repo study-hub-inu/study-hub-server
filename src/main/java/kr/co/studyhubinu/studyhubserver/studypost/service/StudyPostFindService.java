@@ -47,18 +47,22 @@ public class StudyPostFindService {
 
     public GetMyPostResponse getMyPosts(int page, int size, Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        Pageable pageable = PageRequest.of(page, size);
         Long totalCount = studyPostRepository.countByPostedUserId(userId);
         Slice<GetMyPostData> getMyPostData = studyPostRepository.findSliceByPostedUserId(user.getId(), pageable);
         return new GetMyPostResponse(totalCount, getMyPostData);
     }
 
     public GetBookmarkedPostsResponse getBookmarkedPosts(int page, int size, Long userId) {
-        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        isExistUser(userId);
+        Pageable pageable = PageRequest.of(page, size);
         Long totalCount = bookMarkRepository.countByUserId(userId);
         Slice<GetBookmarkedPostsData> getBookmarkedPostsData = studyPostRepository.findPostsByBookmarked(userId, pageable);
         return new GetBookmarkedPostsResponse(totalCount, getBookmarkedPostsData);
+    }
+
+    private void isExistUser(Long userId) {
+        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
     private List<RelatedPostData> getRelatedPosts(MajorType major, Long exceptPostId) {
