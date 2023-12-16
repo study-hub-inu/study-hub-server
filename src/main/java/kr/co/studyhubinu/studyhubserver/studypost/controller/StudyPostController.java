@@ -87,8 +87,8 @@ public class StudyPostController {
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
     @GetMapping("/v1/study-posts")
-    public ResponseEntity<Slice<FindPostResponseByInquiry>> findPostByAllString(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
-        Slice<FindPostResponseByInquiry> findPostResponseByInquiries = studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId());
+    public ResponseEntity<Slice<FindPostResponseByInquiry>> findAllPost(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
+        Slice<FindPostResponseByInquiry> findPostResponseByInquiries = studyPostFindService.findAllPost(inquiryRequest, page, size, userId.getId());
         return ResponseEntity.ok(findPostResponseByInquiries);
     }
 

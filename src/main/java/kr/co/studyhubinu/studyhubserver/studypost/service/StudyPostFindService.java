@@ -36,7 +36,7 @@ public class StudyPostFindService {
     private final UserRepository userRepository;
     private final BookmarkRepository bookMarkRepository;
 
-    public Slice<FindPostResponseByInquiry> findPostResponseByInquiry(final InquiryRequest inquiryRequest, final int page, final int size, Long userId) {
+    public Slice<FindPostResponseByInquiry> findAllPost(final InquiryRequest inquiryRequest, final int page, final int size, Long userId) {
         return studyPostRepository.findByInquiry(inquiryRequest, PageRequest.of(page, size), userId);
     }
 

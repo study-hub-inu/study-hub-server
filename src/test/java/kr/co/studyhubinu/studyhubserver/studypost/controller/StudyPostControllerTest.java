@@ -241,7 +241,7 @@ class StudyPostControllerTest extends ControllerRequest {
         params.put("titleAndMajor", "true");
         params.put("hot", "true");
 
-        when(studyPostFindService.findPostResponseByInquiry(any(), anyInt(), anyInt(), any())).thenReturn(slice);
+        when(studyPostFindService.findAllPost(any(), anyInt(), anyInt(), any())).thenReturn(slice);
 
         // when
         ResultActions resultActions = performGetRequest("/api/v1/study-posts", params);
