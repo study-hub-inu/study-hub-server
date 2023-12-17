@@ -29,6 +29,7 @@ class CommentRepositoryTest {
         CommentEntity comment1 = CommentEntityFixture.COMMENT_1.commentEntity_생성(userId, postId);
         CommentEntity comment2 = CommentEntityFixture.COMMENT_2.commentEntity_생성(userId, postId);
         commentRepository.save(comment1);
+        Thread.sleep(1000 * 2);
         commentRepository.save(comment2);
 
         // when
@@ -39,9 +40,6 @@ class CommentRepositoryTest {
         assertThat(comments.getContent()).hasSize(2);
         CommentResponse commentResponse1 = comments.getContent().get(1);
         CommentResponse commentResponse2 = comments.getContent().get(0);
-
-        System.out.println("***********************" + commentResponse1.getContent() + commentResponse1.getCreatedDate().getNano());
-        System.out.println("***********************" + commentResponse2.getContent() + commentResponse2.getCreatedDate().getNano());
 
         assertAll(
                 () -> assertEquals(comment1.getId(), commentResponse1.getCommentId()),
