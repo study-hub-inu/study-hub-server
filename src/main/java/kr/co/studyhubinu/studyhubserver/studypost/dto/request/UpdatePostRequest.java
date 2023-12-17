@@ -12,12 +12,14 @@ import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
+@NoArgsConstructor
 public class UpdatePostRequest {
 
     @Schema(description = "수정할 투표 게시글 id", example = "1")

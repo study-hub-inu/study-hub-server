@@ -14,12 +14,14 @@ import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Getter
+@NoArgsConstructor
 public class CreatePostRequest {
 
     @Schema(description = "제목", example = "정보처리기사")
