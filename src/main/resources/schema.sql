@@ -16,8 +16,8 @@ CREATE TABLE users
     image_url          VARCHAR(255) DEFAULT NULL,
     gender             VARCHAR(6)   DEFAULT NULL,
     major              VARCHAR(50)  DEFAULT NULL,
-    created_date       TIMESTAMP    DEFAULT NULL,
-    modified_date      TIMESTAMP    DEFAULT NULL,
+    created_date       TIMESTAMP(3)    DEFAULT NULL,
+    modified_date      TIMESTAMP(3)    DEFAULT NULL,
     PRIMARY KEY (user_id)
 );
 
@@ -52,8 +52,8 @@ CREATE TABLE study
     study_start_date   DATE          DEFAULT NULL,
     study_end_date     DATE          DEFAULT NULL,
     chat_url           VARCHAR(100)  DEFAULT NULL,
-    created_date       TIMESTAMP     DEFAULT NULL,
-    modified_date      TIMESTAMP     DEFAULT NULL,
+    created_date       TIMESTAMP(3)     DEFAULT NULL,
+    modified_date      TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (study_id)
 );
 
@@ -64,8 +64,8 @@ CREATE TABLE alarm
     post_id            BIGINT        NOT NULL,
     alarm_category     VARCHAR(15)   DEFAULT NULL,
     checked            TINYINT       DEFAULT 0,
-    created_date       TIMESTAMP     DEFAULT NULL,
-    modified_date      TIMESTAMP     DEFAULT NULL,
+    created_date       TIMESTAMP(3)     DEFAULT NULL,
+    modified_date      TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (alarm_id)
 );
 
@@ -74,8 +74,8 @@ CREATE TABLE bookmark
     bookmark_id        BIGINT NOT NULL AUTO_INCREMENT,
     post_id            BIGINT        NOT NULL,
     user_id            BIGINT        NOT NULL,
-    created_date       TIMESTAMP     DEFAULT NULL,
-    modified_date      TIMESTAMP     DEFAULT NULL,
+    created_date       TIMESTAMP(3)     DEFAULT NULL,
+    modified_date      TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (bookmark_id)
 );
 
