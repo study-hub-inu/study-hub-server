@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RepositoryTest
-public class StudyPostRepositoryTest {
+class StudyPostRepositoryTest {
 
     @Autowired
     private StudyPostRepository studyPostRepository;
