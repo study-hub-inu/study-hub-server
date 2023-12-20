@@ -1,22 +1,23 @@
 package kr.co.studyhubinu.studyhubserver.studypost.dto.data;
 
-import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.Getter;
 
 @Getter
-public class RelatedPostData {
+public class PostDataByBookmark {
     private Long postId;
-    private String title;
     private MajorType major;
+    private String title;
+    private String content;
     private int remainingSeat;
-    private UserData postedUser;
+    private boolean close;
 
-    public RelatedPostData(Long postId, String title, MajorType major, int remainingSeat, UserData postedUser) {
+    public PostDataByBookmark(Long postId, MajorType major, String title, String content, int remainingSeat, boolean close) {
         this.postId = postId;
-        this.title = title;
         this.major = major;
+        this.title = title;
+        this.content = content;
         this.remainingSeat = remainingSeat;
-        this.postedUser = postedUser;
+        this.close = close;
     }
 }

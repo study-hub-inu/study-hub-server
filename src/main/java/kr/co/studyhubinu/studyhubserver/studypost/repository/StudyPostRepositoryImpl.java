@@ -9,19 +9,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookmarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.IntegratedPostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,13 +32,13 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<IntegratedPostData> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
+    public List<PostDataByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
         QBookmarkEntity bookmark = bookmarkEntity;
 
-        JPAQuery<IntegratedPostData> data = jpaQueryFactory
-                .select(Projections.constructor(IntegratedPostData.class,
+        JPAQuery<PostDataByInquiry> data = jpaQueryFactory
+                .select(Projections.constructor(PostDataByInquiry.class,
                         post.id.as("postId"), post.major, post.title, post.studyStartDate, post.studyEndDate,
                         post.createdDate, post.studyPerson, post.filteredGender,
                         post.penalty, post.penaltyWay, post.remainingSeat, post.close,
@@ -70,12 +64,12 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public List<IntegratedPostData> findPostsByBookmarked(Long userId, Pageable pageable) {
+    public List<PostDataByBookmark> findPostsByBookmarked(Long userId, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
         QBookmarkEntity bookmark = bookmarkEntity;
 
-        JPAQuery<IntegratedPostData> studyPostDto = jpaQueryFactory.select(
-                        Projections.constructor(IntegratedPostData.class,
+        JPAQuery<PostDataByBookmark> studyPostDto = jpaQueryFactory.select(
+                        Projections.constructor(PostDataByBookmark.class,
                                 post.id.as("postId"), post.major, post.title, post.content, post.remainingSeat, post.close))
                 .from(post)
                 .innerJoin(bookmark)
@@ -86,6 +80,29 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .limit(pageable.getPageSize() + 1);
 
         return studyPostDto.fetch();
+    }
+
+    @Override
+    public List<PostDataByUserId> findByPostedUserId(final Long userId, final Pageable pageable) {
+        QStudyPostEntity post = studyPostEntity;
+        JPAQuery<PostDataByUserId> data = jpaQueryFactory.select(
+                        Projections.constructor(PostDataByUserId.class,
+                                post.id.as("postId"),
+                                post.major,
+                                post.title,
+                                post.content,
+                                post.remainingSeat,
+                                post.close
+                        )
+                )
+                .from(post)
+                .where(post.postedUserId.eq(userId))
+                .orderBy(post.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1);
+
+
+        return data.fetch();
     }
 
     @Override
@@ -120,11 +137,11 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
 
     @Override
-    public List<IntegratedPostData> findByMajor(MajorType major, Long exceptPostId) {
+    public List<PostDataByMajor> findByMajor(MajorType major, Long exceptPostId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
-        JPAQuery<IntegratedPostData> data = jpaQueryFactory.select(
-                        Projections.constructor(IntegratedPostData.class,
+        JPAQuery<PostDataByMajor> data = jpaQueryFactory.select(
+                        Projections.constructor(PostDataByMajor.class,
                                 post.id.as("postId"),
                                 post.title,
                                 post.major,
@@ -178,7 +195,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     private Predicate bookmarkPredicate(Long userId, QBookmarkEntity bookmark) {
-        if(userId != null) {
+        if (userId != null) {
             return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
         }
         return Expressions.asBoolean(Expressions.constant(false));

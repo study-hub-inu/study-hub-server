@@ -30,7 +30,6 @@ public class StudyPostService {
         StudyPostEntity studyPost = info.toEntity(user.getId());
         studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         return studyPostRepository.save(studyPost).getId();
-
     }
 
     @Transactional

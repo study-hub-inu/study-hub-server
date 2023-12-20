@@ -10,19 +10,11 @@ import java.util.stream.Collectors;
 
 public class Converter {
 
-    public static <T, U> Slice<U> toSlice(List<T> persistenceDto, Function<T, U> constructor, final Pageable pageable) {
-        List<U> items = toApplicationDto(persistenceDto, constructor);
-
+    public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
         if (items.size() > pageable.getPageSize()) {
             items.remove(items.size() - 1);
             return new SliceImpl<>(items, pageable, true);
         }
         return new SliceImpl<>(items, pageable, false);
-    }
-
-    public static <T, U> List<U> toApplicationDto(List<T> persistenceDto, Function<T, U> constructor) {
-        return persistenceDto.stream()
-                .map(constructor)
-                .collect(Collectors.toList());
     }
 }

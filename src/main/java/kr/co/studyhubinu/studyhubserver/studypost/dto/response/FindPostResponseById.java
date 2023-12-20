@@ -2,7 +2,7 @@ package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
 
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByMajor;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -31,9 +31,9 @@ public class FindPostResponseById {
     private boolean isUsersPost;
     private boolean isBookmarked;
     private UserData postedUser;
-    private List<RelatedPostData> relatedPost;
+    private List<PostDataByMajor> relatedPost;
 
-    public FindPostResponseById(PostData postData, List<RelatedPostData> relatedPosts) {
+    public FindPostResponseById(PostData postData, List<PostDataByMajor> relatedPosts) {
         this.postId = postData.getPostId();
         this.title = postData.getTitle();
         this.createdDate = postData.getCreatedDate();
