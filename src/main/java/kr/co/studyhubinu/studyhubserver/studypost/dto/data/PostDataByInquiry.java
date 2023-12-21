@@ -27,6 +27,7 @@ public class PostDataByInquiry {
     private boolean isBookmarked;
     private UserData userData;
 
+    @Builder
     public PostDataByInquiry(Long postId, MajorType major, String title, LocalDate studyStartDate, LocalDate studyEndDate, LocalDateTime createdDate, Integer studyPerson, GenderType filteredGender, Integer penalty, String penaltyWay, Integer remainingSeat, boolean close, boolean isBookmarked, UserData userData) {
         this.postId = postId;
         this.major = major;

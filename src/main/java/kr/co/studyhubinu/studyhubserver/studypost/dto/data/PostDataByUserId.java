@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.dto.data;
 
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import lombok.Builder;
 import lombok.Getter;
 
 
@@ -14,6 +15,7 @@ public class PostDataByUserId {
     private Integer remainingSeat;
     private boolean close;
 
+    @Builder
     public PostDataByUserId(Long postId, MajorType major, String title, String content, Integer remainingSeat, boolean close) {
         this.postId = postId;
         this.major = major;
