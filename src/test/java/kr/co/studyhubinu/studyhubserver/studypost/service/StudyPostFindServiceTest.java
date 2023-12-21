@@ -2,15 +2,13 @@ package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByBookmark;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByInquiry;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByUserId;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByBookmark;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -108,12 +106,35 @@ class StudyPostFindServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(postResponse.getTotalCount().equals(1L)),
-                () -> assertThat(postResponse.getPosts().getContent().get(0).getTitle().equals("덤벼라 세상아"))
+                () -> assertThat(postResponse.getTotalCount()).isEqualTo(1L),
+                () -> assertThat(postResponse.getPosts().getContent().get(0).getTitle()).isEqualTo("덤벼라 세상아")
         );
     }
 
     @Test
-    void getBookmarkedPosts() {
+    void 식별자로_게시글_조회() {
+        // given
+        PostData post = PostData.builder()
+                .postId(1L)
+                .title("안녕하세요")
+                .build();
+        PostDataByMajor postDataByMajor = PostDataByMajor
+                .builder()
+                .postId(2L)
+                .title("반갑습니다")
+                .build();
+
+        List<PostDataByMajor> postsByMajor = new ArrayList<>();
+        postsByMajor.add(postDataByMajor);
+        when(studyPostRepository.findByMajor(any(), anyLong())).thenReturn(postsByMajor);
+
+        // when
+        FindPostResponseById postResponse = new FindPostResponseById(post, studyPostFindService.getRelatedPosts(any(), anyLong()));
+
+        // then
+        assertAll(
+                () -> assertThat(postResponse.getPostId()).isEqualTo(1L),
+                () -> assertThat(postResponse.getRelatedPost().get(0).getTitle()).isEqualTo("반갑습니다")
+        );
     }
 }

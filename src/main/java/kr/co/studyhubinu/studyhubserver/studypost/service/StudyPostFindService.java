@@ -70,6 +70,10 @@ public class StudyPostFindService {
         return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
     }
 
+    public List<PostDataByMajor> getRelatedPosts(MajorType major, Long exceptPostId) {
+        return studyPostRepository.findByMajor(major, exceptPostId);
+    }
+
     private PostData findPostDataById(Long postId, Long userId) {
         return studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
     }
@@ -84,9 +88,5 @@ public class StudyPostFindService {
 
     private void validateUser(Long userId) {
         userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-    }
-
-    private List<PostDataByMajor> getRelatedPosts(MajorType major, Long exceptPostId) {
-        return studyPostRepository.findByMajor(major, exceptPostId);
     }
 }
