@@ -41,19 +41,23 @@ public class StudyPostFindService {
     }
 
     public FindPostResponseByBookmark getBookmarkedPosts(int page, int size, Long userId) {
-        isExistUser(userId);
+        validateUser(userId);
         final Pageable pageable = PageRequest.of(page, size);
-        final Long totalCount = bookMarkRepository.countByUserId(userId);
+        final Long totalCount = getBookmarkCountByUserId(userId);
 
         final Slice<PostDataByBookmark> posts = Converter.toSlice(pageable, studyPostRepository.findPostsByBookmarked(userId, pageable));
 
         return new FindPostResponseByBookmark(totalCount, posts);
     }
 
+    private Long getBookmarkCountByUserId(Long userId) {
+        return bookMarkRepository.countByUserId(userId);
+    }
+
     public FindPostResponseByUserId getMyPosts(int page, int size, Long userId) {
-        final UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        final UserEntity user = findUser(userId);
         final Pageable pageable = PageRequest.of(page, size);
-        final Long totalCount = studyPostRepository.countByPostedUserId(userId);
+        final Long totalCount = getPostCountByUserId(userId);
 
         final Slice<PostDataByUserId> posts = Converter.toSlice(pageable, studyPostRepository.findByPostedUserId(user.getId(), pageable));
 
@@ -61,12 +65,24 @@ public class StudyPostFindService {
     }
 
     public FindPostResponseById findPostById(Long postId, Long userId) {
-        final PostData postData = studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
+        final PostData postData = findPostDataById(postId, userId);
 
         return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
     }
 
-    private void isExistUser(Long userId) {
+    private PostData findPostDataById(Long postId, Long userId) {
+        return studyPostRepository.findPostById(postId, userId).orElseThrow(PostNotFoundException::new);
+    }
+
+    private Long getPostCountByUserId(Long userId) {
+        return studyPostRepository.countByPostedUserId(userId);
+    }
+
+    private UserEntity findUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+    private void validateUser(Long userId) {
         userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 

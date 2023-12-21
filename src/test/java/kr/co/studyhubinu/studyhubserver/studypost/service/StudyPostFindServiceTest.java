@@ -66,7 +66,24 @@ class StudyPostFindServiceTest {
 
     @Test
     void 북마크한_게시글_조회() {
+        // given
+        Pageable pageable = PageRequest.of(0,1);
+        PostDataByBookmark post = PostDataByBookmark.builder()
+                .postId(1L)
+                .title("안녕하세요 세상이여")
+                .build();
 
+        List<PostDataByBookmark> posts = new ArrayList<>();
+        posts.add(post);
+
+        // when
+        FindPostResponseByBookmark postResponse = new FindPostResponseByBookmark(1L, Converter.toSlice(pageable, posts));
+
+        // then
+        assertAll(
+                () -> assertThat(postResponse.getTotalCount().equals(1L)),
+                () -> assertThat(postResponse.getGetBookmarkedPostsData().getContent().get(0).getTitle().equals("안녕하세요 세상이여"))
+        );
     }
 
     @Test
