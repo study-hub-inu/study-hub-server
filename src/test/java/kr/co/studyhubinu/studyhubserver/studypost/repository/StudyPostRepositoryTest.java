@@ -2,12 +2,10 @@ package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookmarkEntity;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
+import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.support.fixture.BookmarkEntityFixture;
@@ -22,7 +20,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -31,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RepositoryTest
-@ActiveProfiles("dev")
 public class StudyPostRepositoryTest {
 
     @Autowired
@@ -72,13 +68,14 @@ public class StudyPostRepositoryTest {
         studyPostRepository.save(post2);
 
         // when
-        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Slice<GetMyPostData> expectedResult = studyPostRepository.findSliceByPostedUserId(userId1, pageable);
+        Pageable pageable = PageRequest.of(0, 10);
+        List<PostDataByUserId> posts = studyPostRepository.findByPostedUserId(userId1, pageable);
 
         // then
-        assertThat(expectedResult.getContent()).hasSize(2);
-        GetMyPostData data1 = expectedResult.getContent().get(1);
-        GetMyPostData data2 = expectedResult.getContent().get(0);
+
+        assertThat(posts.size()).isEqualTo(2);
+        PostDataByUserId data1 = posts.get(1);
+        PostDataByUserId data2 = posts.get(0);
         assertAll(
                 () -> assertEquals(post1.getId(), data1.getPostId()),
                 () -> assertEquals(post1.getContent(), data1.getContent()),
@@ -105,12 +102,12 @@ public class StudyPostRepositoryTest {
 
         // when
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdDate"));
-        Slice<GetBookmarkedPostsData> dataSlice = studyPostRepository.findPostsByBookmarked(bookmarkedUserId, pageable);
+        List<PostDataByBookmark> posts = studyPostRepository.findPostsByBookmarked(bookmarkedUserId, pageable);
 
         // then
-        assertThat(dataSlice.getContent()).hasSize(2);
-        GetBookmarkedPostsData data1 = dataSlice.getContent().get(1);
-        GetBookmarkedPostsData data2 = dataSlice.getContent().get(0);
+        assertThat(posts.size()).isEqualTo(2);
+        PostDataByBookmark data1 = posts.get(1);
+        PostDataByBookmark data2 = posts.get(0);
         assertAll(
                 () -> assertEquals(post1.getId(), data1.getPostId()),
                 () -> assertEquals(post1.getContent(), data1.getContent()),
@@ -192,15 +189,15 @@ public class StudyPostRepositoryTest {
         studyPostRepository.save(relatedPost);
 
         // when
-        List<RelatedPostData> dataList = studyPostRepository.findByMajor(mainPost.getMajor(), mainPost.getId());
-        RelatedPostData data = dataList.get(0);
+        List<PostDataByMajor> posts = studyPostRepository.findByMajor(mainPost.getMajor(), mainPost.getId());
+        PostDataByMajor post = posts.get(0);
 
         // then
         assertAll(
-                () -> assertEquals(relatedPost.getId(), data.getPostId()),
-                () -> assertEquals(relatedPost.getTitle(), data.getTitle()),
-                () -> assertEquals(relatedPostUser.getId(), data.getPostedUser().getUserId()),
-                () -> assertEquals(relatedPost.getMajor(), data.getMajor())
+                () -> assertEquals(relatedPost.getId(), post.getPostId()),
+                () -> assertEquals(relatedPost.getTitle(), post.getTitle()),
+                () -> assertEquals(relatedPostUser.getId(), post.getUserData().getUserId()),
+                () -> assertEquals(relatedPost.getMajor(), post.getMajor())
         );
     }
 
@@ -225,15 +222,16 @@ public class StudyPostRepositoryTest {
         InquiryRequest request = new InquiryRequest("SQLD", true, true);
 
         // when
-        Slice<FindPostResponseByInquiry> dataSlice = studyPostRepository.findByInquiry(request, PageRequest.of(0, 3), authUserId);
-        FindPostResponseByInquiry data = dataSlice.getContent().get(0);
+        List<PostDataByInquiry> posts = studyPostRepository.findByInquiry(request, PageRequest.of(0, 3), authUserId);
+
+        PostDataByInquiry post = posts.get(0);
 
         // then
         assertAll(
-                () -> assertEquals(post1.getId(), data.getPostId()),
-                () -> assertEquals(post1.getTitle(), data.getTitle()),
-                () -> assertEquals(isBookmarked, data.isBookmarked()),
-                () -> assertEquals(user.getId(), data.getUserData().getUserId())
+                () -> assertEquals(post1.getId(), post.getPostId()),
+                () -> assertEquals(post1.getTitle(), post.getTitle()),
+                () -> assertEquals(isBookmarked, post.isBookmarked()),
+                () -> assertEquals(user.getId(), post.getUserData().getUserId())
         );
     }
 

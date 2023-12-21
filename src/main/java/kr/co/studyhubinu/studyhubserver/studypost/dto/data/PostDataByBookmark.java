@@ -1,26 +1,25 @@
-package kr.co.studyhubinu.studyhubserver.studypost.dto.response;
+package kr.co.studyhubinu.studyhubserver.studypost.dto.data;
 
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class FindPostResponseByAll {
+public class PostDataByBookmark {
     private Long postId;
     private MajorType major;
     private String title;
     private String content;
-    private int leftover;
-    private int studyPerson;
+    private int remainingSeat;
     private boolean close;
 
-    public FindPostResponseByAll(Long postId, MajorType major, String title, String content, int leftover, Integer studyPerson, Boolean close) {
+    @Builder
+    public PostDataByBookmark(Long postId, MajorType major, String title, String content, int remainingSeat, boolean close) {
         this.postId = postId;
         this.major = major;
         this.title = title;
         this.content = content;
-        this.leftover = leftover;
-        this.studyPerson = studyPerson;
+        this.remainingSeat = remainingSeat;
         this.close = close;
     }
-
 }

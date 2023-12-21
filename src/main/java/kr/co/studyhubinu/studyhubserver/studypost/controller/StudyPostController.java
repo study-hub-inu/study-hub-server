@@ -6,15 +6,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByBookmark;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetMyPostResponse;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,9 +54,9 @@ public class StudyPostController {
 
     @Operation(summary = "내가 북마크한 스터디 조회")
     @GetMapping("/v1/study-posts/bookmarked")
-    public ResponseEntity<GetBookmarkedPostsResponse> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
-        GetBookmarkedPostsResponse getBookmarkedPostsResponse = studyPostFindService.getBookmarkedPosts(page, size, userId.getId());
-        return ResponseEntity.ok().body(getBookmarkedPostsResponse);
+    public ResponseEntity<FindPostResponseByBookmark> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
+        FindPostResponseByBookmark findPostResponseByBookmark = studyPostFindService.getBookmarkedPosts(page, size, userId.getId());
+        return ResponseEntity.ok().body(findPostResponseByBookmark);
     }
 
     @Operation(summary = "스터디 단건 조회", description = "url 끝에 postId를 넣어주세요")
@@ -73,9 +72,9 @@ public class StudyPostController {
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
     @GetMapping("/v1/study-posts/mypost")
-    public ResponseEntity<GetMyPostResponse> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
-        GetMyPostResponse getMyPostResponse = studyPostFindService.getMyPosts(page, size, userId.getId());
-        return ResponseEntity.ok(getMyPostResponse);
+    public ResponseEntity<FindPostResponseByUserId> getMyPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
+        FindPostResponseByUserId findPostResponseByUserId = studyPostFindService.getMyPosts(page, size, userId.getId());
+        return ResponseEntity.ok(findPostResponseByUserId);
     }
 
     @Operation(summary = "스터디 게시글 전체 조회", description = "parameter 칸에 조회할 내용을 입력해주세요")
@@ -87,8 +86,8 @@ public class StudyPostController {
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
     @GetMapping("/v1/study-posts")
-    public ResponseEntity<Slice<FindPostResponseByInquiry>> findAllPost(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
-        Slice<FindPostResponseByInquiry> findPostResponseByInquiries = studyPostFindService.findAllPost(inquiryRequest, page, size, userId.getId());
+    public ResponseEntity<FindPostResponseByInquiry> findPostByAllString(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
+        FindPostResponseByInquiry findPostResponseByInquiries = studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId());
         return ResponseEntity.ok(findPostResponseByInquiries);
     }
 

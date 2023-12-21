@@ -10,23 +10,23 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
-@Component
-@Slf4j
-@RequiredArgsConstructor
-public class StudyPostScheduler {
-
-   private final JobLauncher jobLauncher;
-   private final Job job;
-
-    @Scheduled(cron = "0 0 4 * * *")
-    public void runJob() {
-
-        try{
-            jobLauncher.run(
-                    job, new JobParametersBuilder().addString("dateTime", LocalDateTime.now().toString()).toJobParameters()
-            );
-        } catch (Exception e) {
-            log.error(e.getMessage());
-        }
-    }
-}
+//@Component
+//@Slf4j
+//@RequiredArgsConstructor
+//public class StudyPostScheduler {
+//
+//   private final JobLauncher jobLauncher;
+//   private final Job job;
+//
+//    @Scheduled(cron = "0 0 4 * * *")
+//    public void runJob() {
+//
+//        try{
+//            jobLauncher.run(
+//                    job, new JobParametersBuilder().addString("dateTime", LocalDateTime.now().toString()).toJobParameters()
+//            );
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//        }
+//    }
+//}

@@ -9,18 +9,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookmarkEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,13 +32,13 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<FindPostResponseByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
+    public List<PostDataByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
         QBookmarkEntity bookmark = bookmarkEntity;
 
-        JPAQuery<FindPostResponseByInquiry> data = jpaQueryFactory
-                .select(Projections.constructor(FindPostResponseByInquiry.class,
+        JPAQuery<PostDataByInquiry> data = jpaQueryFactory
+                .select(Projections.constructor(PostDataByInquiry.class,
                         post.id.as("postId"), post.major, post.title, post.studyStartDate, post.studyEndDate,
                         post.createdDate, post.studyPerson, post.filteredGender,
                         post.penalty, post.penaltyWay, post.remainingSeat, post.close,
@@ -65,50 +60,16 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
             data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
         }
 
-        return toSlice(pageable, data.fetch());
-    }
-
-    private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        if(inquiryRequest.getInquiryText() != null) {
-            addMajorPredicate(post, predicate, inquiryRequest.getInquiryText());
-            addTitlePredicate(post, predicate, inquiryRequest);
-        }
-        return predicate.getValue();
-    }
-
-    private void addMajorPredicate(QStudyPostEntity post, BooleanBuilder predicate, String inquiryText) {
-        predicate.and(post.major.eq(MajorType.of(inquiryText)));
-    }
-
-    private void addTitlePredicate(QStudyPostEntity post, BooleanBuilder predicate, InquiryRequest inquiryRequest) {
-        if(inquiryRequest.isTitleAndMajor()) {
-            predicate.or(post.title.contains(inquiryRequest.getInquiryText()));
-        }
-    }
-
-    private OrderSpecifier<?> hotPredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
-        if(inquiryRequest.isHot()) {
-            return post.remainingSeat.asc();
-        }
-        return post.createdDate.desc();
-    }
-
-    private Predicate bookmarkPredicate(Long userId, QBookmarkEntity bookmark) {
-        if(userId != null) {
-            return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
-        }
-        return Expressions.asBoolean(Expressions.constant(false));
+        return data.fetch();
     }
 
     @Override
-    public Slice<GetBookmarkedPostsData> findPostsByBookmarked(Long userId, Pageable pageable) {
+    public List<PostDataByBookmark> findPostsByBookmarked(Long userId, Pageable pageable) {
         QStudyPostEntity post = studyPostEntity;
         QBookmarkEntity bookmark = bookmarkEntity;
 
-        JPAQuery<GetBookmarkedPostsData> studyPostDto = jpaQueryFactory.select(
-                        Projections.constructor(GetBookmarkedPostsData.class,
+        JPAQuery<PostDataByBookmark> studyPostDto = jpaQueryFactory.select(
+                        Projections.constructor(PostDataByBookmark.class,
                                 post.id.as("postId"), post.major, post.title, post.content, post.remainingSeat, post.close))
                 .from(post)
                 .innerJoin(bookmark)
@@ -118,7 +79,30 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
 
-        return toSlice(pageable, studyPostDto.fetch());
+        return studyPostDto.fetch();
+    }
+
+    @Override
+    public List<PostDataByUserId> findByPostedUserId(final Long userId, final Pageable pageable) {
+        QStudyPostEntity post = studyPostEntity;
+        JPAQuery<PostDataByUserId> data = jpaQueryFactory.select(
+                        Projections.constructor(PostDataByUserId.class,
+                                post.id.as("postId"),
+                                post.major,
+                                post.title,
+                                post.content,
+                                post.remainingSeat,
+                                post.close
+                        )
+                )
+                .from(post)
+                .where(post.postedUserId.eq(userId))
+                .orderBy(post.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1);
+
+
+        return data.fetch();
     }
 
     @Override
@@ -153,11 +137,11 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
 
     @Override
-    public List<RelatedPostData> findByMajor(MajorType major, Long exceptPostId) {
+    public List<PostDataByMajor> findByMajor(MajorType major, Long exceptPostId) {
         QStudyPostEntity post = studyPostEntity;
         QUserEntity user = userEntity;
-        JPAQuery<RelatedPostData> data = jpaQueryFactory.select(
-                        Projections.constructor(RelatedPostData.class,
+        JPAQuery<PostDataByMajor> data = jpaQueryFactory.select(
+                        Projections.constructor(PostDataByMajor.class,
                                 post.id.as("postId"),
                                 post.title,
                                 post.major,
@@ -180,16 +164,40 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 )
                 .limit(5);
 
-        List<RelatedPostData> result = data.fetch();
-
-        return result;
+        return data.fetch();
     }
 
-    public static <T> Slice<T> toSlice(final Pageable pageable, final List<T> items) {
-        if (items.size() > pageable.getPageSize()) {
-            items.remove(items.size() - 1);
-            return new SliceImpl<>(items, pageable, true);
+    private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if(inquiryRequest.getInquiryText() != null) {
+            addMajorPredicate(post, predicate, inquiryRequest.getInquiryText());
+            addTitlePredicate(post, predicate, inquiryRequest);
         }
-        return new SliceImpl<>(items, pageable, false);
+        return predicate.getValue();
+    }
+
+    private void addMajorPredicate(QStudyPostEntity post, BooleanBuilder predicate, String inquiryText) {
+        predicate.and(post.major.eq(MajorType.of(inquiryText)));
+    }
+
+    private void addTitlePredicate(QStudyPostEntity post, BooleanBuilder predicate, InquiryRequest inquiryRequest) {
+        if(inquiryRequest.isTitleAndMajor()) {
+            predicate.or(post.title.contains(inquiryRequest.getInquiryText()));
+        }
+    }
+
+    private OrderSpecifier<?> hotPredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+        if(inquiryRequest.isHot()) {
+            return post.remainingSeat.asc();
+        }
+        return post.createdDate.desc();
+    }
+
+    private Predicate bookmarkPredicate(Long userId, QBookmarkEntity bookmark) {
+        if (userId != null) {
+            return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
+        }
+        return Expressions.asBoolean(Expressions.constant(false));
     }
 }
