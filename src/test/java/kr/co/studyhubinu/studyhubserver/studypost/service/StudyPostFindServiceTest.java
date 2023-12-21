@@ -4,10 +4,13 @@ import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByBookmark;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByInquiry;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByBookmark;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -59,8 +62,8 @@ class StudyPostFindServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(postResponse.getTotalCount().equals(1L)),
-                () -> assertThat(postResponse.getPostDataByInquiries().getContent().get(0).getTitle().equals("Hello World"))
+                () -> assertThat(postResponse.getTotalCount()).isEqualTo(1L),
+                () -> assertThat(postResponse.getPostDataByInquiries().getContent().get(0).getTitle()).isEqualTo("Hello World")
         );
     }
 
@@ -81,13 +84,33 @@ class StudyPostFindServiceTest {
 
         // then
         assertAll(
-                () -> assertThat(postResponse.getTotalCount().equals(1L)),
-                () -> assertThat(postResponse.getGetBookmarkedPostsData().getContent().get(0).getTitle().equals("안녕하세요 세상이여"))
+                () -> assertThat(postResponse.getTotalCount()).isEqualTo(1L),
+                () -> assertThat(postResponse.getGetBookmarkedPostsData().getContent().get(0).getTitle()).isEqualTo("안녕하세요 세상이여")
         );
     }
 
     @Test
-    void getMyPosts() {
+    void 내가_쓴_게시글_조회() {
+        // given
+        Pageable pageable = PageRequest.of(0,1);
+        PostDataByUserId post = PostDataByUserId.builder()
+                .postId(1L)
+                .title("덤벼라 세상아")
+                .build();
+
+        List<PostDataByUserId> posts = new ArrayList<>();
+        posts.add(post);
+
+        when(studyPostRepository.findByPostedUserId(1L, pageable)).thenReturn(posts);
+
+        // when
+        FindPostResponseByUserId postResponse = new FindPostResponseByUserId(1L, Converter.toSlice(pageable, studyPostRepository.findByPostedUserId(1L, pageable)));
+
+        // then
+        assertAll(
+                () -> assertThat(postResponse.getTotalCount().equals(1L)),
+                () -> assertThat(postResponse.getPosts().getContent().get(0).getTitle().equals("덤벼라 세상아"))
+        );
     }
 
     @Test
