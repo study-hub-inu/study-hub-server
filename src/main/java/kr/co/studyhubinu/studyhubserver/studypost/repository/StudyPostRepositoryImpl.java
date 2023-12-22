@@ -1,9 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.studypost.repository;
 
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,6 +15,7 @@ import kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserData;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -27,37 +28,34 @@ import static kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity.userEntit
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public List<PostDataByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
-        QStudyPostEntity post = studyPostEntity;
-        QUserEntity user = userEntity;
-        QBookmarkEntity bookmark = bookmarkEntity;
 
         JPAQuery<PostDataByInquiry> data = jpaQueryFactory
                 .select(Projections.constructor(PostDataByInquiry.class,
-                        post.id.as("postId"), post.major, post.title, post.studyStartDate, post.studyEndDate,
-                        post.createdDate, post.studyPerson, post.filteredGender,
-                        post.penalty, post.penaltyWay, post.remainingSeat, post.close,
-                        bookmarkPredicate(userId, bookmark),
+                        studyPostEntity.id.as("postId"), studyPostEntity.major, studyPostEntity.title, studyPostEntity.studyStartDate, studyPostEntity.studyEndDate,
+                        studyPostEntity.createdDate, studyPostEntity.studyPerson, studyPostEntity.filteredGender,
+                        studyPostEntity.penalty, studyPostEntity.penaltyWay, studyPostEntity.remainingSeat, studyPostEntity.close,
+                        bookmarkPredicate(userId),
                         Projections.constructor(
                                 UserData.class,
-                                user.id, user.major, user.nickname, user.imageUrl
+                                userEntity.id, userEntity.major, userEntity.nickname, userEntity.imageUrl
                         )
                 ))
-                .from(post)
-                .leftJoin(user).on(post.postedUserId.eq(user.id))
-                .where(wherePredicate(post, inquiryRequest))
-                .orderBy(hotPredicate(post, inquiryRequest))
-                .orderBy(post.createdDate.desc())
+                .from(studyPostEntity)
+                .leftJoin(userEntity).on(studyPostEntity.postedUserId.eq(userEntity.id))
+                .where(textEq(inquiryRequest.getInquiryText()).or(majorEq(inquiryRequest.getInquiryText(), inquiryRequest.isTitleAndMajor())))
+                .orderBy(hotPredicate(inquiryRequest), studyPostEntity.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
 
         if (userId != null) {
-            data.leftJoin(bookmark).on(post.id.eq(bookmark.postId).and(bookmark.userId.eq(userId)));
+            data.leftJoin(bookmarkEntity).on(studyPostEntity.id.eq(bookmarkEntity.postId).and(bookmarkEntity.userId.eq(userId)));
         }
 
         return data.fetch();
@@ -167,36 +165,30 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         return data.fetch();
     }
 
-    private Predicate wherePredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        if(inquiryRequest.getInquiryText() != null) {
-            addMajorPredicate(post, predicate, inquiryRequest.getInquiryText());
-            addTitlePredicate(post, predicate, inquiryRequest);
+    private BooleanExpression textEq(String inquiryText) {
+        if (inquiryText == null) {
+            return null;
         }
-        return predicate.getValue();
+        return studyPostEntity.title.eq(inquiryText);
     }
 
-    private void addMajorPredicate(QStudyPostEntity post, BooleanBuilder predicate, String inquiryText) {
-        predicate.and(post.major.eq(MajorType.of(inquiryText)));
-    }
-
-    private void addTitlePredicate(QStudyPostEntity post, BooleanBuilder predicate, InquiryRequest inquiryRequest) {
-        if(inquiryRequest.isTitleAndMajor()) {
-            predicate.or(post.title.contains(inquiryRequest.getInquiryText()));
+    private Predicate majorEq(String inquiryText, boolean titleAndMajor) {
+        if (inquiryText != null && titleAndMajor) {
+            return studyPostEntity.major.eq(MajorType.of(inquiryText));
         }
+        return null;
     }
 
-    private OrderSpecifier<?> hotPredicate(QStudyPostEntity post, InquiryRequest inquiryRequest) {
+    private OrderSpecifier<?> hotPredicate(InquiryRequest inquiryRequest) {
         if(inquiryRequest.isHot()) {
-            return post.remainingSeat.asc();
+            return studyPostEntity.remainingSeat.asc();
         }
-        return post.createdDate.desc();
+        return studyPostEntity.createdDate.desc();
     }
 
-    private Predicate bookmarkPredicate(Long userId, QBookmarkEntity bookmark) {
+    private BooleanExpression bookmarkPredicate(Long userId) {
         if (userId != null) {
-            return Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId);
+            return Expressions.booleanTemplate("{0} = {1}", bookmarkEntity.userId, userId);
         }
         return Expressions.asBoolean(Expressions.constant(false));
     }
