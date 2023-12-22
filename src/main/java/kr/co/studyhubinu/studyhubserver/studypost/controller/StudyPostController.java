@@ -3,6 +3,7 @@ package kr.co.studyhubinu.studyhubserver.studypost.controller;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.studyhubinu.studyhubserver.config.resolver.QueryStringArgResolver;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
@@ -86,7 +87,7 @@ public class StudyPostController {
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
     @GetMapping("/v1/study-posts")
-    public ResponseEntity<FindPostResponseByInquiry> findPostByAllString(final InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
+    public ResponseEntity<FindPostResponseByInquiry> findPostByAllString(@QueryStringArgResolver InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
         FindPostResponseByInquiry findPostResponseByInquiries = studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId());
         return ResponseEntity.ok(findPostResponseByInquiries);
     }
