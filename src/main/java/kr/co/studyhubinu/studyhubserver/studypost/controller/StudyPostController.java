@@ -88,6 +88,7 @@ public class StudyPostController {
     })
     @GetMapping("/v1/study-posts")
     public ResponseEntity<FindPostResponseByInquiry> findPostByAllString(@QueryStringArgResolver InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
+
         FindPostResponseByInquiry findPostResponseByInquiries = studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId());
         return ResponseEntity.ok(findPostResponseByInquiries);
     }

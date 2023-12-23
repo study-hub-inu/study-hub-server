@@ -35,7 +35,6 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
     @Override
     public List<PostDataByInquiry> findByInquiry(final InquiryRequest inquiryRequest, final Pageable pageable, Long userId) {
-
         JPAQuery<PostDataByInquiry> data = jpaQueryFactory
                 .select(Projections.constructor(PostDataByInquiry.class,
                         studyPostEntity.id.as("postId"), studyPostEntity.major, studyPostEntity.title, studyPostEntity.studyStartDate, studyPostEntity.studyEndDate,
