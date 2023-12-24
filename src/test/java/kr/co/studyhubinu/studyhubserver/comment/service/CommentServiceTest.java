@@ -6,7 +6,9 @@ import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
 import kr.co.studyhubinu.studyhubserver.exception.StatusType;
+import kr.co.studyhubinu.studyhubserver.exception.comment.CommentNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.support.fixture.CommentEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
@@ -106,10 +108,8 @@ class CommentServiceTest {
     @Test
     void 존재하지_않는_id로_게시글을_조회하면_PostNotFoundException_을_던진다() {
         // given
-        Long commentUserId = 1L;
         Long commentPostId = 3L;
         String content = "안녕하세요!";
-        UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성(commentUserId);
         given(studyPostRepository.findById(anyLong())).willReturn(Optional.empty());
         CreateCommentRequest request = new CreateCommentRequest(commentPostId, content);
 
@@ -119,5 +119,41 @@ class CommentServiceTest {
         }).isInstanceOf(PostNotFoundException.class)
                 .extracting("status")
                 .isEqualTo(StatusType.POST_NOT_FOUND);
+    }
+
+    @Test
+    void 존재하지_않는_id로_댓글을_조회하면_CommentNotFoundException_을_던진다() {
+        // given
+        Long commentUserId = 1L;
+        Long commentPostId = 3L;
+        String updateContent = "안녕하세요!";
+        UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성(commentUserId);
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        given(commentRepository.findById(anyLong())).willReturn(Optional.empty());
+        UpdateCommentRequest request = new UpdateCommentRequest(commentPostId, updateContent);
+
+        // when // then
+        assertThatThrownBy(() ->  {
+            commentService.updateComment(request, commentPostId);
+        }).isInstanceOf(CommentNotFoundException.class)
+                .extracting("status")
+                .isEqualTo(StatusType.COMMENT_NOT_FOUND);
+    }
+
+    @Test
+    void 존재하지_않는_id로_유저를_조회하면_UserNotFoundException_을_던진다() {
+        // given
+        Long commentUserId = 1L;
+        Long commentPostId = 3L;
+        String updateContent = "안녕하세요!";
+        given(userRepository.findById(anyLong())).willReturn(Optional.empty());
+        UpdateCommentRequest request = new UpdateCommentRequest(commentPostId, updateContent);
+
+        // when // then
+        assertThatThrownBy(() ->  {
+            commentService.updateComment(request, commentPostId);
+        }).isInstanceOf(UserNotFoundException.class)
+                .extracting("status")
+                .isEqualTo(StatusType.USER_NOT_FOUND);
     }
 }
