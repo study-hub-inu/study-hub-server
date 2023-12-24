@@ -54,7 +54,7 @@ public class StudyPostController {
 
 
     @Operation(summary = "내가 북마크한 스터디 조회")
-    @GetMapping("/v1/study-posts/bookmarked")
+        @GetMapping("/v1/study-posts/bookmarked")
     public ResponseEntity<FindPostResponseByBookmark> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
         FindPostResponseByBookmark findPostResponseByBookmark = studyPostFindService.getBookmarkedPosts(page, size, userId.getId());
         return ResponseEntity.ok().body(findPostResponseByBookmark);
@@ -86,7 +86,7 @@ public class StudyPostController {
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
     })
-    @GetMapping("/v1/study-posts")
+    @GetMapping("/v2/study-posts")
     public ResponseEntity<FindPostResponseByInquiry> findPostByAllString(@QueryStringArgResolver InquiryRequest inquiryRequest, @RequestParam int page, @RequestParam int size, UserId userId) {
 
         FindPostResponseByInquiry findPostResponseByInquiries = studyPostFindService.findPostResponseByInquiry(inquiryRequest, page, size, userId.getId());
