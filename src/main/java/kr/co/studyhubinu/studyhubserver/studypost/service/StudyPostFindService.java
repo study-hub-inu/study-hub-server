@@ -9,10 +9,7 @@ import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.RelatedPostData;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetMyPostResponse;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -21,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +27,8 @@ import java.util.List;
 @Service
 @Transactional
 public class StudyPostFindService {
+
+    private static final int POST_RECOMMEND_COUNT = 5;
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
@@ -67,5 +65,10 @@ public class StudyPostFindService {
 
     private List<RelatedPostData> getRelatedPosts(MajorType major, Long exceptPostId) {
         return studyPostRepository.findByMajor(major, exceptPostId);
+    }
+
+    public FindRecommendPostsResponse findRecommendPosts(String keyword) {
+        List<String> recommendPosts = studyPostRepository.findPostsByTitle(keyword, POST_RECOMMEND_COUNT);
+        return new FindRecommendPostsResponse(recommendPosts);
     }
 }

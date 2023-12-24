@@ -6,10 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetMyPostResponse;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
@@ -18,6 +15,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @RestController
@@ -96,5 +94,12 @@ public class StudyPostController {
     public ResponseEntity<HttpStatus> closePost(@PathVariable("post-id") Long postId, UserId userId) {
         studyPostService.closePost(postId, userId.getId());
         return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "검색어 추천 기능 개발", description = "parameter에 검색어를 입력해주세요 기획상 추천수는 5개입니다")
+    @ApiImplicitParam(name = "keyword", value = "검색어 키워드", required = true)
+    @GetMapping("/vi/study-post/recommend")
+    public ResponseEntity<FindRecommendPostsResponse> findRecommendPosts(@RequestParam String keyword) {
+        return ResponseEntity.ok().body(studyPostFindService.findRecommendPosts(keyword));
     }
 }
