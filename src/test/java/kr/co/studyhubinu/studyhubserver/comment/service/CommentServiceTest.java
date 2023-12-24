@@ -11,6 +11,7 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,8 +20,11 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
@@ -70,8 +74,29 @@ class CommentServiceTest {
         );
     }
 
+    @Test
+    void 유저와_댓글의_식별자로_댓글을_삭제한다() {
+        // given
+        Long commentId = 5L;
+        Long commentPostId = 1L;
+        Long commentUserId = 2L;
+        UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성(commentUserId);
+        CommentEntity comment = CommentEntityFixture.COMMENT_1.commentEntity_생성(commentUserId, commentPostId);
+        given(userRepository.findById(anyLong())).willReturn(Optional.of(user));
+        given(commentRepository.findById(anyLong())).willReturn(Optional.of(comment));
+        ArgumentCaptor<CommentEntity> captor = ArgumentCaptor.forClass(CommentEntity.class);
 
+        // when
+        commentService.deleteComment(commentId, commentUserId);
 
-
+        // then
+        verify(commentRepository, times(1)).delete(captor.capture());
+        CommentEntity deletedComment = captor.getValue();
+        assertAll(
+                () -> assertEquals(deletedComment.getUserId(), commentUserId),
+                () -> assertEquals(deletedComment.getPostId(), commentPostId),
+                () -> assertEquals(deletedComment.getContent(), comment.getContent())
+        );
+    }
 
 }

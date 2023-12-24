@@ -120,11 +120,11 @@ class BookmarkServiceTest {
 
         // then
         verify(bookmarkRepository, times(1)).delete(captor.capture());
-        BookmarkEntity actualBookmark = captor.getValue();
+        BookmarkEntity deletedBookmark = captor.getValue();
         assertAll(
                 () -> assertFalse(result),
-                () -> assertEquals(actualBookmark.getUserId(), bookmarkUserId),
-                () -> assertEquals(actualBookmark.getPostId(), bookmarkPostId)
+                () -> assertEquals(deletedBookmark.getUserId(), bookmarkUserId),
+                () -> assertEquals(deletedBookmark.getPostId(), bookmarkPostId)
         );
     }
 
