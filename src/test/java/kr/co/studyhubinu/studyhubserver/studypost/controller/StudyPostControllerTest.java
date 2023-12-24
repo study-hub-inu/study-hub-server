@@ -240,7 +240,7 @@ class StudyPostControllerTest extends ControllerRequest {
         when(studyPostFindService.findPostResponseByInquiry(any(), anyInt(), anyInt(), any())).thenReturn(new FindPostResponseByInquiry(3L, posts));
 
         // when
-        ResultActions resultActions = performGetRequest("/api/v1/study-posts", params);
+        ResultActions resultActions = performGetRequest("/api/v2/study-posts", params);
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
