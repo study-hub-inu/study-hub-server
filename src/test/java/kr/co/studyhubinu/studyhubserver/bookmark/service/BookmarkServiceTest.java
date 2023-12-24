@@ -58,6 +58,7 @@ class BookmarkServiceTest {
 
         // when
         boolean result = bookmarkService.doBookMark(bookmarkUserId, bookmarkPostId);
+
         // then
         verify(bookmarkRepository, times(1)).save(captor.capture());
         BookmarkEntity bookmark = captor.getValue();
@@ -74,6 +75,7 @@ class BookmarkServiceTest {
         Long bookmarkUserId = 1L;
         Long bookmarkPostId = 3L;
         given(userRepository.findById(anyLong())).willReturn(Optional.empty());
+
         // when // then
         assertThatThrownBy(() ->  {
             bookmarkService.doBookMark(bookmarkUserId, bookmarkPostId);
@@ -90,6 +92,7 @@ class BookmarkServiceTest {
         UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성(bookmarkUserId);
         given(userRepository.findById(bookmarkUserId)).willReturn(Optional.of(user));
         given(studyPostRepository.findById(anyLong())).willReturn(Optional.empty());
+
         // when // then
         assertThatThrownBy(() ->  {
             bookmarkService.doBookMark(bookmarkUserId, bookmarkPostId);
@@ -114,6 +117,7 @@ class BookmarkServiceTest {
 
         // when
         boolean result = bookmarkService.doBookMark(bookmarkUserId, bookmarkPostId);
+
         // then
         verify(bookmarkRepository, times(1)).delete(captor.capture());
         BookmarkEntity actualBookmark = captor.getValue();
