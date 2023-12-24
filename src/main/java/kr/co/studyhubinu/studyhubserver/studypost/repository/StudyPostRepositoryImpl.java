@@ -152,7 +152,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     @Override
-    public List<String> findPostsByTitle(String keyword, int postRecommendCount) {
+    public List<String> findPostsByTitleStartWith(String keyword, int postRecommendCount) {
         QStudyPostEntity post = studyPostEntity;
         return jpaQueryFactory.select(post.title)
                 .from(post)

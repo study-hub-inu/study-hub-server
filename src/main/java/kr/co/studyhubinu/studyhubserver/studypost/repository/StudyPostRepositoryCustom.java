@@ -23,6 +23,6 @@ public interface StudyPostRepositoryCustom {
 
     Optional<PostData> findPostById(Long postId, Long userId);
 
-    List<String> findPostsByTitle(String keyword, int postRecommendCount);
+    List<String> findPostsByTitleStartWith(String keyword, int postRecommendCount);
 }
 

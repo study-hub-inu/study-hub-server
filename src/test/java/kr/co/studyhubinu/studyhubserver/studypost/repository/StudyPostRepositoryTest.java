@@ -26,8 +26,7 @@ import org.springframework.data.domain.Sort;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @RepositoryTest
 class StudyPostRepositoryTest {
@@ -251,8 +250,27 @@ class StudyPostRepositoryTest {
 
         // then
         assertAll(
-                () -> assertEquals(findPost.get(0).isClose(), true),
-                () -> assertEquals(findPost.get(1).isClose(), true)
+                () -> assertTrue(findPost.get(0).isClose()),
+                () -> assertTrue(findPost.get(1).isClose())
         );
+    }
+
+    @Test
+    void 스터디_게시글_제목을_기반으로_게시글_제목을_유동적인_개수와_인기순으로_조회한다() {
+        // given
+        Long postedUserId = 1L;
+        String searchKeyword = "정처기";
+        int postRecommendCount = 5;
+        StudyPostEntity post1 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성(postedUserId);
+        StudyPostEntity post2 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING_WITH_MALE.studyPostEntity_생성(postedUserId);
+        studyPostRepository.save(post1);
+        studyPostRepository.save(post2);
+
+        // when
+        List<String> recommendResult = studyPostRepository.findPostsByTitleStartWith(searchKeyword, postRecommendCount);
+
+        // then
+        assertThat(recommendResult)
+                .containsExactly(post2.getTitle(), post1.getTitle());
     }
 }

@@ -68,7 +68,7 @@ public class StudyPostFindService {
     }
 
     public FindRecommendPostsResponse findRecommendPosts(String keyword) {
-        List<String> recommendPosts = studyPostRepository.findPostsByTitle(keyword, POST_RECOMMEND_COUNT);
+        List<String> recommendPosts = studyPostRepository.findPostsByTitleStartWith(keyword, POST_RECOMMEND_COUNT);
         return new FindRecommendPostsResponse(recommendPosts);
     }
 }
