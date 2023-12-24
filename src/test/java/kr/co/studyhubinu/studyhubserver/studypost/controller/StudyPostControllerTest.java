@@ -2,19 +2,16 @@ package kr.co.studyhubinu.studyhubserver.studypost.controller;
 
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetBookmarkedPostsData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.GetMyPostData;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetBookmarkedPostsResponse;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.GetMyPostResponse;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByBookmark;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
 import kr.co.studyhubinu.studyhubserver.support.controller.ControllerRequest;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -31,7 +28,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -155,9 +151,9 @@ class StudyPostControllerTest extends ControllerRequest {
     @Test
     void 북마크한_스터디_조회_성공() throws Exception {
         // given
-        Slice<GetBookmarkedPostsData> data = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
+        Slice<PostDataByBookmark> data = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
         when(studyPostFindService.getBookmarkedPosts(anyInt(), anyInt(), any())).
-                thenReturn(new GetBookmarkedPostsResponse(1L, data));
+                thenReturn(new FindPostResponseByBookmark(1L, data));
 
         Map<String, String> params = new HashMap<>();
         params.put("page", "0");
@@ -211,11 +207,11 @@ class StudyPostControllerTest extends ControllerRequest {
     @Test
     void 내가_작성한_스터디_조회_성공() throws Exception {
         // given
-        SliceImpl<GetMyPostData> slice = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
+        SliceImpl<PostDataByUserId> posts = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
         Map<String, String> params = new HashMap<>();
         params.put("page", "0");
         params.put("size", "3");
-        when(studyPostFindService.getMyPosts(anyInt(), anyInt(), any())).thenReturn(new GetMyPostResponse(3L, slice));
+        when(studyPostFindService.getMyPosts(anyInt(), anyInt(), any())).thenReturn(new FindPostResponseByUserId(3L, posts));
 
         // when
         ResultActions resultActions = performGetRequest("/api/v1/study-posts/mypost", params);
@@ -227,13 +223,13 @@ class StudyPostControllerTest extends ControllerRequest {
                 .andDo(print());
 
         assertThat(responseBody).contains("\"totalCount\":3");
-        assertThat(responseBody).contains("\"getMyPostData\"");
+        assertThat(responseBody).contains("\"posts\"");
     }
 
     @Test
     void 스터디_게시글_전체_조회_성공() throws Exception {
         // given
-        SliceImpl<FindPostResponseByInquiry> slice = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
+        SliceImpl<PostDataByInquiry> posts = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
         Map<String, String> params = new HashMap<>();
         params.put("page", "0");
         params.put("size", "3");
@@ -241,10 +237,10 @@ class StudyPostControllerTest extends ControllerRequest {
         params.put("titleAndMajor", "true");
         params.put("hot", "true");
 
-        when(studyPostFindService.findPostResponseByInquiry(any(), anyInt(), anyInt(), any())).thenReturn(slice);
+        when(studyPostFindService.findPostResponseByInquiry(any(), anyInt(), anyInt(), any())).thenReturn(new FindPostResponseByInquiry(3L, posts));
 
         // when
-        ResultActions resultActions = performGetRequest("/api/v1/study-posts", params);
+        ResultActions resultActions = performGetRequest("/api/v2/study-posts", params);
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
