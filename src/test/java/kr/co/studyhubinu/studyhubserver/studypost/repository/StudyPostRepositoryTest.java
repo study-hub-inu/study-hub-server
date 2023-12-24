@@ -225,7 +225,6 @@ class StudyPostRepositoryTest {
         // when
         List<PostDataByInquiry> posts = studyPostRepository.findByInquiry(request, PageRequest.of(0, 3), authUserId);
 
-        System.out.println("사이즈 : " + posts.size());
         PostDataByInquiry post = posts.get(0);
 
         // then
