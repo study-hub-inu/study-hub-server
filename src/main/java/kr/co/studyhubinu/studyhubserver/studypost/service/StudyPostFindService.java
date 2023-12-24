@@ -37,7 +37,7 @@ public class StudyPostFindService {
         final Pageable pageable = PageRequest.of(page, size);
         final Slice<PostDataByInquiry> posts = Converter.toSlice(pageable, studyPostRepository.findByInquiry(inquiryRequest, pageable, userId));
 
-        return new FindPostResponseByInquiry((long) size, posts);
+        return new FindPostResponseByInquiry((long) posts.getContent().size(), posts);
     }
 
     public FindPostResponseByBookmark getBookmarkedPosts(int page, int size, Long userId) {

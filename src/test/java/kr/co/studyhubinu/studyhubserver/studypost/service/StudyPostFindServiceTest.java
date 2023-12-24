@@ -2,12 +2,15 @@ package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByBookmark;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,10 +22,13 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 
@@ -48,15 +54,15 @@ class StudyPostFindServiceTest {
                 .postId(1L)
                 .title("Hello World")
                 .build();
-        Pageable pageable = PageRequest.of(0,1);
+
         List<PostDataByInquiry> posts = new ArrayList<>();
         posts.add(inquiry);
+        InquiryRequest inquiryRequest = InquiryRequest.builder().build();
 
         when(studyPostRepository.findByInquiry(any(), any(), anyLong())).thenReturn(posts);
 
         // when
-        FindPostResponseByInquiry postResponse = new FindPostResponseByInquiry((long) pageable.getPageSize(),
-                Converter.toSlice(pageable, studyPostRepository.findByInquiry(any(), any(), anyLong())));
+        FindPostResponseByInquiry postResponse = studyPostFindService.findPostResponseByInquiry(inquiryRequest, 0, 2, 1L);
 
         // then
         assertAll(
@@ -68,7 +74,6 @@ class StudyPostFindServiceTest {
     @Test
     void 북마크한_게시글_조회() {
         // given
-        Pageable pageable = PageRequest.of(0,1);
         PostDataByBookmark post = PostDataByBookmark.builder()
                 .postId(1L)
                 .title("안녕하세요 세상이여")
@@ -77,8 +82,12 @@ class StudyPostFindServiceTest {
         List<PostDataByBookmark> posts = new ArrayList<>();
         posts.add(post);
 
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().build());
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(bookmarkRepository.countByUserId(anyLong())).thenReturn(1L);
+        when(studyPostRepository.findPostsByBookmarked(anyLong(), any())).thenReturn(posts);
         // when
-        FindPostResponseByBookmark postResponse = new FindPostResponseByBookmark(1L, Converter.toSlice(pageable, posts));
+        FindPostResponseByBookmark postResponse = studyPostFindService.getBookmarkedPosts(0, 3, 1L);
 
         // then
         assertAll(
@@ -88,9 +97,19 @@ class StudyPostFindServiceTest {
     }
 
     @Test
+    void 북마크한_게시글_조회_실패_존재하지않는_유저() {
+        // given
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // when, then
+        assertThrows(UserNotFoundException.class, () -> {
+            studyPostFindService.getBookmarkedPosts(0, 3, 1L);
+        });
+    }
+
+    @Test
     void 내가_쓴_게시글_조회() {
         // given
-        Pageable pageable = PageRequest.of(0,1);
         PostDataByUserId post = PostDataByUserId.builder()
                 .postId(1L)
                 .title("덤벼라 세상아")
@@ -98,11 +117,14 @@ class StudyPostFindServiceTest {
 
         List<PostDataByUserId> posts = new ArrayList<>();
         posts.add(post);
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().build());
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(studyPostRepository.countByPostedUserId(anyLong())).thenReturn(1L);
+        when(studyPostRepository.findByPostedUserId(anyLong(), any())).thenReturn(posts);
 
-        when(studyPostRepository.findByPostedUserId(1L, pageable)).thenReturn(posts);
 
         // when
-        FindPostResponseByUserId postResponse = new FindPostResponseByUserId(1L, Converter.toSlice(pageable, studyPostRepository.findByPostedUserId(1L, pageable)));
+        FindPostResponseByUserId postResponse = studyPostFindService.getMyPosts(0, 3, 1L);
 
         // then
         assertAll(
@@ -127,11 +149,11 @@ class StudyPostFindServiceTest {
         List<PostDataByMajor> postsByMajor = new ArrayList<>();
         postsByMajor.add(postDataByMajor);
         when(studyPostRepository.findByMajor(any(), anyLong())).thenReturn(postsByMajor);
+        when(studyPostRepository.findPostById(anyLong(), anyLong())).thenReturn(Optional.ofNullable(PostData.builder().postId(1L).build()));
 
         // when
-        FindPostResponseById postResponse = new FindPostResponseById(post, studyPostFindService.getRelatedPosts(any(), anyLong()));
+        FindPostResponseById postResponse = studyPostFindService.findPostById(1L, 1L);
 
-        // then
         assertAll(
                 () -> assertThat(postResponse.getPostId()).isEqualTo(1L),
                 () -> assertThat(postResponse.getRelatedPost().get(0).getTitle()).isEqualTo("반갑습니다")
