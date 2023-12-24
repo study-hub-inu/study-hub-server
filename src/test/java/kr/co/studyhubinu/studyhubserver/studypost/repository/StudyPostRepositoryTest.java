@@ -214,6 +214,7 @@ class StudyPostRepositoryTest {
         studyPostRepository.save(post2);
         BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(post1.getId(), authUserId);
         bookmarkRepository.save(bookmark);
+
         if (authUserId == bookmark.getUserId()) {
             isBookmarked = true;
         } else {
@@ -224,6 +225,7 @@ class StudyPostRepositoryTest {
         // when
         List<PostDataByInquiry> posts = studyPostRepository.findByInquiry(request, PageRequest.of(0, 3), authUserId);
 
+        System.out.println("사이즈 : " + posts.size());
         PostDataByInquiry post = posts.get(0);
 
         // then
