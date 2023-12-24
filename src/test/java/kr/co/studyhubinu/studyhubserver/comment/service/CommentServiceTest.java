@@ -2,8 +2,11 @@ package kr.co.studyhubinu.studyhubserver.comment.service;
 
 import kr.co.studyhubinu.studyhubserver.comment.domain.CommentEntity;
 import kr.co.studyhubinu.studyhubserver.comment.domain.CommentValidator;
+import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
+import kr.co.studyhubinu.studyhubserver.exception.StatusType;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.support.fixture.CommentEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
@@ -19,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -99,4 +103,21 @@ class CommentServiceTest {
         );
     }
 
+    @Test
+    void 존재하지_않는_id로_게시글을_조회하면_PostNotFoundException_을_던진다() {
+        // given
+        Long commentUserId = 1L;
+        Long commentPostId = 3L;
+        String content = "안녕하세요!";
+        UserEntity user = UserEntityFixture.DONGWOO.UserEntity_생성(commentUserId);
+        given(studyPostRepository.findById(anyLong())).willReturn(Optional.empty());
+        CreateCommentRequest request = new CreateCommentRequest(commentPostId, content);
+
+        // when // then
+        assertThatThrownBy(() ->  {
+            commentService.createComment(request, commentPostId);
+        }).isInstanceOf(PostNotFoundException.class)
+                .extracting("status")
+                .isEqualTo(StatusType.POST_NOT_FOUND);
+    }
 }

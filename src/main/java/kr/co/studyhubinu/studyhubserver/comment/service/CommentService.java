@@ -9,9 +9,7 @@ import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
 import kr.co.studyhubinu.studyhubserver.exception.comment.CommentNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -70,18 +68,6 @@ public class CommentService {
 
     private void validateStudyPostExist(Long postId) {
         studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-    }
-
-    private UserEntity findUser(Long userId) {
-        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-    }
-
-    private StudyPostEntity findStudyPost(Long postId) {
-        return studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
-    }
-
-    private void validateCommentExist(Long commentId) {
-        commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
     }
 
     private CommentEntity findComment(Long commentId) {
