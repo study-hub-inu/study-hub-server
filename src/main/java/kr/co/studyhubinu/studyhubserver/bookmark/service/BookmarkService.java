@@ -24,8 +24,8 @@ public class BookmarkService {
     @Transactional
     public boolean doBookMark(final Long userId, final Long postId) {
         final AtomicBoolean created = new AtomicBoolean(false);
-        validateUserEntityExist(userId);
-        validateStudyPostEntityExist(postId);
+        validateUserExist(userId);
+        validateStudyPostExist(postId);
         bookMarkRepository.findByUserIdAndPostId(userId, postId).ifPresentOrElse(
                 bookMark -> {
                     bookMarkRepository.delete(bookMark);
@@ -41,16 +41,16 @@ public class BookmarkService {
     }
 
     public boolean checkBookmarked(final Long userId, final Long postId) {
-        validateUserEntityExist(userId);
-        validateStudyPostEntityExist(postId);
+        validateUserExist(userId);
+        validateStudyPostExist(postId);
         return bookMarkRepository.findByUserIdAndPostId(userId, postId).isPresent();
     }
 
-    private void validateUserEntityExist(Long userId) {
+    private void validateUserExist(Long userId) {
         userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
-    private void validateStudyPostEntityExist(Long postId) {
+    private void validateStudyPostExist(Long postId) {
         studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
     }
     
