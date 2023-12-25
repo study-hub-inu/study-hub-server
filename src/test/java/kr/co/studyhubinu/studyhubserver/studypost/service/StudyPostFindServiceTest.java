@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
@@ -16,8 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,6 +130,17 @@ class StudyPostFindServiceTest {
     }
 
     @Test
+    void 내가_작성한_게시글_조회_실패_존재하지않는_유저() {
+        // given
+        when(userRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // when, then
+        assertThrows(UserNotFoundException.class, () -> {
+            studyPostFindService.getMyPosts(0, 3, 1L);
+        });
+    }
+
+    @Test
     void 식별자로_게시글_조회() {
         // given
         PostDataByMajor postDataByMajor = PostDataByMajor
@@ -151,5 +161,16 @@ class StudyPostFindServiceTest {
                 () -> assertThat(postResponse.getPostId()).isEqualTo(1L),
                 () -> assertThat(postResponse.getRelatedPost().get(0).getTitle()).isEqualTo("반갑습니다")
         );
+    }
+
+    @Test
+    void 식별자로_게시글_조회_실패_존재하지않는_게시글() {
+        // given
+        when(studyPostRepository.findPostById(anyLong(), anyLong())).thenReturn(Optional.empty());
+
+        // when, then
+        assertThrows(PostNotFoundException.class, () -> {
+            studyPostFindService.findPostById(1L, 1L);
+        });
     }
 }
