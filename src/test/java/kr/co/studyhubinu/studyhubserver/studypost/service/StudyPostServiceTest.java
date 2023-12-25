@@ -1,6 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
-import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
@@ -16,7 +16,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Optional;
 
 import static org.junit.Assert.assertThrows;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
@@ -77,6 +76,38 @@ class StudyPostServiceTest {
     }
 
     @Test
-    void closePost() {
+    void 게시글_게시_기한_종료_성공() {
+        // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(studyPostRepository.findById(anyLong())).
+                thenReturn(Optional.ofNullable(StudyPostEntity.builder().id(1L).userId(1L).title("사랑찾아 인생찾아 울산까지 왔습니다").build()));
+
+        // when, then
+        studyPostService.closePost(1L, 1L);
+    }
+
+    @Test
+    void 게시글_게시_기한_종료_실패_존재하지않는_게시글() {
+        // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(studyPostRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when, then
+        assertThrows(PostNotFoundException.class, () -> {
+            studyPostService.closePost(1L, 1L);
+        });
+    }
+
+    @Test
+    void 게시글_게시_기한_종료_실패_존재하지않는_유저() {
+        // given
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        // when, then
+        assertThrows(UserNotFoundException.class, () -> {
+            studyPostService.closePost(1L, 1L);
+        });
     }
 }
