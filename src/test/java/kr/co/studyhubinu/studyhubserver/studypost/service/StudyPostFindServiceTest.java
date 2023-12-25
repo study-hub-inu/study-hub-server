@@ -1,7 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
-import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
@@ -28,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 
@@ -86,6 +84,7 @@ class StudyPostFindServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(userEntity);
         when(bookmarkRepository.countByUserId(anyLong())).thenReturn(1L);
         when(studyPostRepository.findPostsByBookmarked(anyLong(), any())).thenReturn(posts);
+
         // when
         FindPostResponseByBookmark postResponse = studyPostFindService.getBookmarkedPosts(0, 3, 1L);
 
@@ -110,36 +109,30 @@ class StudyPostFindServiceTest {
     @Test
     void 내가_쓴_게시글_조회() {
         // given
+        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(UserEntity.builder().id(1L).build()));
+        when(studyPostRepository.countByPostedUserId(anyLong())).thenReturn(1L);
+
         PostDataByUserId post = PostDataByUserId.builder()
                 .postId(1L)
-                .title("덤벼라 세상아")
+                .title("사랑찾아 인생찾아")
                 .build();
-
         List<PostDataByUserId> posts = new ArrayList<>();
         posts.add(post);
-        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().build());
-        when(userRepository.findById(anyLong())).thenReturn(userEntity);
-        when(studyPostRepository.countByPostedUserId(anyLong())).thenReturn(1L);
         when(studyPostRepository.findByPostedUserId(anyLong(), any())).thenReturn(posts);
-
 
         // when
         FindPostResponseByUserId postResponse = studyPostFindService.getMyPosts(0, 3, 1L);
 
         // then
         assertAll(
-                () -> assertThat(postResponse.getTotalCount()).isEqualTo(1L),
-                () -> assertThat(postResponse.getPosts().getContent().get(0).getTitle()).isEqualTo("덤벼라 세상아")
+                () -> assertThat(postResponse.getTotalCount()).isEqualTo(1),
+                () -> assertThat(postResponse.getPosts().getContent().get(0).getTitle()).isEqualTo("사랑찾아 인생찾아")
         );
     }
 
     @Test
     void 식별자로_게시글_조회() {
         // given
-        PostData post = PostData.builder()
-                .postId(1L)
-                .title("안녕하세요")
-                .build();
         PostDataByMajor postDataByMajor = PostDataByMajor
                 .builder()
                 .postId(2L)
