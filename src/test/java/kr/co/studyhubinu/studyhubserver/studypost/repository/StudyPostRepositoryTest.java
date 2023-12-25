@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RepositoryTest
-public class StudyPostRepositoryTest {
+class StudyPostRepositoryTest {
 
     @Autowired
     private StudyPostRepository studyPostRepository;
@@ -214,6 +214,7 @@ public class StudyPostRepositoryTest {
         studyPostRepository.save(post2);
         BookmarkEntity bookmark = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(post1.getId(), authUserId);
         bookmarkRepository.save(bookmark);
+
         if (authUserId == bookmark.getUserId()) {
             isBookmarked = true;
         } else {
