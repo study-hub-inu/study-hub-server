@@ -51,8 +51,8 @@ public class StudyPostService {
 
     @Transactional
     public void closePost(Long postId, Long userId) {
-        final UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        final StudyPostEntity post = studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        final UserEntity user = findUser(userId);
+        final StudyPostEntity post = findPost(postId);
         validatePostByUser(user.getId(), post);
         post.close();
     }
