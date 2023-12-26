@@ -7,6 +7,7 @@ import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightExcepti
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -97,7 +98,68 @@ class StudyPostServiceTest {
     }
 
     @Test
-    void updatePost() {
+    void 게시글_수정_성공() {
+        // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        Optional<StudyPostEntity> studyPostEntity = Optional.ofNullable(StudyPostEntityFixture.SQLD.studyPostEntity_생성(1L));
+        UpdateStudyPostInfo updateStudyPostInfo = UpdateStudyPostInfo.builder().
+                userId(1L).
+                postId(1L).
+                studyStartDate(LocalDate.of(2024, 1, 3)).
+                studyEndDate(LocalDate.of(2024, 10, 5)).
+                build();
+
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(studyPostRepository.findById(anyLong())).thenReturn(studyPostEntity);
+
+        // when
+        Long postId = studyPostService.updatePost(updateStudyPostInfo);
+
+        // then
+        assertThat(postId).isEqualTo(1L);
+    }
+
+    @Test
+    void 게시글_수정_실패_시작날짜가_현재날짜_이전일경우() {
+        // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        Optional<StudyPostEntity> studyPostEntity = Optional.ofNullable(StudyPostEntityFixture.SQLD.studyPostEntity_생성(1L));
+        UpdateStudyPostInfo updateStudyPostInfo = UpdateStudyPostInfo.builder().
+                userId(1L).
+                postId(1L).
+                studyStartDate(LocalDate.of(2023, 1, 3)).
+                studyEndDate(LocalDate.of(2024, 10, 5)).
+                build();
+
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(studyPostRepository.findById(anyLong())).thenReturn(studyPostEntity);
+
+        // when, then
+        assertThrows(PostStartDateConflictException.class, () -> {
+            studyPostService.updatePost(updateStudyPostInfo);
+        });
+    }
+
+    @Test
+    void 게시글_수정_실패_시작날짜가_종료날짜_이후인경우() {
+        // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        Optional<StudyPostEntity> studyPostEntity = Optional.ofNullable(StudyPostEntityFixture.SQLD.studyPostEntity_생성(1L));
+
+        UpdateStudyPostInfo updateStudyPostInfo = UpdateStudyPostInfo.builder().
+                userId(1L).
+                postId(1L).
+                studyStartDate(LocalDate.of(2024, 11, 3)).
+                studyEndDate(LocalDate.of(2024, 10, 5)).
+                build();
+
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(studyPostRepository.findById(anyLong())).thenReturn(studyPostEntity);
+
+        // when, then
+        assertThrows(PostEndDateConflictException.class, () -> {
+            studyPostService.updatePost(updateStudyPostInfo);
+        });
     }
 
     @Test

@@ -1,6 +1,8 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
+import kr.co.studyhubinu.studyhubserver.exception.study.PostEndDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostStartDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
@@ -13,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -27,7 +31,7 @@ public class StudyPostService {
     public Long createPost(StudyPostInfo info) {
         UserEntity user = findUser(info.getUserId());
         StudyPostEntity studyPost = info.toEntity(user.getId());
-        //studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
+        validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         return studyPostRepository.save(studyPost).getId();
     }
 
@@ -35,7 +39,7 @@ public class StudyPostService {
     public Long updatePost(UpdateStudyPostInfo info) {
         UserEntity user = findUser(info.getUserId());
         StudyPostEntity post = findPost(info.getPostId());
-        //studyPostValidator.validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
+        validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         validatePostByUser(user.getId(), post);
         post.update(info);
         return post.getId();
@@ -67,5 +71,24 @@ public class StudyPostService {
 
     private void validatePostByUser(Long userId, StudyPostEntity post) {
         if (!post.isPostOfUser(userId)) throw new UserNotAccessRightException();
+    }
+
+    private void validStudyPostDate(LocalDate studyStartDate, LocalDate studyEndDate) {
+        LocalDate now = LocalDate.now();
+
+        validateStartDateOverEndDate(studyStartDate, studyEndDate);
+        validateStartDateBeforeNow(studyStartDate, now);
+    }
+
+    private void validateStartDateBeforeNow(LocalDate studyStartDate, LocalDate now) {
+        if (now.isAfter(studyStartDate)) {
+            throw new PostStartDateConflictException();
+        }
+    }
+
+    private void validateStartDateOverEndDate(LocalDate studyStartDate, LocalDate studyEndDate) {
+        if (studyStartDate.isAfter(studyEndDate)) {
+            throw new PostEndDateConflictException();
+        }
     }
 }
