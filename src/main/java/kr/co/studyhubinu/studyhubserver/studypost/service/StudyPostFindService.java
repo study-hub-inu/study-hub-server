@@ -11,6 +11,7 @@ import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseB
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByUserId;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.*;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -28,6 +29,8 @@ import java.util.List;
 @Service
 @Transactional
 public class StudyPostFindService {
+
+    private static final int POST_RECOMMEND_COUNT = 5;
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
@@ -88,5 +91,10 @@ public class StudyPostFindService {
 
     private void validateUser(Long userId) {
         userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    }
+
+    public FindRecommendPostsResponse findRecommendPosts(String keyword) {
+        List<String> recommendPosts = studyPostRepository.findPostsByTitleStartWith(keyword, POST_RECOMMEND_COUNT);
+        return new FindRecommendPostsResponse(recommendPosts);
     }
 }

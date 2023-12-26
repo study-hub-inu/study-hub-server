@@ -20,5 +20,7 @@ public interface StudyPostRepositoryCustom {
     List<PostDataByUserId> findByPostedUserId(Long userId, Pageable pageable);
 
     Optional<PostData> findPostById(Long postId, Long userId);
+
+    List<String> findPostsByTitleStartWith(String keyword, int postRecommendCount);
 }
 
