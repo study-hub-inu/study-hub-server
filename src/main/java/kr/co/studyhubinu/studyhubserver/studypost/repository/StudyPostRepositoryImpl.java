@@ -132,6 +132,20 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         return Optional.ofNullable(result);
     }
 
+    @Override
+    public List<String> findPostsByTitleStartWith(String keyword, int postRecommendCount) {
+        QStudyPostEntity post = studyPostEntity;
+        return jpaQueryFactory.select(post.title)
+                .from(post)
+                .where(post.title.startsWith(keyword))
+                .orderBy(
+                        post.remainingSeat.asc(),
+                        post.createdDate.desc()
+                )
+                .limit(postRecommendCount)
+                .fetch();
+    }
+
 
     @Override
     public List<PostDataByMajor> findByMajor(MajorType major, Long exceptPostId) {
