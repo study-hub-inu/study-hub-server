@@ -1,10 +1,14 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
+import kr.co.studyhubinu.studyhubserver.exception.study.PostEndDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostStartDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
+import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -13,8 +17,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -36,11 +42,58 @@ class StudyPostServiceTest {
     @Test
     void 게시글_생성_성공() {
         // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        StudyPostEntityFixture fixture = StudyPostEntityFixture.SQLD;
+        StudyPostInfo studyPostInfo = StudyPostInfo.builder().
+                userId(1L).
+                studyStartDate(LocalDate.of(2024, 1, 3)).
+                studyEndDate(LocalDate.of(2024, 10, 5)).
+                build();
+
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+        when(studyPostRepository.save(any())).thenReturn(fixture.studyPostEntity_생성(1L));
 
         // when
+        Long postId = studyPostService.createPost(studyPostInfo);
 
         // then
+        assertThat(postId).isEqualTo(1L);
+    }
 
+    @Test
+    void 게시글_생성_실패_시작날짜가_현재날짜_이전일경우() {
+        // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        StudyPostInfo studyPostInfo = StudyPostInfo.builder().
+                userId(1L).
+                studyStartDate(LocalDate.of(2023, 1, 3)).
+                studyEndDate(LocalDate.of(2024, 10, 5)).
+                build();
+
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+
+        // when, then
+        assertThrows(PostStartDateConflictException.class, () -> {
+            studyPostService.createPost(studyPostInfo);
+        });
+    }
+
+    @Test
+    void 게시글_생성_실패_시작날짜가_종료날짜_이후인경우() {
+        // given
+        Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        StudyPostInfo studyPostInfo = StudyPostInfo.builder().
+                userId(1L).
+                studyStartDate(LocalDate.of(2024, 11, 3)).
+                studyEndDate(LocalDate.of(2024, 10, 5)).
+                build();
+
+        when(userRepository.findById(anyLong())).thenReturn(userEntity);
+
+        // when, then
+        assertThrows(PostEndDateConflictException.class, () -> {
+            studyPostService.createPost(studyPostInfo);
+        });
     }
 
     @Test
