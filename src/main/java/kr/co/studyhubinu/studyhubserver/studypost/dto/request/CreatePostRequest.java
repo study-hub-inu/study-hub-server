@@ -3,12 +3,10 @@ package kr.co.studyhubinu.studyhubserver.studypost.dto.request;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.studypost.validate.MinStudyPerson;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
@@ -62,13 +60,13 @@ public class CreatePostRequest {
     @NotNull(message = "스터디 방식 작성은 필수입니다!")
     private StudyWayType studyWay;
 
-    @Schema(description = "스터디 시작 날짜(ISO 8601)", example = "2023-08-23")
+    @Schema(description = "스터디 시작 날짜(ISO 8601)", example = "2024-04-07")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @NotNull(message = "스터디 시작 날짜 작성은 필수입니다!")
     private LocalDate studyStartDate;
 
-    @Schema(description = "스터디 종료 날짜(ISO 8601)", example = "2023-12-25")
+    @Schema(description = "스터디 종료 날짜(ISO 8601)", example = "2025-12-25")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @NotNull(message = "스터디 종료 날짜 작성은 필수입니다!")
