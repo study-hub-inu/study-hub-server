@@ -17,6 +17,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +53,7 @@ class StudyPostFindServiceTest {
                 .postId(1L)
                 .title("Hello World")
                 .build();
-
+        Pageable pageable = PageRequest.of(0, 2);
         List<PostDataByInquiry> posts = new ArrayList<>();
         posts.add(inquiry);
         InquiryRequest inquiryRequest = InquiryRequest.builder().build();
@@ -59,7 +61,7 @@ class StudyPostFindServiceTest {
         when(studyPostRepository.findByInquiry(any(), any(), anyLong())).thenReturn(posts);
 
         // when
-        FindPostResponseByInquiry postResponse = studyPostFindService.findPostResponseByInquiry(inquiryRequest, 0, 2, 1L);
+        FindPostResponseByInquiry postResponse = studyPostFindService.findPostResponseByInquiry(inquiryRequest, pageable.getPageNumber(), pageable.getPageSize(), 1L);
 
         // then
         assertAll(
@@ -77,6 +79,7 @@ class StudyPostFindServiceTest {
                 .build();
 
         List<PostDataByBookmark> posts = new ArrayList<>();
+        Pageable pageable = PageRequest.of(0, 3);
         posts.add(post);
 
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().build());
@@ -85,7 +88,7 @@ class StudyPostFindServiceTest {
         when(studyPostRepository.findPostsByBookmarked(anyLong(), any())).thenReturn(posts);
 
         // when
-        FindPostResponseByBookmark postResponse = studyPostFindService.getBookmarkedPosts(0, 3, 1L);
+        FindPostResponseByBookmark postResponse = studyPostFindService.getBookmarkedPosts(pageable.getPageNumber(), pageable.getPageSize(), 1L);
 
         // then
         assertAll(
@@ -97,11 +100,12 @@ class StudyPostFindServiceTest {
     @Test
     void 북마크한_게시글_조회_실패_존재하지않는_유저() {
         // given
+        Pageable pageable = PageRequest.of(0, 3);
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
 
         // when, then
         assertThrows(UserNotFoundException.class, () -> {
-            studyPostFindService.getBookmarkedPosts(0, 3, 1L);
+            studyPostFindService.getBookmarkedPosts(pageable.getPageNumber(), pageable.getPageSize(), 1L);
         });
     }
 
@@ -110,6 +114,7 @@ class StudyPostFindServiceTest {
         // given
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(UserEntity.builder().id(1L).build()));
         when(studyPostRepository.countByPostedUserId(anyLong())).thenReturn(1L);
+        Pageable pageable = PageRequest.of(0, 3);
 
         PostDataByUserId post = PostDataByUserId.builder()
                 .postId(1L)
@@ -120,7 +125,7 @@ class StudyPostFindServiceTest {
         when(studyPostRepository.findByPostedUserId(anyLong(), any())).thenReturn(posts);
 
         // when
-        FindPostResponseByUserId postResponse = studyPostFindService.getMyPosts(0, 3, 1L);
+        FindPostResponseByUserId postResponse = studyPostFindService.getMyPosts(pageable.getPageNumber(), pageable.getPageSize(), 1L);
 
         // then
         assertAll(
@@ -133,10 +138,11 @@ class StudyPostFindServiceTest {
     void 내가_작성한_게시글_조회_실패_존재하지않는_유저() {
         // given
         when(userRepository.findById(1L)).thenReturn(Optional.empty());
+        Pageable pageable = PageRequest.of(0, 3);
 
         // when, then
         assertThrows(UserNotFoundException.class, () -> {
-            studyPostFindService.getMyPosts(0, 3, 1L);
+            studyPostFindService.getMyPosts(pageable.getPageNumber(), pageable.getPageSize(), 1L);
         });
     }
 
