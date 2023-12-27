@@ -5,10 +5,10 @@ spring:
     username: admin
     password: root
 
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema.sql
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: classpath:schema.sql
 
   jpa:
     open-in-view: true
