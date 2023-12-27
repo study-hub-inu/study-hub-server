@@ -43,6 +43,7 @@ public enum StudyPostEntityFixture {
 
     public StudyPostEntity studyPostEntity_생성(Long userId) {
         return StudyPostEntity.builder()
+                .id(1L)
                 .title(this.title)
                 .content(this.content)
                 .major(this.major)

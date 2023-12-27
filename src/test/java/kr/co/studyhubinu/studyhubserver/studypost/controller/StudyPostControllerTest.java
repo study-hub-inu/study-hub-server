@@ -2,12 +2,15 @@ package kr.co.studyhubinu.studyhubserver.studypost.controller;
 
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostData;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByBookmark;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByInquiry;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.data.PostDataByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.UpdatePostRequest;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByBookmark;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseById;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByInquiry;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByBookmark;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.response.FindPostResponseByUserId;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostFindService;
 import kr.co.studyhubinu.studyhubserver.studypost.service.StudyPostService;
@@ -177,15 +180,15 @@ class StudyPostControllerTest extends ControllerRequest {
         // given
         when(studyPostFindService.getBookmarkedPosts(anyInt(), anyInt(), any())).thenReturn(null);
         Map<String, String> params = new HashMap<>();
-            params.put("page", "0");
+        params.put("page", "0");
 
-    // when, then
-    ResultActions resultActions = performGetRequest("/api/v1/study-posts/bookmarked", params);
+        // when, then
+        ResultActions resultActions = performGetRequest("/api/v1/study-posts/bookmarked", params);
 
-    // then
+        // then
         resultActions.andExpect(status().is4xxClientError())
-            .andDo(print());
-}
+                .andDo(print());
+    }
 
     @Test
     void 스터디_단건_조회_성공() throws Exception {
