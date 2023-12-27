@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.user.controller;
 
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
@@ -43,6 +44,7 @@ public class UserController {
     }
 
     @Operation(summary = "닉네임 중복 검사")
+    @ApiImplicitParam(name = "nickname", value = "중복을 확인할 닉네임", required = true)
     @GetMapping("/v1/users/duplication-nickname")
     public ResponseEntity<HttpStatus> nicknameDuplicationValid(@RequestParam String nickname) {
         userService.nicknameDuplicationValid(nickname);

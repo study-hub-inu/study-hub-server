@@ -52,7 +52,11 @@ public class StudyPostController {
 
 
     @Operation(summary = "내가 북마크한 스터디 조회")
-        @GetMapping("/v1/study-posts/bookmarked")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "페이지", required = true),
+            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
+    })
+    @GetMapping("/v1/study-posts/bookmarked")
     public ResponseEntity<FindPostResponseByBookmark> getBookmarkedPosts(@RequestParam int page, @RequestParam int size, UserId userId) {
         FindPostResponseByBookmark findPostResponseByBookmark = studyPostFindService.getBookmarkedPosts(page, size, userId.getId());
         return ResponseEntity.ok().body(findPostResponseByBookmark);
