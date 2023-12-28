@@ -47,14 +47,12 @@ CREATE TABLE post
 CREATE TABLE study
 (
     study_id           BIGINT NOT NULL AUTO_INCREMENT,
-    posted_user_id     BIGINT        NOT NULL,
     title              VARCHAR(55)   DEFAULT NULL,
     content            VARCHAR(255)  DEFAULT NULL,
     study_start_date   DATE          DEFAULT NULL,
     study_end_date     DATE          DEFAULT NULL,
     chat_url           VARCHAR(100)  DEFAULT NULL,
-    created_date       TIMESTAMP(3)     DEFAULT NULL,
-    modified_date      TIMESTAMP(3)     DEFAULT NULL,
+    user_id            BIGINT NOT NULL,
     PRIMARY KEY (study_id)
 );
 
@@ -80,12 +78,12 @@ CREATE TABLE bookmark
     PRIMARY KEY (bookmark_id)
 );
 
-CREATE TABLE user_study (
-      user_post_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE apply (
+      apply_id BIGINT AUTO_INCREMENT PRIMARY KEY,
       approve boolean,
-      post_id BIGINT,
+      study_id BIGINT,
       user_id BIGINT,
-      FOREIGN KEY (post_id) REFERENCES study(study_id),
+      FOREIGN KEY (study_id) REFERENCES study(study_id),
       FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
 

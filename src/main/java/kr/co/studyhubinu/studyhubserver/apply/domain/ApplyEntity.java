@@ -12,7 +12,7 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "user_study")
+@Table(name = "apply")
 public class ApplyEntity {
 
     @Id
@@ -20,6 +20,7 @@ public class ApplyEntity {
     @Column(name = "apply_id")
     private Long id;
 
+    private boolean approve;
 
     @ManyToOne
     @JoinColumn(name = "study_id")

@@ -60,7 +60,7 @@ public class StudyPostEntity extends BaseTimeEntity {
     @Column(name = "study_end_date")
     private LocalDate studyEndDate;
 
-    @Column(name = "posted_user_Id")
+    @Column(name = "posted_user_id")
     private Long postedUserId;
 
     @Column(name = "remaining_seat")
