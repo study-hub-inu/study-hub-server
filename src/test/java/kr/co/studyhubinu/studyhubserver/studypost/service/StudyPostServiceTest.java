@@ -5,9 +5,11 @@ import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostStartDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
+import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -38,24 +40,28 @@ class StudyPostServiceTest {
     StudyPostRepository studyPostRepository;
 
     @Mock
+    StudyRepository studyRepository;
+
+    @Mock
     UserRepository userRepository;
 
     @Test
     void 게시글_생성_성공() {
         // given
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        StudyEntity studyEntity = StudyEntity.builder().id(1L).build();
         StudyPostEntityFixture fixture = StudyPostEntityFixture.SQLD;
-        StudyPostInfo studyPostInfo = StudyPostInfo.builder().
-                userId(1L).
+        CreatePostRequest postRequest = CreatePostRequest.builder().
                 studyStartDate(LocalDate.of(2024, 1, 3)).
                 studyEndDate(LocalDate.of(2024, 10, 5)).
                 build();
 
         when(userRepository.findById(anyLong())).thenReturn(userEntity);
-        when(studyPostRepository.save(any())).thenReturn(fixture.studyPostEntity_생성(1L));
+        when(studyPostRepository.save(any())).thenReturn(fixture.studyPostEntity_생성(1L, 1L));
+        when(studyRepository.save(any())).thenReturn(studyEntity);
 
         // when
-        Long postId = studyPostService.createPost(studyPostInfo);
+        Long postId = studyPostService.createPost(postRequest, 1L);
 
         // then
         assertThat(postId).isEqualTo(1L);
@@ -65,8 +71,7 @@ class StudyPostServiceTest {
     void 게시글_생성_실패_시작날짜가_현재날짜_이전일경우() {
         // given
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
-        StudyPostInfo studyPostInfo = StudyPostInfo.builder().
-                userId(1L).
+        CreatePostRequest postRequest = CreatePostRequest.builder().
                 studyStartDate(LocalDate.of(2023, 1, 3)).
                 studyEndDate(LocalDate.of(2024, 10, 5)).
                 build();
@@ -75,7 +80,7 @@ class StudyPostServiceTest {
 
         // when, then
         assertThrows(PostStartDateConflictException.class, () -> {
-            studyPostService.createPost(studyPostInfo);
+            studyPostService.createPost(postRequest, 1L);
         });
     }
 
@@ -83,9 +88,8 @@ class StudyPostServiceTest {
     void 게시글_생성_실패_시작날짜가_종료날짜_이후인경우() {
         // given
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
-        StudyPostInfo studyPostInfo = StudyPostInfo.builder().
-                userId(1L).
-                studyStartDate(LocalDate.of(2024, 11, 3)).
+        CreatePostRequest postRequest = CreatePostRequest.builder().
+                studyStartDate(LocalDate.of(2025, 1, 3)).
                 studyEndDate(LocalDate.of(2024, 10, 5)).
                 build();
 
@@ -93,7 +97,7 @@ class StudyPostServiceTest {
 
         // when, then
         assertThrows(PostEndDateConflictException.class, () -> {
-            studyPostService.createPost(studyPostInfo);
+            studyPostService.createPost(postRequest, 1L);
         });
     }
 
@@ -101,7 +105,7 @@ class StudyPostServiceTest {
     void 게시글_수정_성공() {
         // given
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
-        Optional<StudyPostEntity> studyPostEntity = Optional.ofNullable(StudyPostEntityFixture.SQLD.studyPostEntity_생성(1L));
+        Optional<StudyPostEntity> studyPostEntity = Optional.ofNullable(StudyPostEntityFixture.SQLD.studyPostEntity_생성(1L, 1L));
         UpdateStudyPostInfo updateStudyPostInfo = UpdateStudyPostInfo.builder().
                 userId(1L).
                 postId(1L).

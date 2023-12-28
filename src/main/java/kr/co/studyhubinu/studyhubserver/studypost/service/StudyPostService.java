@@ -5,9 +5,11 @@ import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostStartDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
+import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.studypost.dto.data.StudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
+import kr.co.studyhubinu.studyhubserver.studypost.dto.request.CreatePostRequest;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
@@ -26,13 +28,22 @@ public class StudyPostService {
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
+    private final StudyRepository studyRepository;
 
     @Transactional
-    public Long createPost(StudyPostInfo info) {
-        UserEntity user = findUser(info.getUserId());
-        StudyPostEntity studyPost = info.toEntity(user.getId());
-        validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
+    public Long createPost(CreatePostRequest post, Long userId) {
+        isExistUser(userId);
+        validStudyPostDate(post.getStudyStartDate(), post.getStudyEndDate());
+        Long studyId = createStudy(post, userId);
+        StudyPostEntity studyPost = post.toStudyPostEntity(userId, studyId);
+
         return studyPostRepository.save(studyPost).getId();
+    }
+
+    @Transactional
+    public Long createStudy(CreatePostRequest post, Long userId) {
+        StudyEntity study = studyRepository.save(post.toStudyEntity(userId));
+        return study.getId();
     }
 
     @Transactional
@@ -59,6 +70,10 @@ public class StudyPostService {
         final StudyPostEntity post = findPost(postId);
         validatePostByUser(user.getId(), post);
         post.close();
+    }
+
+    private void isExistUser(Long userId) {
+        userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
 
     private UserEntity findUser(Long userId) {

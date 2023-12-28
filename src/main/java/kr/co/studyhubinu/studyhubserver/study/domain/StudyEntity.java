@@ -1,14 +1,11 @@
 package kr.co.studyhubinu.studyhubserver.study.domain;
 
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
-import kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity;
+import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-
-import static javax.persistence.FetchType.*;
 
 @Entity
 @Getter
@@ -38,16 +35,18 @@ public class StudyEntity {
     private Long userId;
 
     @OneToMany(mappedBy = "study")
-    private List<UserStudyEntity> userStudyEntityList;
+    private List<ApplyEntity> applyEntityList;
 
 
     @Builder
-    public StudyEntity(String title, String content, LocalDate studyStartDate, LocalDate studyEndDate, String chatUrl) {
+    public StudyEntity(Long id, String title, String content, LocalDate studyStartDate, LocalDate studyEndDate, String chatUrl, Long userId) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.chatUrl = chatUrl;
+        this.userId = userId;
     }
 
 }
