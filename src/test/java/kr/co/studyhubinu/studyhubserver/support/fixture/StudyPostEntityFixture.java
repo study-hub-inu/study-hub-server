@@ -43,7 +43,24 @@ public enum StudyPostEntityFixture {
 
     public StudyPostEntity studyPostEntity_생성(Long userId) {
         return StudyPostEntity.builder()
-                .id(1L)
+                .title(this.title)
+                .content(this.content)
+                .major(this.major)
+                .studyPerson(this.studyPerson)
+                .filteredGender(this.gender)
+                .studyWay(this.studyWay)
+                .penalty(this.penalty)
+                .penaltyWay(this.penaltyWay)
+                .studyStartDate(this.studyStartDate)
+                .studyEndDate(this.studyEndDate)
+                .userId(userId)
+                .remainingSeat(this.remainingSeat)
+                .build();
+    }
+
+    public StudyPostEntity studyPostEntity_생성(Long userId, Long postId) {
+        return StudyPostEntity.builder()
+                .id(postId)
                 .title(this.title)
                 .content(this.content)
                 .major(this.major)

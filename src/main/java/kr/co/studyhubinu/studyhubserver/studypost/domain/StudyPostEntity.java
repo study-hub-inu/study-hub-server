@@ -66,8 +66,11 @@ public class StudyPostEntity extends BaseTimeEntity {
     @Column(name = "remaining_seat")
     private Integer remainingSeat;
 
+    @Column(name = "study_id")
+    private Long studyId;
+
     @Builder
-    public StudyPostEntity(Long id, String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat) {
+    public StudyPostEntity(Long id, String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Long userId, int remainingSeat, Long studyId) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -82,6 +85,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.studyEndDate = studyEndDate;
         this.postedUserId = userId;
         this.remainingSeat = remainingSeat;
+        this.studyId = studyId;
     }
 
     public void update(UpdateStudyPostInfo info) {

@@ -49,6 +49,8 @@ public class QStudyPostEntity extends EntityPathBase<StudyPostEntity> {
 
     public final DatePath<java.time.LocalDate> studyEndDate = createDate("studyEndDate", java.time.LocalDate.class);
 
+    public final NumberPath<Long> studyId = createNumber("studyId", Long.class);
+
     public final NumberPath<Integer> studyPerson = createNumber("studyPerson", Integer.class);
 
     public final DatePath<java.time.LocalDate> studyStartDate = createDate("studyStartDate", java.time.LocalDate.class);

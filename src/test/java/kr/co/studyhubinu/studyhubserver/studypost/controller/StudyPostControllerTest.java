@@ -81,7 +81,7 @@ class StudyPostControllerTest extends ControllerRequest {
     @MethodSource("requestParameters")
     void 스터디_게시글_생성_실패(String testName, CreatePostRequest createPostRequest, String msg) throws Exception {
         // given
-        when(studyPostService.createPost(any())).thenReturn(1L);
+        when(studyPostService.createPost(any(), anyLong())).thenReturn(1L);
 
         // when, then
         ResultActions resultActions = performPostRequest("/api/v1/study-posts", createPostRequest);
@@ -98,7 +98,7 @@ class StudyPostControllerTest extends ControllerRequest {
     @Test
     void 스터디_게시글_생성_성공() throws Exception {
         // given
-        when(studyPostService.createPost(any())).thenReturn(1L);
+        when(studyPostService.createPost(any(), anyLong())).thenReturn(1L);
 
         // when, then
         ResultActions resultActions = performPostRequest("/api/v1/study-posts", CreatePostRequestFixture.createPostRequest_생성(CORRECT_POST));

@@ -68,7 +68,6 @@ class StudyPostRepositoryTest {
         List<PostDataByUserId> posts = studyPostRepository.findByPostedUserId(userId1, pageable);
 
         // then
-
         assertThat(posts.size()).isEqualTo(2);
         PostDataByUserId data1 = posts.get(1);
         PostDataByUserId data2 = posts.get(0);

@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.userstudy.domain;
+package kr.co.studyhubinu.studyhubserver.apply.domain;
 
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -13,17 +13,16 @@ import static javax.persistence.GenerationType.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_study")
-public class UserStudyEntity {
+public class ApplyEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "user_post_id")
+    @Column(name = "apply_id")
     private Long id;
 
-    private boolean approve;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "study_id")
     private StudyEntity study;
 
     @ManyToOne
@@ -31,8 +30,7 @@ public class UserStudyEntity {
     private UserEntity user;
 
     @Builder
-    public UserStudyEntity(boolean approve, StudyEntity study, UserEntity user) {
-        this.approve = approve;
+    public ApplyEntity(StudyEntity study, UserEntity user) {
         this.study = study;
         this.user = user;
     }

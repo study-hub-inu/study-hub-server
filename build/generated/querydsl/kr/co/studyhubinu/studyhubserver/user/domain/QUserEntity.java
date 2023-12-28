@@ -42,7 +42,7 @@ public class QUserEntity extends EntityPathBase<UserEntity> {
 
     public final StringPath password = createString("password");
 
-    public final ListPath<kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity, kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserStudyEntity> userStudyEntitiyList = this.<kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity, kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserStudyEntity>createList("userStudyEntitiyList", kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity.class, kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserStudyEntity.class, PathInits.DIRECT2);
+    public final ListPath<kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity> userStudyEntitiyList = this.<kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity>createList("userStudyEntitiyList", kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity.class, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity.class, PathInits.DIRECT2);
 
     public QUserEntity(String variable) {
         super(UserEntity.class, forVariable(variable));

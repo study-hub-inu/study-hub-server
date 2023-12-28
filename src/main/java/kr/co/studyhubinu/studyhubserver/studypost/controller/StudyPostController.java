@@ -35,7 +35,7 @@ public class StudyPostController {
                     "제목, 내용, 채팅방 URI, 관련 학과, 스터디 정원, 벌금, 필터 성별, 스터디 방식, 스터디 시작 날짜, 스터디 종료 날짜를 Json 형식으로 입력해주세요.")
     @PostMapping("/v1/study-posts")
     public ResponseEntity<Long> createPost(@Valid @RequestBody CreatePostRequest request, UserId userId) {
-        Long postId = studyPostService.createPost(request.toService(userId.getId()));
+        Long postId = studyPostService.createPost(request, userId.getId());
         return ResponseEntity.ok(postId);
     }
 
