@@ -4,24 +4,34 @@ import kr.co.studyhubinu.studyhubserver.bookmark.controller.CreateCommentRequest
 import kr.co.studyhubinu.studyhubserver.bookmark.controller.UpdateCommentRequestFixture;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
+import kr.co.studyhubinu.studyhubserver.comment.dto.response.CommentResponse;
 import kr.co.studyhubinu.studyhubserver.comment.service.CommentService;
 import kr.co.studyhubinu.studyhubserver.config.WebConfig;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.support.controller.ControllerRequest;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static kr.co.studyhubinu.studyhubserver.bookmark.controller.CreateCommentRequestFixture.CORRECT_CREATE_COMMENT;
 import static kr.co.studyhubinu.studyhubserver.bookmark.controller.UpdateCommentRequestFixture.CORRECT_COMMENT;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -80,4 +90,26 @@ class CommentControllerTest extends ControllerRequest {
                 .andDo(print());
     }
 
+    @Test
+    public void 댓글_리스트_조회() throws Exception {
+
+        // given
+        SliceImpl<CommentResponse> comment = new SliceImpl<>(new ArrayList<>(), PageRequest.of(1, 3), false);
+        Map<String, String> params = new HashMap<>();
+        params.put("page", "0");
+        params.put("size", "3");
+        when(commentService.getComments(anyLong(),anyInt(), anyInt(), any())).thenReturn(comment);
+
+        // when
+        ResultActions resultActions = performGetRequest("/api/v1/comments/1", params);
+        MvcResult mvcResult = resultActions.andReturn();
+        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+
+        Assertions.assertThat(responseBody).contains("\"pageNumber\":1");
+        Assertions.assertThat(responseBody).contains("\"pageSize\":3");
+    }
 }
