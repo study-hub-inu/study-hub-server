@@ -67,4 +67,17 @@ class CommentControllerTest extends ControllerRequest {
                 .andDo(print());
     }
 
+    @Test
+    void 댓글_삭제() throws Exception {
+        // given
+        doNothing().when(commentService).deleteComment(anyLong(), anyLong());
+
+        // when
+        ResultActions resultActions = performDeleteRequest("/api/v1/comments/1");
+
+        // then
+        resultActions.andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
 }
