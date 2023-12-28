@@ -25,29 +25,29 @@ public class CommentController {
 
     @Operation(summary = "댓글 작성")
     @PostMapping("/v1/comments")
-    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody CreateCommentRequest request, UserId userId) {
+    public ResponseEntity<HttpStatus> createComment(@Valid @RequestBody final CreateCommentRequest request, final UserId userId) {
         commentService.createComment(request, userId.getId());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "댓글 수정")
     @PutMapping("/v1/comments")
-    public ResponseEntity<HttpStatus> updateComment(@Valid @RequestBody UpdateCommentRequest request, UserId userId) {
+    public ResponseEntity<HttpStatus> updateComment(@Valid @RequestBody final UpdateCommentRequest request, final UserId userId) {
         commentService.updateComment(request, userId.getId());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Operation(summary = "댓글 삭제")
     @DeleteMapping("/v1/comments/{commentId}")
-    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("commentId") Long commentId, UserId userId) {
+    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("commentId") final Long commentId, final UserId userId) {
         commentService.deleteComment(commentId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "댓글 리스트 조회")
     @GetMapping("/v1/comments/{postId}")
-    public ResponseEntity<Slice<CommentResponse>> getComments(@PathVariable("postId") Long postId, @RequestParam int page, @RequestParam int size, UserId userId) {
-        Slice<CommentResponse> commentResponses = commentService.getComments(postId, page, size, userId.getId());
+    public ResponseEntity<Slice<CommentResponse>> getComments(@PathVariable("postId") final Long postId, @RequestParam final int page, @RequestParam final int size, final UserId userId) {
+        final Slice<CommentResponse> commentResponses = commentService.getComments(postId, page, size, userId.getId());
         return ResponseEntity.ok().body(commentResponses);
     }
 

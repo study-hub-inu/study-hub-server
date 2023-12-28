@@ -23,7 +23,7 @@ public class BookmarkService {
 
     @Transactional
     public boolean doBookMark(final Long userId, final Long postId) {
-        final AtomicBoolean created = new AtomicBoolean(false);
+        AtomicBoolean created = new AtomicBoolean(false);
         validateUserExist(userId);
         validateStudyPostExist(postId);
         bookMarkRepository.findByUserIdAndPostId(userId, postId).ifPresentOrElse(
