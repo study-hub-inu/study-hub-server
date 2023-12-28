@@ -9,10 +9,10 @@ import java.time.LocalDate;
 
 public enum StudyPostEntityFixture {
 
-    SQLD("SQLD딸사람 구해요", "열심히 할 사람만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 5, GenderType.MALE, StudyWayType.MIX, 10000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2023, 12, 25), 5),
-    ENGINEER_INFORMATION_PROCESSING("정처기 딸사람 구해요", "심장을 바칠 사람만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 8, GenderType.FEMALE, StudyWayType.MIX, 5000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2024, 2, 13), 8),
-    TOEIC("토익 딸사람 구해요", "800점 이상 목표인 사람들만", MajorType.NONE, 3, GenderType.NULL, StudyWayType.MIX, 50000, "800 달성 실패시", LocalDate.of(2023, 4, 30), LocalDate.of(2023, 8, 25), 3),
-    ENGINEER_INFORMATION_PROCESSING_WITH_MALE("정처기 딸사람!!", "남자만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 8, GenderType.MALE, StudyWayType.MIX, 5000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2024, 2, 13), 8);
+    SQLD("SQLD딸사람 구해요", "열심히 할 사람만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 5, GenderType.MALE, StudyWayType.MIX, 10000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2023, 12, 25), 5, 5L),
+    ENGINEER_INFORMATION_PROCESSING("정처기 딸사람 구해요", "심장을 바칠 사람만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 8, GenderType.FEMALE, StudyWayType.MIX, 5000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2024, 2, 13), 8, 7L),
+    TOEIC("토익 딸사람 구해요", "800점 이상 목표인 사람들만", MajorType.NONE, 3, GenderType.NULL, StudyWayType.MIX, 50000, "800 달성 실패시", LocalDate.of(2023, 4, 30), LocalDate.of(2023, 8, 25), 3, 8L),
+    ENGINEER_INFORMATION_PROCESSING_WITH_MALE("정처기 딸사람!!", "남자만요", MajorType.COMPUTER_SCIENCE_ENGINEERING, 8, GenderType.MALE, StudyWayType.MIX, 5000, "지각비", LocalDate.of(2023, 10, 25), LocalDate.of(2024, 2, 13), 8, 10L);
 
 
     private final String title;
@@ -26,8 +26,9 @@ public enum StudyPostEntityFixture {
     private final LocalDate studyStartDate;
     private final LocalDate studyEndDate;
     private final Integer remainingSeat;
+    private final Long studyId;
 
-    StudyPostEntityFixture(String title, String content, MajorType major, Integer studyPerson, GenderType gender, StudyWayType studyWay, Integer penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Integer remainingSeat) {
+    StudyPostEntityFixture(String title, String content, MajorType major, Integer studyPerson, GenderType gender, StudyWayType studyWay, Integer penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Integer remainingSeat, Long studyId) {
         this.title = title;
         this.content = content;
         this.major = major;
@@ -39,6 +40,7 @@ public enum StudyPostEntityFixture {
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.remainingSeat = remainingSeat;
+        this.studyId = studyId;
     }
 
     public StudyPostEntity studyPostEntity_생성(Long userId) {
@@ -55,6 +57,7 @@ public enum StudyPostEntityFixture {
                 .studyEndDate(this.studyEndDate)
                 .userId(userId)
                 .remainingSeat(this.remainingSeat)
+                .studyId(this.studyId)
                 .build();
     }
 
@@ -73,6 +76,7 @@ public enum StudyPostEntityFixture {
                 .studyEndDate(this.studyEndDate)
                 .userId(userId)
                 .remainingSeat(this.remainingSeat)
+                .studyId(this.studyId)
                 .build();
     }
 }
