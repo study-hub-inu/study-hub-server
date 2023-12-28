@@ -38,6 +38,7 @@ CREATE TABLE post
     study_start_date   DATE          DEFAULT NULL,
     study_end_date     DATE          DEFAULT NULL,
     remaining_seat     INTEGER       DEFAULT NULL,
+    study_id           BIGINT        NOT NULL,
     created_date       TIMESTAMP(3)     DEFAULT NULL,
     modified_date      TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (post_id)
