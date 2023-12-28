@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.userstudy.domain;
+package kr.co.studyhubinu.studyhubserver.apply.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -14,7 +14,7 @@ import com.querydsl.core.types.dsl.PathInits;
  * QUserStudyEntity is a Querydsl query type for UserStudyEntity
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QUserStudyEntity extends EntityPathBase<UserStudyEntity> {
+public class QUserStudyEntity extends EntityPathBase<ApplyEntity> {
 
     private static final long serialVersionUID = 761435169L;
 
@@ -31,10 +31,10 @@ public class QUserStudyEntity extends EntityPathBase<UserStudyEntity> {
     public final kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity user;
 
     public QUserStudyEntity(String variable) {
-        this(UserStudyEntity.class, forVariable(variable), INITS);
+        this(ApplyEntity.class, forVariable(variable), INITS);
     }
 
-    public QUserStudyEntity(Path<? extends UserStudyEntity> path) {
+    public QUserStudyEntity(Path<? extends ApplyEntity> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
@@ -43,10 +43,10 @@ public class QUserStudyEntity extends EntityPathBase<UserStudyEntity> {
     }
 
     public QUserStudyEntity(PathMetadata metadata, PathInits inits) {
-        this(UserStudyEntity.class, metadata, inits);
+        this(ApplyEntity.class, metadata, inits);
     }
 
-    public QUserStudyEntity(Class<? extends UserStudyEntity> type, PathMetadata metadata, PathInits inits) {
+    public QUserStudyEntity(Class<? extends ApplyEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.study = inits.isInitialized("study") ? new kr.co.studyhubinu.studyhubserver.study.domain.QStudyEntity(forProperty("study")) : null;
         this.user = inits.isInitialized("user") ? new kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity(forProperty("user")) : null;

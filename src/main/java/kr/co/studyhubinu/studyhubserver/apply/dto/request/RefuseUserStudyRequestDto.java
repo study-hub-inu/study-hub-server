@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.userstudy.dto.request;
+package kr.co.studyhubinu.studyhubserver.apply.dto.request;
 
 import lombok.Getter;
 

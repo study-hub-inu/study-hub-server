@@ -20,6 +20,8 @@ public class QStudyEntity extends EntityPathBase<StudyEntity> {
 
     public static final QStudyEntity studyEntity = new QStudyEntity("studyEntity");
 
+    public final ListPath<kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity> applyEntityList = this.<kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity>createList("applyEntityList", kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity.class, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity.class, PathInits.DIRECT2);
+
     public final StringPath chatUrl = createString("chatUrl");
 
     public final StringPath content = createString("content");
@@ -33,8 +35,6 @@ public class QStudyEntity extends EntityPathBase<StudyEntity> {
     public final StringPath title = createString("title");
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
-
-    public final ListPath<kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity, kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserStudyEntity> userStudyEntityList = this.<kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity, kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserStudyEntity>createList("userStudyEntityList", kr.co.studyhubinu.studyhubserver.userstudy.domain.UserStudyEntity.class, kr.co.studyhubinu.studyhubserver.userstudy.domain.QUserStudyEntity.class, PathInits.DIRECT2);
 
     public QStudyEntity(String variable) {
         super(StudyEntity.class, forVariable(variable));
