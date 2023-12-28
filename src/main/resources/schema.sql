@@ -1,10 +1,11 @@
-DROP TABLE if EXISTS users CASCADE;
+DROP TABLE IF EXISTS user_study;
+DROP TABLE if EXISTS apply;
+DROP TABLE if EXISTS comment;
+DROP TABLE if EXISTS bookmark;
+DROP TABLE if EXISTS alarm;
 DROP TABLE if EXISTS post;
 DROP TABLE if EXISTS study;
-DROP TABLE if EXISTS alarm;
-DROP TABLE if EXISTS bookmark;
-DROP TABLE if EXISTS user_study;
-DROP TABLE if EXISTS comment;
+DROP TABLE if EXISTS users;
 
 
 CREATE TABLE users
