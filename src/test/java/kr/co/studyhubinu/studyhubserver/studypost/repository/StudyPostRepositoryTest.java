@@ -270,4 +270,23 @@ class StudyPostRepositoryTest {
         assertThat(recommendResult)
                 .containsExactly(post2.getTitle(), post1.getTitle());
     }
+
+    @Test
+    void 스터디_게시글_제목으로_공백_문자열이_들어오면_전체_게시글을_조회한다() {
+        Long postedUserId = 1L;
+        String searchKeyword = "";
+        StudyPostEntity post1 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성(postedUserId);
+        StudyPostEntity post2 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING_WITH_MALE.studyPostEntity_생성(postedUserId);
+        studyPostRepository.save(post1);
+        studyPostRepository.save(post2);
+        InquiryRequest inquiryRequest = InquiryRequest.builder().
+                inquiryText(searchKeyword).
+                build();
+
+        // when
+        List<PostDataByInquiry> posts = studyPostRepository.findByInquiry(inquiryRequest, PageRequest.of(0,2), 1L);
+
+        // then
+        assertThat(posts.size()).isEqualTo(2);
+    }
 }
