@@ -22,13 +22,10 @@ public class NotificationEntity extends BaseTimeEntity {
     @Column(name = "notification_id")
     private Long id;
 
-    @Column(name = "user_id")
-    private Long userId;
-
     @Column(name = "post_id")
     private Long postId;
 
-    @Column(name = "reciver_id")
+    @Column(name = "receiverId")
     private Long receiverId;
 
     @Column(name = "sender_id")
@@ -42,8 +39,8 @@ public class NotificationEntity extends BaseTimeEntity {
 
     private boolean checked;
 
-    public NotificationEntity(Long userId, Long postId, Long receiverId, Long senderId, String content, NotificationType notificationType, boolean checked) {
-        this.userId = userId;
+    @Builder
+    public NotificationEntity(Long postId, Long receiverId, Long senderId, String content, NotificationType notificationType, boolean checked) {
         this.postId = postId;
         this.receiverId = receiverId;
         this.senderId = senderId;
@@ -52,14 +49,11 @@ public class NotificationEntity extends BaseTimeEntity {
         this.checked = checked;
     }
 
-    @Builder
-
-
     public void read() {
         checked = true;
     }
 
-    public boolean isNotificationOfUser(Long userId) {
-        return this.userId.equals(userId);
+    public boolean isNotificationOfUser(Long receiverId) {
+        return this.receiverId.equals(receiverId);
     }
 }

@@ -100,8 +100,10 @@ public class FcmClient {
                     .createScoped(List.of(GOOGLE_AUTH_URL));
 
             googleCredentials.refreshIfExpired();
-
-            return googleCredentials.getAccessToken().getTokenValue();
+            String result =  googleCredentials.getAccessToken().getTokenValue();
+            log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^" + result);
+            return result;
+//            return googleCredentials.getAccessToken().getTokenValue();
         } catch (IOException e) {
             throw new RuntimeException();
         }

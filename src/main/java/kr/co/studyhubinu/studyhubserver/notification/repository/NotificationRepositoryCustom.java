@@ -5,5 +5,5 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
 public interface NotificationRepositoryCustom {
-    Slice<NotificationResponse> findNotificationByuserId(Long userId, Pageable pageable);
+    Slice<NotificationResponse> findNotificationByReceiverId(Long userId, Pageable pageable);
 }

@@ -61,9 +61,8 @@ CREATE TABLE study
 CREATE TABLE notification
 (
     notification_id    BIGINT           NOT NULL AUTO_INCREMENT,
-    user_id            BIGINT           NOT NULL,
     post_id            BIGINT           NOT NULL,
-    reciver_id         BIGINT           NOT NULL,
+    receiverId         BIGINT           NOT NULL,
     sender_id          BIGINT           NOT NULL,
     content            varchar(255)     NOT NULL,
     notification_type  VARCHAR(15)      DEFAULT NULL,

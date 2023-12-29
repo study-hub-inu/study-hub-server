@@ -25,7 +25,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<NotificationResponse> findNotificationByuserId(Long userId, Pageable pageable) {
+    public Slice<NotificationResponse> findNotificationByReceiverId(Long userId, Pageable pageable) {
         QNotificationEntity notification = notificationEntity;
         QStudyPostEntity post = studyPostEntity;
 
@@ -33,7 +33,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                         Projections.constructor(NotificationResponse.class,
                                 notification.id.as("alarmId"),
                                 notification.postId,
-                                notification.userId,
+                                notification.receiverId,
                                 notification.notificationType,
                                 post.title.as("postTitle"),
                                 notification.checked.as("isChecked"),
@@ -41,7 +41,7 @@ public class NotificationRepositoryImpl implements NotificationRepositoryCustom 
                 .from(notification)
                 .leftJoin(post)
                 .on(notification.postId.eq(post.id))
-                .where(notification.userId.eq(userId))
+                .where(notification.receiverId.eq(userId))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
