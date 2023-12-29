@@ -13,7 +13,7 @@ build/bootJarMainClassName
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-firebase_service_key.json
+firebase-service-key.json
 
 *.yml
 application.yml

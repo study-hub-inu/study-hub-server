@@ -60,11 +60,14 @@ CREATE TABLE study
 
 CREATE TABLE notification
 (
-    notification_id    BIGINT NOT NULL AUTO_INCREMENT,
-    user_id            BIGINT        NOT NULL,
-    post_id            BIGINT        NOT NULL,
-    notification_type  VARCHAR(15)   DEFAULT NULL,
-    checked            TINYINT       DEFAULT 0,
+    notification_id    BIGINT           NOT NULL AUTO_INCREMENT,
+    user_id            BIGINT           NOT NULL,
+    post_id            BIGINT           NOT NULL,
+    reciver_id         BIGINT           NOT NULL,
+    sender_id          BIGINT           NOT NULL,
+    content            varchar(255)     NOT NULL,
+    notification_type  VARCHAR(15)      DEFAULT NULL,
+    checked            TINYINT          DEFAULT 0,
     created_date       TIMESTAMP(3)     DEFAULT NULL,
     modified_date      TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (notification_id)

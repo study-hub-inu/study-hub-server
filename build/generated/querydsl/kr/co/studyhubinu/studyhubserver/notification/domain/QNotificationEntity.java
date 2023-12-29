@@ -23,6 +23,8 @@ public class QNotificationEntity extends EntityPathBase<NotificationEntity> {
 
     public final BooleanPath checked = createBoolean("checked");
 
+    public final StringPath content = createString("content");
+
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
@@ -34,6 +36,10 @@ public class QNotificationEntity extends EntityPathBase<NotificationEntity> {
     public final EnumPath<kr.co.studyhubinu.studyhubserver.notification.enums.NotificationType> notificationType = createEnum("notificationType", kr.co.studyhubinu.studyhubserver.notification.enums.NotificationType.class);
 
     public final NumberPath<Long> postId = createNumber("postId", Long.class);
+
+    public final NumberPath<Long> receiverId = createNumber("receiverId", Long.class);
+
+    public final NumberPath<Long> senderId = createNumber("senderId", Long.class);
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
