@@ -32,17 +32,18 @@ public class StudyPostService {
 
     @Transactional
     public Long createPost(CreatePostRequest post, Long userId) {
+        log.info("***************************userId = " + userId);
         isExistUser(userId);
         validStudyPostDate(post.getStudyStartDate(), post.getStudyEndDate());
         Long studyId = createStudy(post, userId);
         StudyPostEntity studyPost = post.toStudyPostEntity(userId, studyId);
-
         return studyPostRepository.save(studyPost).getId();
     }
 
     @Transactional
     public Long createStudy(CreatePostRequest post, Long userId) {
         StudyEntity study = studyRepository.save(post.toStudyEntity(userId));
+        log.info("***************************스터디 저장 성공");
         return study.getId();
     }
 
