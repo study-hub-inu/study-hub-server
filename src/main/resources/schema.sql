@@ -6,6 +6,7 @@ DROP TABLE if EXISTS notification;
 DROP TABLE if EXISTS post;
 DROP TABLE if EXISTS study;
 DROP TABLE if EXISTS users;
+DROP TABLE IF EXISTS fcm_token;
 
 
 CREATE TABLE users
@@ -95,4 +96,12 @@ CREATE TABLE comment (
     content         VARCHAR(100)  DEFAULT NULL,
     created_date    TIMESTAMP(3)     DEFAULT NULL,
     modified_date   TIMESTAMP(3)     DEFAULT NULL
+);
+
+-- 여기서부터 최신화 + notification drop하고 다시 만들기
+
+CREATE TABLE fcm_token (
+    fcm_token_id    BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id         BIGINT      NOT NULL,
+    token           VARCHAR(255)    NOT NULL,
 );
