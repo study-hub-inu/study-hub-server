@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.apply.domain;
 
+import kr.co.studyhubinu.studyhubserver.apply.domain.insepection.Inspection;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import lombok.AccessLevel;
@@ -20,7 +21,8 @@ public class ApplyEntity {
     @Column(name = "apply_id")
     private Long id;
 
-    private boolean approve;
+    @Convert(converter= Inspection.class)
+    private Inspection inspection;
 
     @ManyToOne
     @JoinColumn(name = "study_id")
