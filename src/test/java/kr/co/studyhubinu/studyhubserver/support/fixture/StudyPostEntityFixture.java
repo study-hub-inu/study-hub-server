@@ -55,7 +55,7 @@ public enum StudyPostEntityFixture {
                 .penaltyWay(this.penaltyWay)
                 .studyStartDate(this.studyStartDate)
                 .studyEndDate(this.studyEndDate)
-                .userId(userId)
+                .postedUserId(userId)
                 .remainingSeat(this.remainingSeat)
                 .studyId(this.studyId)
                 .build();
@@ -74,7 +74,7 @@ public enum StudyPostEntityFixture {
                 .penaltyWay(this.penaltyWay)
                 .studyStartDate(this.studyStartDate)
                 .studyEndDate(this.studyEndDate)
-                .userId(userId)
+                .postedUserId(userId)
                 .remainingSeat(this.remainingSeat)
                 .studyId(this.studyId)
                 .build();

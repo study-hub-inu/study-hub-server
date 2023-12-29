@@ -113,10 +113,9 @@ public class CreatePostRequest {
                 .penaltyWay(penaltyWay)
                 .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
-                .userId(userId)
+                .postedUserId(userId)
                 .remainingSeat(studyPerson)
                 .studyId(studyId)
-                .userId(userId)
                 .build();
     }
 }
