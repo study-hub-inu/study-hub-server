@@ -28,13 +28,13 @@ public class QStudyEntity extends EntityPathBase<StudyEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final NumberPath<Long> masterUserId = createNumber("masterUserId", Long.class);
+
     public final DatePath<java.time.LocalDate> studyEndDate = createDate("studyEndDate", java.time.LocalDate.class);
 
     public final DatePath<java.time.LocalDate> studyStartDate = createDate("studyStartDate", java.time.LocalDate.class);
 
     public final StringPath title = createString("title");
-
-    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
     public QStudyEntity(String variable) {
         super(StudyEntity.class, forVariable(variable));

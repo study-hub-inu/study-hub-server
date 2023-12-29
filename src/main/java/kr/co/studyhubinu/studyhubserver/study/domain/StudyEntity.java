@@ -31,8 +31,8 @@ public class StudyEntity {
     @Column(name = "chat_url")
     private String chatUrl;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "master_user_id")
+    private Long masterUserId;
 
     @OneToMany(mappedBy = "study")
     private List<ApplyEntity> applyEntityList;
@@ -46,7 +46,7 @@ public class StudyEntity {
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.chatUrl = chatUrl;
-        this.userId = userId;
+        this.masterUserId = userId;
     }
 
 }
