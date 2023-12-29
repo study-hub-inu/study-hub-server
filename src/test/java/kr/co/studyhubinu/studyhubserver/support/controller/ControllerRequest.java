@@ -45,6 +45,13 @@ public class ControllerRequest {
         );
     }
 
+    public ResultActions performPostRequest(String url) throws Exception {
+        return mockMvc.perform(
+                post(url)
+                        .contentType(MediaType.APPLICATION_JSON)
+        );
+    }
+
     public ResultActions performPutRequest(String url, Object requestObject) throws Exception {
         return mockMvc.perform(
                 put(url)

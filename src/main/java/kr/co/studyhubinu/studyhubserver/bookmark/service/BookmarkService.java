@@ -22,8 +22,8 @@ public class BookmarkService {
     private final StudyPostRepository studyPostRepository;
 
     @Transactional
-    public boolean doBookMark(final Long userId, final Long postId) {
-        final AtomicBoolean created = new AtomicBoolean(false);
+    public boolean doBookMark(Long userId, Long postId) {
+        AtomicBoolean created = new AtomicBoolean(false);
         validateUserExist(userId);
         validateStudyPostExist(postId);
         bookMarkRepository.findByUserIdAndPostId(userId, postId).ifPresentOrElse(
@@ -40,7 +40,7 @@ public class BookmarkService {
         return created.get();
     }
 
-    public boolean checkBookmarked(final Long userId, final Long postId) {
+    public boolean checkBookmarked(Long userId, Long postId) {
         validateUserExist(userId);
         validateStudyPostExist(postId);
         return bookMarkRepository.findByUserIdAndPostId(userId, postId).isPresent();
