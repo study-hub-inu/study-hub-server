@@ -1,10 +1,10 @@
-package kr.co.studyhubinu.studyhubserver.alarm.repository;
+package kr.co.studyhubinu.studyhubserver.notification.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.co.studyhubinu.studyhubserver.alarm.domain.QAlarmEntity;
-import kr.co.studyhubinu.studyhubserver.alarm.dto.response.AlarmResponse;
+import kr.co.studyhubinu.studyhubserver.notification.domain.QNotificationEntity;
+import kr.co.studyhubinu.studyhubserver.notification.dto.response.NotificationResponse;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -14,34 +14,34 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.studyhubinu.studyhubserver.alarm.domain.QAlarmEntity.alarmEntity;
+import static kr.co.studyhubinu.studyhubserver.notification.domain.QNotificationEntity.notificationEntity;
 import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.studyPostEntity;
 
 
 @Repository
 @RequiredArgsConstructor
-public class AlarmRepositoryImpl implements AlarmRepositoryCustom {
+public class NotificationRepositoryImpl implements NotificationRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Slice<AlarmResponse> findAlarmByuserId(Long userId, Pageable pageable) {
-        QAlarmEntity alarm = alarmEntity;
+    public Slice<NotificationResponse> findNotificationByuserId(Long userId, Pageable pageable) {
+        QNotificationEntity notification = notificationEntity;
         QStudyPostEntity post = studyPostEntity;
 
-        JPAQuery<AlarmResponse> alarmResponseJPAQuery = jpaQueryFactory.select(
-                        Projections.constructor(AlarmResponse.class,
-                                alarm.id.as("alarmId"),
-                                alarm.postId,
-                                alarm.userId,
-                                alarm.alarmCategory,
+        JPAQuery<NotificationResponse> alarmResponseJPAQuery = jpaQueryFactory.select(
+                        Projections.constructor(NotificationResponse.class,
+                                notification.id.as("alarmId"),
+                                notification.postId,
+                                notification.userId,
+                                notification.notificationType,
                                 post.title.as("postTitle"),
-                                alarm.checked.as("isChecked"),
-                                alarm.createdDate))
-                .from(alarm)
+                                notification.checked.as("isChecked"),
+                                notification.createdDate))
+                .from(notification)
                 .leftJoin(post)
-                .on(alarm.postId.eq(post.id))
-                .where(alarm.userId.eq(userId))
+                .on(notification.postId.eq(post.id))
+                .where(notification.userId.eq(userId))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);

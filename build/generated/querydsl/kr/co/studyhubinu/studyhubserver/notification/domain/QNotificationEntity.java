@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.alarm.domain;
+package kr.co.studyhubinu.studyhubserver.notification.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -10,18 +10,16 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QAlarmEntity is a Querydsl query type for AlarmEntity
+ * QNotificationEntity is a Querydsl query type for NotificationEntity
  */
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
-public class QAlarmEntity extends EntityPathBase<AlarmEntity> {
+public class QNotificationEntity extends EntityPathBase<NotificationEntity> {
 
-    private static final long serialVersionUID = 2092893217L;
+    private static final long serialVersionUID = -1330078833L;
 
-    public static final QAlarmEntity alarmEntity = new QAlarmEntity("alarmEntity");
+    public static final QNotificationEntity notificationEntity = new QNotificationEntity("notificationEntity");
 
     public final kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity _super = new kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity(this);
-
-    public final EnumPath<kr.co.studyhubinu.studyhubserver.alarm.enums.AlarmType> alarmCategory = createEnum("alarmCategory", kr.co.studyhubinu.studyhubserver.alarm.enums.AlarmType.class);
 
     public final BooleanPath checked = createBoolean("checked");
 
@@ -33,20 +31,22 @@ public class QAlarmEntity extends EntityPathBase<AlarmEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
+    public final EnumPath<kr.co.studyhubinu.studyhubserver.notification.enums.NotificationType> notificationType = createEnum("notificationType", kr.co.studyhubinu.studyhubserver.notification.enums.NotificationType.class);
+
     public final NumberPath<Long> postId = createNumber("postId", Long.class);
 
     public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
-    public QAlarmEntity(String variable) {
-        super(AlarmEntity.class, forVariable(variable));
+    public QNotificationEntity(String variable) {
+        super(NotificationEntity.class, forVariable(variable));
     }
 
-    public QAlarmEntity(Path<? extends AlarmEntity> path) {
+    public QNotificationEntity(Path<? extends NotificationEntity> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QAlarmEntity(PathMetadata metadata) {
-        super(AlarmEntity.class, metadata);
+    public QNotificationEntity(PathMetadata metadata) {
+        super(NotificationEntity.class, metadata);
     }
 
 }
