@@ -14,6 +14,7 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,6 @@ public class FcmClient {
     private static final String PREFIX_ACCESS_TOKEN = "Bearer ";
     private static final String POSTFIX_FCM_REQUEST_URL = "/messages:send";
     private static final String PREFIX_FCM_REQUEST_URL = "https://fcm.googleapis.com/v1/projects/";
-
     private static final String FIREBASE_KEY_PATH = "firebase/firebase-service-key.json";
     private static final String GOOGLE_AUTH_URL = "https://www.googleapis.com/auth/cloud-platform";
 
@@ -39,7 +39,8 @@ public class FcmClient {
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
 
-    private String projectId = "studyhub-15565";
+    @Value("${firebase.project.id}")
+    private String projectId;
 
     public void sendMessageTo(final Long receiverId, final NotificationEntity notificationEntity) {
 
