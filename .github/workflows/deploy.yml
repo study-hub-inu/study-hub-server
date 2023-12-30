@@ -34,6 +34,11 @@ jobs:
           java-version: 11
           distribution: zulu
 
+      - name: Setup Firebase service key
+        run: |
+          mkdir -p src/main/resources/firebase
+          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > src/main/resources/firebase/firebase-service-key.json
+
       - name: Pemission
         run: chmod +x ./gradlew
 
@@ -54,12 +59,6 @@ jobs:
         if: steps.buildAndTests.outcome == 'failure'
         run: exit 1
 
-#      - name: Create directory if not exists
-#        run: mkdir -p src/main/resources/firebase/
-#
-#      - name: Decode Firebase service key # aws-service-key 디코딩하고 파일에 넣기
-#        run: echo "${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }}" | base64 --decode > src/main/resources/firebase/firebase-service-key.json
-
       # UTC가 기준이기 때문에 한국시간으로 맞추려면 +9시간 해야 한다
       - name: Get current time
         uses: 1466587594/get-current-time@v2
@@ -74,8 +73,7 @@ jobs:
       # EB에 CD 하기 위해 추가 작성
       - name: Generate deployment package
         run: |
-          mkdir -p deploy/src/main/resources/firebase
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > deploy/src/main/resources/firebase/firebase-service-key.json
+          mkdir deploy
           cp build/libs/*.jar deploy/application.jar
           cp Procfile deploy/Procfile
           cp -r .ebextensions deploy/.ebextensions
