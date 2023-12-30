@@ -55,7 +55,7 @@ jobs:
         run: exit 1
 
       - name: Decode Firebase service key # aws-service-key 디코딩하고 파일에 넣기
-        run: echo "${{ FIREBASE_SERVICE_KEY_BASE64_ENCODE }}" | base64 --decode > firebase-service-key.json
+        run: echo "${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }}" | base64 --decode > firebase-service-key.json
 
       # UTC가 기준이기 때문에 한국시간으로 맞추려면 +9시간 해야 한다
       - name: Get current time
