@@ -37,8 +37,10 @@ jobs:
       - name: Setup Firebase service key
         run: |
           mkdir -p src/main/resources/firebase
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > src/main/resources/firebase/firebase-service-key.json
-          cat src/main/resources/firebase/firebase-service-key.json
+          cat ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d 
+
+#          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > src/main/resources/firebase/firebase-service-key.json
+#          cat src/main/resources/firebase/firebase-service-key.json
 
       - name: Pemission
         run: chmod +x ./gradlew
