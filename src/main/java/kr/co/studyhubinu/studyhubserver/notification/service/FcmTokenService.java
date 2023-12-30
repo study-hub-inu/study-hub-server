@@ -27,6 +27,12 @@ public class FcmTokenService {
 
     }
 
+    @Transactional
+    public void deleteFcmToken(Long userId) {
+        validateUserExist(userId);
+        fcmTokenRepository.deleteByUserId(userId);
+    }
+
     private void validateUserExist(Long userId) {
         userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }

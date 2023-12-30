@@ -35,21 +35,28 @@ public class NotificationController {
 
 
     @Operation(summary = "알림 조회", description = "사용자의 모든 알림 메시지를 조회합니다.")
-    @GetMapping("v1/notification")
+    @GetMapping("/v1/notification")
     public ResponseEntity<Slice<NotificationResponse>> getNotifications(@RequestParam int page, @RequestParam int size, UserId userId) {
         Slice<NotificationResponse> alarms = notificationService.getNotification(page, size, userId.getId());
         return ResponseEntity.ok().body(alarms);
     }
 
     @Operation(summary = "FCM 토큰 저장", description = "발급받으신 fcm 토큰을 보내주시면 됩니다")
-    @PostMapping("v1/notification/token")
+    @PostMapping("/v1/notification/token")
     public ResponseEntity<HttpStatus> createFcmToken(@RequestBody final CreateFcmTokenRequest createFcmTokenRequest, UserId userId) {
         fcmTokenService.createFcmToken(createFcmTokenRequest, userId.getId());
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "FCM 토큰 삭제", description = "회원이 로그아웃 하면")
+    @DeleteMapping("/v1/notification/token")
+    public ResponseEntity<HttpStatus> deleteFcmToken(UserId userId) {
+        fcmTokenService.deleteFcmToken(userId.getId());
+        return ResponseEntity.noContent().build();
+    }
+
     @Operation(summary = "알림 기능 테스트", description = "알림 기능을 테스트하겠습니다")
-    @PostMapping("vi/notification/test")
+    @PostMapping("/vi/notification/test")
     public ResponseEntity<HttpStatus> sendNotification(UserId userId) {
         notificationService.sendTest(userId.getId());
         return ResponseEntity.ok().build();

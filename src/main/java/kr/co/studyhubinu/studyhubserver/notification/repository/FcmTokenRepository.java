@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface FcmTokenRepository extends JpaRepository<FcmTokenEntity, Long> {
     Optional<FcmTokenEntity> findByUserId(Long userId);
+
+    void deleteByUserId(Long userId);
 }
