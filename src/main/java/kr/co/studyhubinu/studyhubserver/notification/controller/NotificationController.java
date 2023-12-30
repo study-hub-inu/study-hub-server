@@ -20,15 +20,15 @@ public class NotificationController {
     private final NotificationService notificationService;
     private final FcmTokenService fcmTokenService;
     @Operation(summary = "알림 읽음 처리", description = "사용자가 클릭한 알림을 읽음 처리 합니다.")
-    @PutMapping("/v1/notification/{notification_id}")
-    public ResponseEntity<HttpStatus> readNotification(@PathVariable("notification_id") Long notificationId, UserId userId) {
+    @PutMapping("/v1/notification/{notification-id}")
+    public ResponseEntity<HttpStatus> readNotification(@PathVariable("notification-id") Long notificationId, UserId userId) {
         notificationService.readNotification(notificationId, userId.getId());
         return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "알람 삭제", description = "사용자가 알람을 삭제 합니다.")
-    @DeleteMapping("/v1/notification/{notification_id}")
-    public ResponseEntity<HttpStatus> deleteNotification(@PathVariable("notification_id") Long alarmId, UserId userId) {
+    @DeleteMapping("/v1/notification/{notification-id}")
+    public ResponseEntity<HttpStatus> deleteNotification(@PathVariable("notification-id") Long alarmId, UserId userId) {
         notificationService.deleteNotification(alarmId, userId.getId());
         return ResponseEntity.noContent().build();
     }
@@ -43,8 +43,9 @@ public class NotificationController {
 
     @Operation(summary = "FCM 토큰 저장", description = "발급받으신 fcm 토큰을 보내주시면 됩니다")
     @PostMapping("v1/notification/token")
-    public void createFcmToken(@RequestBody final CreateFcmTokenRequest createFcmTokenRequest, UserId userId) {
+    public ResponseEntity<HttpStatus> createFcmToken(@RequestBody final CreateFcmTokenRequest createFcmTokenRequest, UserId userId) {
         fcmTokenService.createFcmToken(createFcmTokenRequest, userId.getId());
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "알림 기능 테스트", description = "알림 기능을 테스트하겠습니다")
