@@ -99,7 +99,7 @@ public class FcmClient {
             final GoogleCredentials googleCredentials = GoogleCredentials
                     .fromStream(new ClassPathResource(FIREBASE_KEY_PATH).getInputStream())
                     .createScoped(List.of(GOOGLE_AUTH_URL));
-
+            log.info("vvvvvvvvvvvvvvvvvvvvvvvvvvvv");
             googleCredentials.refreshIfExpired();
             String result =  googleCredentials.getAccessToken().getTokenValue();
             log.info("^^^^^^^^^^^^^^^^^^^^^^^^^^^" + result);
