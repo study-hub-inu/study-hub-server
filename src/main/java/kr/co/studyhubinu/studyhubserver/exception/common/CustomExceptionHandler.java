@@ -13,7 +13,6 @@ import kr.co.studyhubinu.studyhubserver.exception.StatusType;
 
 @Slf4j
 @RestControllerAdvice
-@Slf4j
 public class CustomExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
