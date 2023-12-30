@@ -2,10 +2,11 @@ DROP TABLE IF EXISTS user_study;
 DROP TABLE if EXISTS apply;
 DROP TABLE if EXISTS comment;
 DROP TABLE if EXISTS bookmark;
-DROP TABLE if EXISTS alarm;
+DROP TABLE if EXISTS notification;
 DROP TABLE if EXISTS post;
 DROP TABLE if EXISTS study;
 DROP TABLE if EXISTS users;
+DROP TABLE IF EXISTS fcm_token;
 
 
 CREATE TABLE users
@@ -57,16 +58,18 @@ CREATE TABLE study
     PRIMARY KEY (study_id)
 );
 
-CREATE TABLE alarm
+CREATE TABLE notification
 (
-    alarm_id           BIGINT NOT NULL AUTO_INCREMENT,
-    user_id            BIGINT        NOT NULL,
-    post_id            BIGINT        NOT NULL,
-    alarm_category     VARCHAR(15)   DEFAULT NULL,
-    checked            TINYINT       DEFAULT 0,
+    notification_id    BIGINT           NOT NULL AUTO_INCREMENT,
+    post_id            BIGINT           NOT NULL,
+    receiver_id         BIGINT           NOT NULL,
+    sender_id          BIGINT           NOT NULL,
+    content            VARCHAR(255)     NOT NULL,
+    notification_type  VARCHAR(15)      DEFAULT NULL,
+    checked            TINYINT          DEFAULT 0,
     created_date       TIMESTAMP(3)     DEFAULT NULL,
     modified_date      TIMESTAMP(3)     DEFAULT NULL,
-    PRIMARY KEY (alarm_id)
+    PRIMARY KEY (notification_id)
 );
 
 CREATE TABLE bookmark
@@ -95,4 +98,11 @@ CREATE TABLE comment (
     content         VARCHAR(100)  DEFAULT NULL,
     created_date    TIMESTAMP(3)     DEFAULT NULL,
     modified_date   TIMESTAMP(3)     DEFAULT NULL
+);
+
+CREATE TABLE fcm_token (
+    fcm_token_id    BIGINT       AUTO_INCREMENT,
+    user_id         BIGINT       NOT NULL,
+    token           VARCHAR(255) NOT NULL,
+    PRIMARY KEY (fcm_token_id)
 );

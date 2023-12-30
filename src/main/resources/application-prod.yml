@@ -60,3 +60,7 @@ cloud:
       secret-key: ${s3.secret}
     s3:
       bucket: ${s3.name}
+
+firebase:
+  project:
+    id: ${firebase.project.id}
