@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -25,7 +26,7 @@ public class NotificationEntity extends BaseTimeEntity {
     @Column(name = "post_id")
     private Long postId;
 
-    @Column(name = "receiverId")
+    @Column(name = "receiver_id")
     private Long receiverId;
 
     @Column(name = "sender_id")
@@ -37,6 +38,7 @@ public class NotificationEntity extends BaseTimeEntity {
     @Column(name = "notification_type")
     private NotificationType notificationType;
 
+    @ColumnDefault("false")
     private boolean checked;
 
     @Builder

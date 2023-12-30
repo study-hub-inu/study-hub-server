@@ -62,9 +62,9 @@ CREATE TABLE notification
 (
     notification_id    BIGINT           NOT NULL AUTO_INCREMENT,
     post_id            BIGINT           NOT NULL,
-    receiverId         BIGINT           NOT NULL,
+    receiver_id         BIGINT           NOT NULL,
     sender_id          BIGINT           NOT NULL,
-    content            varchar(255)     NOT NULL,
+    content            VARCHAR(255)     NOT NULL,
     notification_type  VARCHAR(15)      DEFAULT NULL,
     checked            TINYINT          DEFAULT 0,
     created_date       TIMESTAMP(3)     DEFAULT NULL,
@@ -100,10 +100,9 @@ CREATE TABLE comment (
     modified_date   TIMESTAMP(3)     DEFAULT NULL
 );
 
--- 여기서부터 최신화 + notification drop하고 다시 만들기
-
 CREATE TABLE fcm_token (
-    fcm_token_id    BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id         BIGINT      NOT NULL,
-    token           VARCHAR(255)    NOT NULL,
+    fcm_token_id    BIGINT       AUTO_INCREMENT,
+    user_id         BIGINT       NOT NULL,
+    token           VARCHAR(255) NOT NULL,
+    PRIMARY KEY (fcm_token_id)
 );
