@@ -71,16 +71,11 @@ jobs:
       - name: Show Current Time
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}"
 
-      # Firebase 서비스 키를 base64로 디코딩하여 파일 생성
-      - name: Decode Firebase service key and store in file
-        run: |
-          mkdir -p deploy/src/main/resources/firebase
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > deploy/src/main/resources/firebase/firebase-service-key.json
-
       # EB에 CD 하기 위해 추가 작성
       - name: Generate deployment package
         run: |
-#          mkdir deploy
+          mkdir deploy
+          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > deploy/src/main/resources/firebase/firebase-service-key.json
           cp build/libs/*.jar deploy/application.jar
           cp Procfile deploy/Procfile
           cp -r .ebextensions deploy/.ebextensions
