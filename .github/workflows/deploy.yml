@@ -74,13 +74,8 @@ jobs:
       # Firebase 서비스 키를 base64로 디코딩하여 파일 생성
       - name: Decode Firebase service key and store in file
         run: |
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > deploy/firebase-service-key.json
-
-      # 디렉토리 생성 및 Firebase 서비스 키 복사
-      - name: Create deploy directory and copy Firebase service key
-        run: |
-          mkdir deploy
-          cp deploy/firebase-service-key.json deploy/firebase-service-key.json
+          mkdir -p deploy/src/main/resources/firebase
+          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64 }} | base64 -d > deploy/src/main/resources/firebase/firebase-service-key.json
 
       # EB에 CD 하기 위해 추가 작성
       - name: Generate deployment package
