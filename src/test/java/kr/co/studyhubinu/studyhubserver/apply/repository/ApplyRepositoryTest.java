@@ -74,10 +74,10 @@ class ApplyRepositoryTest {
         applyRepository.save(applyEntity);
         applyRepository.flush();
 
-        ApplyEntity apply = applyRepository.findById(1L).orElseThrow(IllegalArgumentException::new);
+        ApplyEntity apply = applyRepository.findByUserAndStudy(user, study);
         apply.update(updateApplyRequest.getInspection());
         applyRepository.flush();
-        ApplyEntity result = applyRepository.findById(1L).orElseThrow(IllegalArgumentException::new);
+        ApplyEntity result = applyRepository.findByUserAndStudy(user, study);
 
         // then
         assertThat(result.getInspection()).isEqualTo(Inspection.STANDBY);

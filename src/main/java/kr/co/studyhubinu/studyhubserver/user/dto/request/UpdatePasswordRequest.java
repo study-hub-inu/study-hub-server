@@ -4,12 +4,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdatePasswordInfo;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
+@NoArgsConstructor
 public class UpdatePasswordRequest {
 
     @Schema(description = "유저 비밀번호", example = "asd123")

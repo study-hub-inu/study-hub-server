@@ -2,8 +2,8 @@ package kr.co.studyhubinu.studyhubserver.apply.service;
 
 
 import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.ChangeApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
@@ -60,7 +60,7 @@ class ApplyServiceTest {
     @Test
     void 스터디_신청상태_변경() {
         // given
-        ChangeApplyRequest request = ChangeApplyRequest.builder()
+        UpdateApplyRequest request = UpdateApplyRequest.builder()
                 .userId(1L)
                 .studyId(1L)
                 .inspection(Inspection.ACCEPT)
