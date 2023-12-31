@@ -106,4 +106,26 @@ class ApplyRepositoryTest {
         );
     }
 
+    @Test
+    void 스터디로_스터디_요청_조회() {
+        // given
+        UserEntity user = userRepository.save(UserEntityFixture.DONGWOO.UserEntity_생성());
+        StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
+        ApplyEntity apply = ApplyEntity.builder()
+                .user(user)
+                .study(study)
+                .inspection(Inspection.ACCEPT)
+                .build();
+        applyRepository.save(apply);
+        applyRepository.flush();
+
+        // when
+        ApplyEntity result = applyRepository.findByStudy(study);
+
+        // then
+        assertAll(
+                () -> assertEquals(result.getUser().getId(), user.getId()),
+                () -> assertEquals(result.getStudy().getId(), study.getId())
+        );
+    }
 }
