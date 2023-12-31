@@ -81,7 +81,7 @@ CREATE TABLE bookmark
 
 CREATE TABLE apply (
       apply_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-      approve boolean,
+      inspection VARCHAR(15)   DEFAULT NULL,
       study_id BIGINT,
       user_id BIGINT,
       FOREIGN KEY (study_id) REFERENCES study(study_id),

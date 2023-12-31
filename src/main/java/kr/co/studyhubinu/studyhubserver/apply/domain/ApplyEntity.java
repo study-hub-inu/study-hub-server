@@ -5,6 +5,7 @@ import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Table(name = "apply")
 public class ApplyEntity {
 
@@ -33,9 +35,9 @@ public class ApplyEntity {
     private UserEntity user;
 
     @Builder
-    public ApplyEntity(StudyEntity study, UserEntity user) {
+    public ApplyEntity(Inspection inspection, StudyEntity study, UserEntity user) {
+        this.inspection = inspection;
         this.study = study;
         this.user = user;
     }
-
 }
