@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.apply.domain;
 
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -39,5 +40,9 @@ public class ApplyEntity {
         this.inspection = inspection;
         this.study = study;
         this.user = user;
+    }
+
+    public void update(UpdateApplyRequest updateApplyRequest) {
+        this.inspection = updateApplyRequest.getInspection();
     }
 }
