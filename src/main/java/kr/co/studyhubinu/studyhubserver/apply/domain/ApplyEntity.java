@@ -1,6 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.apply.domain;
 
-import kr.co.studyhubinu.studyhubserver.apply.domain.insepection.Inspection;
+import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import lombok.AccessLevel;
@@ -21,7 +21,7 @@ public class ApplyEntity {
     @Column(name = "apply_id")
     private Long id;
 
-    @Convert(converter= Inspection.class)
+    @Enumerated(EnumType.STRING)
     private Inspection inspection;
 
     @ManyToOne
