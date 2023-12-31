@@ -1,11 +1,11 @@
 package kr.co.studyhubinu.studyhubserver.apply.controller;
 
 
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.ApproveUserStudyRequestDto;
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.RefuseUserStudyRequestDto;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.service.ApplyService;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +18,11 @@ public class ApplyController {
 
     private final ApplyService applyService;
 
-//    @PostMapping("/v1/study/approve")
-//    public ResponseEntity<HttpStatus> approveUser(ApproveUserStudyRequestDto approveUserStudyRequestDto) {
-//        applyService.approve(approveUserStudyRequestDto.getUserId(), approveUserStudyRequestDto.getPostId());
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
+    @PostMapping("/v1/study/enroll")
+    public ResponseEntity<HttpStatus> approveUser(UserId userId, EnrollApplyRequest request) {
+        applyService.enroll(userId.getId(), request);
+        return ResponseEntity.ok().build();
+    }
 //
 //    @PostMapping("/v1/study/refuse")
 //    public ResponseEntity<HttpStatus> refuseUser(RefuseUserStudyRequestDto refuseUserStudyRequestDto) {
