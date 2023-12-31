@@ -1,6 +1,5 @@
 package kr.co.studyhubinu.studyhubserver.apply.domain;
 
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -8,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -25,7 +25,10 @@ public class ApplyEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("STANDBY")
     private Inspection inspection;
+
+    private String introduce;
 
     @ManyToOne
     @JoinColumn(name = "study_id")

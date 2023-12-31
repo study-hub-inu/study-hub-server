@@ -7,9 +7,11 @@ import lombok.Getter;
 public class EnrollApplyRequest {
 
     private Long studyId;
+    private String introduce;
 
     @Builder
-    public EnrollApplyRequest(Long studyId) {
+    public EnrollApplyRequest(Long studyId, String introduce) {
         this.studyId = studyId;
+        this.introduce = introduce;
     }
 }
