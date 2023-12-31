@@ -1,5 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.apply.service;
 
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
@@ -18,13 +20,22 @@ public class ApplyService {
     private final StudyRepository studyRepository;
     private final ApplyRepository applyRepository;
 
-//    public void approve(Long userId, Long studyId) {
-//        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-//        StudyEntity study = studyRepository.findById(studyId).orElseThrow();
-//        ApplyEntity applyEntity = new ApplyEntity(true, study, user);
-//        applyRepository.save(applyEntity);
-//    }
-//
+    public void enroll(Long userId, EnrollApplyRequest request) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
+        ApplyEntity apply = toApplyEntity(user, study);
+
+        applyRepository.save(apply);
+    }
+
+    private ApplyEntity toApplyEntity(UserEntity user, StudyEntity study) {
+        return ApplyEntity.builder()
+                .user(user)
+                .study(study)
+                .inspection(Inspection.STANDBY)
+                .build();
+    }
+
 //    public void refuse(Long userId, Long studyId) {
 //        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 //        StudyEntity study = studyRepository.findById(studyId).orElseThrow();
