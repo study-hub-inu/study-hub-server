@@ -2,6 +2,7 @@ package kr.co.studyhubinu.studyhubserver.apply.controller;
 
 
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.service.ApplyService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,14 @@ public class ApplyController {
     private final ApplyService applyService;
 
     @PostMapping("/v1/study/enroll")
-    public ResponseEntity<HttpStatus> approveUser(UserId userId, EnrollApplyRequest request) {
+    public ResponseEntity<HttpStatus> enrollStudy(UserId userId, EnrollApplyRequest request) {
         applyService.enroll(userId.getId(), request);
         return ResponseEntity.ok().build();
     }
-//
-//    @PostMapping("/v1/study/refuse")
-//    public ResponseEntity<HttpStatus> refuseUser(RefuseUserStudyRequestDto refuseUserStudyRequestDto) {
-//        applyService.refuse(refuseUserStudyRequestDto.getUserId(), refuseUserStudyRequestDto.getStudyId());
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+
+    @PostMapping("/v1/study/update")
+    public ResponseEntity<HttpStatus> updateStudyInspection(UpdateApplyRequest request) {
+        applyService.update(request);
+        return ResponseEntity.ok().build();
+    }
 }

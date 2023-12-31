@@ -1,6 +1,8 @@
 package kr.co.studyhubinu.studyhubserver.apply.controller;
 
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.service.ApplyService;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.support.controller.ControllerRequest;
@@ -41,6 +43,24 @@ class ApplyControllerTest extends ControllerRequest {
 
         // when
         ResultActions resultActions = performPostRequest("/api/v1/study/enroll", request);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 스터디_요청상태_수정() throws Exception {
+        // given
+        doNothing().when(applyService).update(any());
+        UpdateApplyRequest request = UpdateApplyRequest.builder()
+                .studyId(1L)
+                .userId(1L)
+                .inspection(Inspection.ACCEPT)
+                .build();
+
+        // when
+        ResultActions resultActions = performPostRequest("/api/v1/study/update", request);
 
         // then
         resultActions.andExpect(status().isOk())
