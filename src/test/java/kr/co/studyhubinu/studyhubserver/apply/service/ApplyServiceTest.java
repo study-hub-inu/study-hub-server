@@ -2,7 +2,9 @@ package kr.co.studyhubinu.studyhubserver.apply.service;
 
 
 import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.ChangeApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
@@ -18,9 +20,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @ExtendWith(MockitoExtension.class)
 class ApplyServiceTest {
@@ -60,11 +60,19 @@ class ApplyServiceTest {
     @Test
     void 스터디_신청상태_변경() {
         // given
+        ChangeApplyRequest request = ChangeApplyRequest.builder()
+                .userId(1L)
+                .studyId(1L)
+                .inspection(Inspection.ACCEPT)
+                .build();
 
+        Optional<UserEntity> user = Optional.ofNullable(UserEntity.builder().id(1L).build());
+        Optional<StudyEntity> study = Optional.ofNullable(StudyEntity.builder().id(1L).build());
+        when(userRepository.findById(anyLong())).thenReturn(user);
+        when(studyRepository.findById(anyLong())).thenReturn(study);
+        when(applyRepository.findByUserAndStudy(any(), any())).thenReturn(ApplyEntity.builder().build());
 
-        // when
-
-        // then
-
+        // when, then
+        applyService.update(request);
     }
 }

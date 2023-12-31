@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.apply.service;
 
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.ChangeApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
@@ -36,10 +37,10 @@ public class ApplyService {
                 .build();
     }
 
-//    public void refuse(Long userId, Long studyId) {
-//        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-//        StudyEntity study = studyRepository.findById(studyId).orElseThrow();
-//        ApplyEntity applyEntity = new ApplyEntity(false, study, user);
-//        applyRepository.save(applyEntity);
-//    }
+    public void update(ChangeApplyRequest request) {
+        UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(UserNotFoundException::new);
+        StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
+        ApplyEntity applyEntity = applyRepository.findByUserAndStudy(user, study);
+        applyEntity.update(request.getInspection());
+    }
 }
