@@ -42,7 +42,7 @@ public class ApplyEntity {
         this.user = user;
     }
 
-    public void update(UpdateApplyRequest updateApplyRequest) {
-        this.inspection = updateApplyRequest.getInspection();
+    public void update(Inspection inspection) {
+        this.inspection = inspection;
     }
 }

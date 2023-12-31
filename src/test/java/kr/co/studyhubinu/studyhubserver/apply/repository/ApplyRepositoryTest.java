@@ -75,7 +75,7 @@ class ApplyRepositoryTest {
         applyRepository.flush();
 
         ApplyEntity apply = applyRepository.findById(1L).orElseThrow(IllegalArgumentException::new);
-        apply.update(updateApplyRequest);
+        apply.update(updateApplyRequest.getInspection());
         applyRepository.flush();
         ApplyEntity result = applyRepository.findById(1L).orElseThrow(IllegalArgumentException::new);
 
