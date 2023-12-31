@@ -83,4 +83,27 @@ class ApplyRepositoryTest {
         assertThat(result.getInspection()).isEqualTo(Inspection.STANDBY);
     }
 
+    @Test
+    void 유저식별자와_스터디식별자로_스터디요청_엔티티_조회() {
+        // given
+        UserEntity user = userRepository.save(UserEntityFixture.DONGWOO.UserEntity_생성());
+        StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
+        ApplyEntity apply = ApplyEntity.builder()
+                .user(user)
+                .study(study)
+                .inspection(Inspection.ACCEPT)
+                .build();
+        applyRepository.save(apply);
+        applyRepository.flush();
+
+        // when
+        ApplyEntity result = applyRepository.findByUserAndStudy(user, study);
+
+        // then
+        assertAll(
+                () -> assertEquals(result.getUser().getId(), user.getId()),
+                () -> assertEquals(result.getStudy().getId(), study.getId())
+        );
+    }
+
 }
