@@ -84,8 +84,9 @@ CREATE TABLE apply (
       inspection VARCHAR(15)   DEFAULT NULL,
       study_id BIGINT,
       user_id BIGINT,
-      FOREIGN KEY (study_id) REFERENCES study(study_id),
-      FOREIGN KEY (user_id) REFERENCES users(user_id)
+      introduce VARCHAR(255)  DEFAULT NULL,
+      created_date       TIMESTAMP(3)     DEFAULT NULL,
+      modified_date      TIMESTAMP(3)     DEFAULT NULL
 );
 
 CREATE TABLE comment (
