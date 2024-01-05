@@ -2,8 +2,9 @@ package kr.co.studyhubinu.studyhubserver.comment.repository;
 
 import kr.co.studyhubinu.studyhubserver.comment.dto.response.CommentResponse;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
+
+import java.util.List;
 
 public interface CommentRepositoryCustom {
-    Slice<CommentResponse> findSliceByPostIdWithUserId(Long postId, Long userId, Pageable pageable);
+    List<CommentResponse> findSliceByPostIdWithUserId(Long postId, Long userId, Pageable pageable);
 }
