@@ -30,7 +30,7 @@ import java.util.List;
 @Transactional
 public class StudyPostFindService {
 
-    private static final int POST_RECOMMEND_COUNT = 5;
+    private static final int POST_RECOMMEND_COUNT = 10;
 
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
