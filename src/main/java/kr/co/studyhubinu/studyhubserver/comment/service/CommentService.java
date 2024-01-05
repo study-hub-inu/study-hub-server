@@ -6,6 +6,7 @@ import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.response.CommentResponse;
 import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
+import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.comment.CommentNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
@@ -59,7 +60,7 @@ public class CommentService {
         final Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         validateStudyPostExist(postId);
         validateUserExist(userId);
-        return commentRepository.findSliceByPostIdWithUserId(postId, userId, pageable);
+        return Converter.toSlice(pageable, commentRepository.findSliceByPostIdWithUserId(postId, userId, pageable));
     }
 
     private void validateUserExist(Long userId) {
