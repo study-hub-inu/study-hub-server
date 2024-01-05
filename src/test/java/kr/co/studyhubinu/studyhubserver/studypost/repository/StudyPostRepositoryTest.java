@@ -257,7 +257,7 @@ class StudyPostRepositoryTest {
         // given
         Long postedUserId = 1L;
         String searchKeyword = "정처기";
-        int postRecommendCount = 5;
+        int postRecommendCount = 10;
         StudyPostEntity post1 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성(postedUserId);
         StudyPostEntity post2 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING_WITH_MALE.studyPostEntity_생성(postedUserId);
         studyPostRepository.save(post1);
