@@ -34,8 +34,6 @@ public class StudyEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToMany(mappedBy = "study")
-    private List<ApplyEntity> applyEntityList;
 
 
     @Builder

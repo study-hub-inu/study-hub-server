@@ -40,9 +40,6 @@ public class UserEntity extends BaseTimeEntity {
     @Column(name = "image_url", length = 1024)
     private String imageUrl;
 
-    @OneToMany(mappedBy = "user")
-    private List<ApplyEntity> userStudyEntitiyList;
-
     @Builder
     public UserEntity(Long id, String email, String password, String nickname, String imageUrl, MajorType major, GenderType gender) {
         this.id = id;

@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ApplyRepository extends JpaRepository<ApplyEntity, Long> {
-    ApplyEntity findByUserAndStudy(UserEntity user, StudyEntity study);
+public interface ApplyRepository extends JpaRepository<ApplyEntity, Long>, ApplyRepositoryCustom {
+    ApplyEntity findByUserIdAndStudyId(Long userId, Long studyId);
 
-    List<ApplyEntity> findByStudy(StudyEntity study);
+    List<ApplyEntity> findByUserId(Long userId);
 }
