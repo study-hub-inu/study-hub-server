@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
@@ -24,7 +23,7 @@ class CommentRepositoryTest {
     private CommentRepository commentRepository;
 
     @Test
-    void 게시글과_유저의_식별자로_댓글을_최신순으로_조회한다() {
+    void 게시글과_유저의_식별자로_댓글을_과거순으로_조회한다() {
         // given
         Long userId = 1L;
         Long postId = 3L;
@@ -39,8 +38,8 @@ class CommentRepositoryTest {
 
         // then
         assertThat(comments.size()).isEqualTo(2);
-        CommentResponse commentResponse1 = comments.get(1);
-        CommentResponse commentResponse2 = comments.get(0);
+        CommentResponse commentResponse1 = comments.get(0);
+        CommentResponse commentResponse2 = comments.get(1);
 
         assertAll(
                 () -> assertEquals(comment1.getId(), commentResponse1.getCommentId()),
