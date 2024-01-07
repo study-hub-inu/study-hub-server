@@ -52,7 +52,7 @@ public class CommentService {
     public void deleteComment(Long commentId, Long userId) {
         validateUserExist(userId);
         final CommentEntity findComment = findComment(commentId);
-        commentValidator.validIsCommentOfUser(commentId, findComment);
+        commentValidator.validIsCommentOfUser(userId, findComment);
         commentRepository.delete(findComment);
     }
 

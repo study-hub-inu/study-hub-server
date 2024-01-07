@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static kr.co.studyhubinu.studyhubserver.comment.domain.QCommentEntity.commentEntity;
-import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.studyPostEntity;
 import static kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity.userEntity;
 
 @Repository
@@ -42,7 +41,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
                 .from(commentEntity)
                 .leftJoin(userEntity).on(commentEntity.userId.eq(userEntity.id))
                 .where(commentEntity.postId.eq(postId))
-                .orderBy(commentEntity.createdDate.desc())
+                .orderBy(commentEntity.createdDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
                 .fetch();

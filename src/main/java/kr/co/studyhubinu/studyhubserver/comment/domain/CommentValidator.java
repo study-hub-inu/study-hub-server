@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 public class CommentValidator {
 
     public void validIsCommentOfUser(Long userId, CommentEntity comment) {
-        log.info("*****************" + userId);
-        log.info("%%%%%%%%%%%%%%%%%" + comment.getUserId());
         if (!comment.isCommentOfUser(userId)) throw new UserNotAccessRightException();
     }
 
