@@ -59,7 +59,6 @@ public class CommentService {
     public Slice<CommentResponse> getComments(Long postId, int page, int size, Long userId) {
         final Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         validateStudyPostExist(postId);
-        validateUserExist(userId);
         return Converter.toSlice(pageable, commentRepository.findSliceByPostIdWithUserId(postId, userId, pageable));
     }
 
