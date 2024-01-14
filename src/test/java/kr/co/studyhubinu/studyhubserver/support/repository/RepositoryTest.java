@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@AutoConfigureTestDatabase(replace = Replace.AUTO_CONFIGURED)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @DataJpaTest(properties = {"spring.jpa.properties.hibernate.jdbc.time_zone=Asia/Seoul"})
 @Import({TestQueryDslConfig.class, JpaAuditingConfig.class})
 public @interface RepositoryTest {
