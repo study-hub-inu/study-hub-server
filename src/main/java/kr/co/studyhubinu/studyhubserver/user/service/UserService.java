@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Connection;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -42,6 +44,7 @@ public class UserService {
         userRepository.save(userEntity);
     }
 
+    @Transactional
     public void updateUser(UpdateUserInfo info) {
         UserEntity user = getUserById(info.getUserId(), new UserNotFoundException());
         user.update(info);
@@ -52,7 +55,8 @@ public class UserService {
         UserEntity user = getUserById(userId, new UserNotFoundException());
         userDeleter.deleteUserRelatedData(user);
     }
-  
+
+    @Transactional(readOnly = true)
     public GetUserResponse getUser(Long userId) {
         UserEntity user = getUserById(userId, new UserNotFoundException());
         UserActivityCountData data = userActivityFinder.countUserActivity(userId);
