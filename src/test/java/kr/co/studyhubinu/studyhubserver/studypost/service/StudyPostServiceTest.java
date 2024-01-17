@@ -52,8 +52,8 @@ class StudyPostServiceTest {
         StudyEntity studyEntity = StudyEntity.builder().id(1L).build();
         StudyPostEntityFixture fixture = StudyPostEntityFixture.SQLD;
         CreatePostRequest postRequest = CreatePostRequest.builder().
-                studyStartDate(LocalDate.of(2024, 1, 3)).
-                studyEndDate(LocalDate.of(2024, 10, 5)).
+                studyStartDate(LocalDate.of(2025, 1, 3)).
+                studyEndDate(LocalDate.of(2025, 10, 5)).
                 build();
 
         when(userRepository.findById(anyLong())).thenReturn(userEntity);
@@ -109,8 +109,8 @@ class StudyPostServiceTest {
         UpdateStudyPostInfo updateStudyPostInfo = UpdateStudyPostInfo.builder().
                 userId(1L).
                 postId(1L).
-                studyStartDate(LocalDate.of(2024, 1, 3)).
-                studyEndDate(LocalDate.of(2024, 10, 5)).
+                studyStartDate(LocalDate.of(2025, 1, 3)).
+                studyEndDate(LocalDate.of(2025, 10, 5)).
                 build();
 
         when(userRepository.findById(anyLong())).thenReturn(userEntity);
