@@ -24,7 +24,6 @@ public class ApplyEntity extends BaseTimeEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("STANDBY")
     private Inspection inspection;
 
     private String introduce;
@@ -36,11 +35,11 @@ public class ApplyEntity extends BaseTimeEntity {
     private Long userId;
 
     @Builder
-    public ApplyEntity(Inspection inspection, String introduce, Long study, Long user) {
+    public ApplyEntity(Inspection inspection, String introduce, Long study, Long userId) {
         this.inspection = inspection;
         this.introduce = introduce;
         this.studyId = study;
-        this.userId = user;
+        this.userId = userId;
     }
 
     public void update(Inspection inspection) {

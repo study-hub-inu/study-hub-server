@@ -29,7 +29,7 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
                 .where(applyEntity.studyId.eq(studyId))
                 .orderBy(applyEntity.createdDate.asc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageNumber() + 1)
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
     }
 }

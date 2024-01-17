@@ -50,7 +50,7 @@ class ApplyRepositoryTest {
 
         // when
         ApplyEntity apply = ApplyEntity.builder()
-                .user(user.getId())
+                .userId(user.getId())
                 .study(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .build();
@@ -76,7 +76,7 @@ class ApplyRepositoryTest {
 
         // when
         ApplyEntity applyEntity = ApplyEntity.builder()
-                .user(user.getId())
+                .userId(user.getId())
                 .study(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .build();
@@ -98,7 +98,7 @@ class ApplyRepositoryTest {
         UserEntity user = userRepository.save(UserEntityFixture.DONGWOO.UserEntity_생성());
         StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
         ApplyEntity apply = ApplyEntity.builder()
-                .user(user.getId())
+                .userId(user.getId())
                 .study(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .build();
@@ -123,26 +123,28 @@ class ApplyRepositoryTest {
         // given
         UserEntity user = userRepository.save(UserEntityFixture.DONGWOO.UserEntity_생성());
         UserEntity user2 = userRepository.save(UserEntityFixture.JOOWON.UserEntity_생성());
+
         StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
+
         Pageable pageable = PageRequest.of(0,2);
 
         ApplyEntity apply1 = ApplyEntity.builder()
-                .user(user.getId())
+                .userId(user.getId())
                 .study(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .introduce("벌금내러 왔습니다.")
                 .build();
+
         ApplyEntity apply2 = ApplyEntity.builder()
-                .user(user2.getId())
+                .userId(user2.getId())
                 .study(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .introduce("목숨을 걸겠습니다.")
                 .build();
-        ApplyEntity result1 = applyRepository.save(apply1);
 
+        ApplyEntity result1 = applyRepository.save(apply1);
         ApplyEntity result2 = applyRepository.save(apply2);
-        applyRepository.flush();
-        userRepository.flush();
+        List<ApplyEntity> list = applyRepository.findAll();
 
         // when
         List<ApplyUserData> result = applyRepository.findByStudy(study.getId(), pageable);

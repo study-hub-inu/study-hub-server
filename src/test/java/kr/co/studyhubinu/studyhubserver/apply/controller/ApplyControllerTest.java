@@ -1,12 +1,15 @@
 package kr.co.studyhubinu.studyhubserver.apply.controller;
 
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.service.ApplyService;
 import kr.co.studyhubinu.studyhubserver.config.resolver.UserIdArgumentResolver;
 import kr.co.studyhubinu.studyhubserver.support.controller.ControllerRequest;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -14,8 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,7 +45,7 @@ class ApplyControllerTest extends ControllerRequest {
                 .build();
 
         // when
-        ResultActions resultActions = performPostRequest("/api/v1/study/enroll", request);
+        ResultActions resultActions = performPostRequest("/api/v1/study", request);
 
         // then
         resultActions.andExpect(status().isOk())
@@ -60,7 +63,24 @@ class ApplyControllerTest extends ControllerRequest {
                 .build();
 
         // when
-        ResultActions resultActions = performPostRequest("/api/v1/study/update", request);
+        ResultActions resultActions = performPutRequest("/api/v1/study", request);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 스터디_요청상태_조회() throws Exception {
+        // given
+        FindApplyResponse findApplyResponse = FindApplyResponse.builder().build();
+        FindApplyRequest findApplyRequest = FindApplyRequest.builder()
+                        .studyId(1L)
+                        .build();
+        Mockito.when(applyService.findApply(any(), anyInt(), anyInt())).thenReturn(findApplyResponse);
+
+        // when
+        ResultActions resultActions = performPostRequest("/api/v1/study", findApplyRequest);
 
         // then
         resultActions.andExpect(status().isOk())
