@@ -172,7 +172,7 @@ class StudyPostServiceTest {
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
         when(userRepository.findById(anyLong())).thenReturn(userEntity);
         when(studyPostRepository.findById(anyLong())).
-                thenReturn(Optional.ofNullable(StudyPostEntity.builder().id(1L).userId(1L).title("사랑찾아 인생찾아 울산까지 왔습니다").build()));
+                thenReturn(Optional.ofNullable(StudyPostEntity.builder().id(1L).postedUserId(1L).title("사랑찾아 인생찾아 울산까지 왔습니다").build()));
 
         doNothing().when(studyPostRepository).delete(any());
 
@@ -186,7 +186,7 @@ class StudyPostServiceTest {
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
         when(userRepository.findById(anyLong())).thenReturn(userEntity);
         when(studyPostRepository.findById(anyLong())).
-                thenReturn(Optional.ofNullable(StudyPostEntity.builder().id(1L).userId(2L).title("사랑찾아 인생찾아 울산까지 왔습니다").build()));
+                thenReturn(Optional.ofNullable(StudyPostEntity.builder().id(1L).postedUserId(2L).title("사랑찾아 인생찾아 울산까지 왔습니다").build()));
 
         // when, then
         assertThrows(UserNotAccessRightException.class, () -> {
@@ -200,7 +200,7 @@ class StudyPostServiceTest {
         Optional<UserEntity> userEntity = Optional.ofNullable(UserEntity.builder().id(1L).build());
         when(userRepository.findById(anyLong())).thenReturn(userEntity);
         when(studyPostRepository.findById(anyLong())).
-                thenReturn(Optional.ofNullable(StudyPostEntity.builder().id(1L).userId(1L).title("사랑찾아 인생찾아 울산까지 왔습니다").build()));
+                thenReturn(Optional.ofNullable(StudyPostEntity.builder().id(1L).postedUserId(1L).title("사랑찾아 인생찾아 울산까지 왔습니다").build()));
 
         // when, then
         studyPostService.closePost(1L, 1L);

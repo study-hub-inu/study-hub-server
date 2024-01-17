@@ -61,13 +61,13 @@ public class CreatePostRequest {
     @NotNull(message = "스터디 방식 작성은 필수입니다!")
     private StudyWayType studyWay;
 
-    @Schema(description = "스터디 시작 날짜(ISO 8601)", example = "2023-08-23")
+    @Schema(description = "스터디 시작 날짜(ISO 8601)", example = "2024-06-23")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @NotNull(message = "스터디 시작 날짜 작성은 필수입니다!")
     private LocalDate studyStartDate;
 
-    @Schema(description = "스터디 종료 날짜(ISO 8601)", example = "2023-12-25")
+    @Schema(description = "스터디 종료 날짜(ISO 8601)", example = "2024-12-25")
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @NotNull(message = "스터디 종료 날짜 작성은 필수입니다!")
@@ -113,10 +113,9 @@ public class CreatePostRequest {
                 .penaltyWay(penaltyWay)
                 .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
-                .userId(userId)
+                .postedUserId(userId)
                 .remainingSeat(studyPerson)
                 .studyId(studyId)
-                .userId(userId)
                 .build();
     }
 }

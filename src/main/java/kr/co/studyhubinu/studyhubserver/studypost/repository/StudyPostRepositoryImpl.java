@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static kr.co.studyhubinu.studyhubserver.bookmark.domain.QBookmarkEntity.bookmarkEntity;
@@ -179,10 +180,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
     }
 
     private BooleanExpression textEq(String inquiryText) {
-        if (inquiryText == null) {
-            return null;
-        }
-        return studyPostEntity.title.contains(inquiryText);
+        return studyPostEntity.title.contains(Objects.requireNonNullElse(inquiryText, ""));
     }
 
     private Predicate majorEq(String inquiryText, boolean titleAndMajor) {

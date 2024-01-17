@@ -36,7 +36,6 @@ public class StudyPostService {
         validStudyPostDate(post.getStudyStartDate(), post.getStudyEndDate());
         Long studyId = createStudy(post, userId);
         StudyPostEntity studyPost = post.toStudyPostEntity(userId, studyId);
-
         return studyPostRepository.save(studyPost).getId();
     }
 

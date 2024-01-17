@@ -2,6 +2,7 @@ package kr.co.studyhubinu.studyhubserver.exception.common;
 
 import kr.co.studyhubinu.studyhubserver.exception.ExceptionMessage;
 import kr.co.studyhubinu.studyhubserver.exception.token.TokenNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +11,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import kr.co.studyhubinu.studyhubserver.exception.StatusType;
 
+@Slf4j
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ExceptionMessage> handle(CustomException e) {
         int statusCode = e.getStatus().getStatusCode();
+        log.error("[ERROR] MESSAGE : {}, 초비상!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", e.getMessage());
         return ResponseEntity.status(HttpStatus.valueOf(statusCode))
                 .body(ExceptionMessage.of(e.getStatus(), e.getMessage()));
     }
-
     @ExceptionHandler(BindException.class)
     public ResponseEntity<ExceptionMessage> bindException(BindException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

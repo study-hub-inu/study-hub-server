@@ -107,7 +107,7 @@ public class StudyPostController {
 
     @Operation(summary = "검색어 추천 기능 개발", description = "parameter에 검색어를 입력해주세요 기획상 추천수는 5개입니다")
     @ApiImplicitParam(name = "keyword", value = "검색어 키워드", required = true)
-    @GetMapping("/vi/study-post/recommend")
+    @GetMapping("/v1/study-post/recommend")
     public ResponseEntity<FindRecommendPostsResponse> findRecommendPosts(@RequestParam String keyword) {
         return ResponseEntity.ok().body(studyPostFindService.findRecommendPosts(keyword));
     }

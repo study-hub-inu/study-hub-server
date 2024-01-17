@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div style="margin:100px;">
+    <h1>문의하기입니다</h1>
+    <h1>스터디 매칭 어플 스터디허브 문의하기</h1>
+
+    <div align="center" style="border:1px solid black; font-family:verdana;">
+        <h3 style="color:blue">문의 내용입니다.</h3>
+        <div style="font-size:130%" th:text="${content}"></div>
+        <br/>
+        <div style="font-size:130%">답변 받을 이메일: <span th:text="${toEmail}"></span></div>
+    </div>
+    <br/>
+</div>
+
+
+</body>
+</html>

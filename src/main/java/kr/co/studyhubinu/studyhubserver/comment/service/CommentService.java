@@ -6,6 +6,7 @@ import kr.co.studyhubinu.studyhubserver.comment.dto.request.CreateCommentRequest
 import kr.co.studyhubinu.studyhubserver.comment.dto.request.UpdateCommentRequest;
 import kr.co.studyhubinu.studyhubserver.comment.dto.response.CommentResponse;
 import kr.co.studyhubinu.studyhubserver.comment.repository.CommentRepository;
+import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.comment.CommentNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
@@ -35,14 +36,14 @@ public class CommentService {
     public void createComment(CreateCommentRequest request, Long userId) {
         validateStudyPostExist(request.getPostId());
         validateUserExist(userId);
-        CommentEntity comment = request.toEntity(userId);
+        final CommentEntity comment = request.toEntity(userId);
         commentRepository.save(comment);
     }
 
     @Transactional
     public void updateComment(UpdateCommentRequest request, Long userId) {
         validateUserExist(userId);
-        CommentEntity findComment = findComment(request.getCommentId());
+        final CommentEntity findComment = findComment(request.getCommentId());
         commentValidator.validIsCommentOfUser(userId, findComment);
         findComment.update(request.getContent());
     }
@@ -50,16 +51,15 @@ public class CommentService {
     @Transactional
     public void deleteComment(Long commentId, Long userId) {
         validateUserExist(userId);
-        CommentEntity findComment = findComment(commentId);
-        commentValidator.validIsCommentOfUser(commentId, findComment);
+        final CommentEntity findComment = findComment(commentId);
+        commentValidator.validIsCommentOfUser(userId, findComment);
         commentRepository.delete(findComment);
     }
 
     public Slice<CommentResponse> getComments(Long postId, int page, int size, Long userId) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        final Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         validateStudyPostExist(postId);
-        validateUserExist(userId);
-        return commentRepository.findSliceByPostIdWithUserId(postId, userId, pageable);
+        return Converter.toSlice(pageable, commentRepository.findSliceByPostIdWithUserId(postId, userId, pageable));
     }
 
     private void validateUserExist(Long userId) {
