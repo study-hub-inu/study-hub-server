@@ -140,8 +140,8 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .from(post)
                 .where(post.title.startsWith(keyword))
                 .orderBy(
-                        post.remainingSeat.asc(),
-                        post.createdDate.desc()
+                        post.remainingSeat.min().asc(),
+                        post.createdDate.max().desc()
                 )
                 .groupBy(studyPostEntity.title)
                 .limit(postRecommendCount)
