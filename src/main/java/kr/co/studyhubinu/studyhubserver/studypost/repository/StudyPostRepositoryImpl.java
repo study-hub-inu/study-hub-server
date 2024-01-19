@@ -143,6 +143,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                         post.remainingSeat.asc(),
                         post.createdDate.desc()
                 )
+                .groupBy(studyPostEntity.title)
                 .limit(postRecommendCount)
                 .fetch();
     }
