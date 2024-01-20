@@ -55,7 +55,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.PAT }}
           publish_dir: ./build/reports/jacoco/test/html/index.html
 
       - name: Archive test results if tests failed # 테스트가 실패하면 결과 아카이빙
