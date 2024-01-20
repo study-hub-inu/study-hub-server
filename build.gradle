@@ -9,6 +9,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.14'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'jacoco'
 }
 
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
@@ -100,6 +101,11 @@ configurations {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // 테스트 종료후 항상 리포트 생성
+}
+
+jacocoTestReport {
+    dependsOn test // 리포트 생성을 위해서는 test가 먼저 완료되어야 함
 }
 
 jar {
