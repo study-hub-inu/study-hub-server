@@ -1,10 +1,12 @@
 package kr.co.studyhubinu.studyhubserver.apply.domain;
 
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
+import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -12,28 +14,35 @@ import static javax.persistence.GenerationType.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Table(name = "apply")
-public class ApplyEntity {
+public class ApplyEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "apply_id")
     private Long id;
 
-    private boolean approve;
+    @Enumerated(EnumType.STRING)
+    private Inspection inspection;
 
-    @ManyToOne
-    @JoinColumn(name = "study_id")
-    private StudyEntity study;
+    private String introduce;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private UserEntity user;
+    @Column(name = "study_id")
+    private Long studyId;
+
+    @Column(name = "user_id")
+    private Long userId;
 
     @Builder
-    public ApplyEntity(StudyEntity study, UserEntity user) {
-        this.study = study;
-        this.user = user;
+    public ApplyEntity(Inspection inspection, String introduce, Long study, Long userId) {
+        this.inspection = inspection;
+        this.introduce = introduce;
+        this.studyId = study;
+        this.userId = userId;
     }
 
+    public void update(Inspection inspection) {
+        this.inspection = inspection;
+    }
 }

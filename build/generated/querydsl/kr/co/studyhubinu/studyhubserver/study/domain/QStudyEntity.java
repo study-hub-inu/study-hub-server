@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -19,8 +18,6 @@ public class QStudyEntity extends EntityPathBase<StudyEntity> {
     private static final long serialVersionUID = -1337579743L;
 
     public static final QStudyEntity studyEntity = new QStudyEntity("studyEntity");
-
-    public final ListPath<kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity> applyEntityList = this.<kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity>createList("applyEntityList", kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity.class, kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity.class, PathInits.DIRECT2);
 
     public final StringPath chatUrl = createString("chatUrl");
 

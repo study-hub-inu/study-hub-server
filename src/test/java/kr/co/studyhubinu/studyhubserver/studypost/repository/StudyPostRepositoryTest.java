@@ -69,13 +69,13 @@ class StudyPostRepositoryTest {
 
         // then
         assertThat(posts.size()).isEqualTo(2);
-        PostDataByUserId data1 = posts.get(1);
-        PostDataByUserId data2 = posts.get(0);
+        PostDataByUserId data1 = posts.get(0);
+        PostDataByUserId data2 = posts.get(1);
         assertAll(
-                () -> assertEquals(post1.getId(), data1.getPostId()),
-                () -> assertEquals(post1.getContent(), data1.getContent()),
-                () -> assertEquals(post2.getId(), data2.getPostId()),
-                () -> assertEquals(post2.getContent(), data2.getContent())
+                () -> assertEquals(post1.getId(), data2.getPostId()),
+                () -> assertEquals(post1.getContent(), data2.getContent()),
+                () -> assertEquals(post2.getId(), data1.getPostId()),
+                () -> assertEquals(post2.getContent(), data1.getContent())
         );
     }
 

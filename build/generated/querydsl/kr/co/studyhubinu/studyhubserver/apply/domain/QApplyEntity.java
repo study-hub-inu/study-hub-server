@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -18,38 +17,36 @@ public class QApplyEntity extends EntityPathBase<ApplyEntity> {
 
     private static final long serialVersionUID = -1543003327L;
 
-    private static final PathInits INITS = PathInits.DIRECT2;
-
     public static final QApplyEntity applyEntity = new QApplyEntity("applyEntity");
 
-    public final BooleanPath approve = createBoolean("approve");
+    public final kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity _super = new kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity(this);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final kr.co.studyhubinu.studyhubserver.study.domain.QStudyEntity study;
+    public final EnumPath<kr.co.studyhubinu.studyhubserver.apply.enums.Inspection> inspection = createEnum("inspection", kr.co.studyhubinu.studyhubserver.apply.enums.Inspection.class);
 
-    public final kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity user;
+    public final StringPath introduce = createString("introduce");
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
+
+    public final NumberPath<Long> studyId = createNumber("studyId", Long.class);
+
+    public final NumberPath<Long> userId = createNumber("userId", Long.class);
 
     public QApplyEntity(String variable) {
-        this(ApplyEntity.class, forVariable(variable), INITS);
+        super(ApplyEntity.class, forVariable(variable));
     }
 
     public QApplyEntity(Path<? extends ApplyEntity> path) {
-        this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
+        super(path.getType(), path.getMetadata());
     }
 
     public QApplyEntity(PathMetadata metadata) {
-        this(metadata, PathInits.getFor(metadata, INITS));
-    }
-
-    public QApplyEntity(PathMetadata metadata, PathInits inits) {
-        this(ApplyEntity.class, metadata, inits);
-    }
-
-    public QApplyEntity(Class<? extends ApplyEntity> type, PathMetadata metadata, PathInits inits) {
-        super(type, metadata, inits);
-        this.study = inits.isInitialized("study") ? new kr.co.studyhubinu.studyhubserver.study.domain.QStudyEntity(forProperty("study")) : null;
-        this.user = inits.isInitialized("user") ? new kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity(forProperty("user")) : null;
+        super(ApplyEntity.class, metadata);
     }
 
 }
