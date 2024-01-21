@@ -1,6 +1,5 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
-import kr.co.studyhubinu.studyhubserver.alarm.repository.AlarmRepository;
 import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 
@@ -23,7 +22,6 @@ public class UserDeleter {
     private final StudyPostRepository studyPostRepository;
     private final StudyRepository studyRepository;
     private final BookmarkRepository bookMarkRepository;
-    private final AlarmRepository alarmRepository;
     private final ApplyRepository applyRepository;
 
     public void deleteUserRelatedData(UserEntity user) {
