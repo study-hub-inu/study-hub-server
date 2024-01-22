@@ -19,13 +19,21 @@ public class QStudyEntity extends EntityPathBase<StudyEntity> {
 
     public static final QStudyEntity studyEntity = new QStudyEntity("studyEntity");
 
+    public final kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity _super = new kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity(this);
+
     public final StringPath chatUrl = createString("chatUrl");
 
     public final StringPath content = createString("content");
 
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final NumberPath<Long> masterUserId = createNumber("masterUserId", Long.class);
+
+    //inherited
+    public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
 
     public final DatePath<java.time.LocalDate> studyEndDate = createDate("studyEndDate", java.time.LocalDate.class);
 
