@@ -20,4 +20,12 @@ public class EmailTestService {
         log.info("**************************입력된 인증 코드" + info.getAuthCode());
         return authCode != null && authCode.equals(info.getAuthCode());
     }
+
+    public void insertEmail(String email, String authCode) {
+        EmailTestEntity emailTestEntity = EmailTestEntity.builder()
+                .email(email)
+                .code(authCode)
+                .build();
+        emailTestRepository.save(emailTestEntity);
+    }
 }

@@ -3,11 +3,9 @@ package kr.co.studyhubinu.studyhubserver.emailTest;
 import kr.co.studyhubinu.studyhubserver.email.dto.request.MailValidRequest;
 import kr.co.studyhubinu.studyhubserver.email.dto.response.ValidEmailResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -24,4 +22,9 @@ public class EmailTestController {
         return ResponseEntity.ok(new ValidEmailResponse(auth));
     }
 
+    @PostMapping("/v1/email/verify-test-insert")
+    public ResponseEntity<HttpStatus> insertEmail(@RequestParam String email, @RequestParam String authCode) {
+        emailTestService.insertEmail(email, authCode);
+        return ResponseEntity.ok().build();
+    }
 }
