@@ -1,17 +1,16 @@
 package kr.co.studyhubinu.studyhubserver.study.domain;
 
-import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
+import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "study")
-public class StudyEntity {
+public class StudyEntity extends BaseTimeEntity {
 
     @Id
     @Column(name = "study_id")
