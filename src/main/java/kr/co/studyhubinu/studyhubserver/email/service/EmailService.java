@@ -5,6 +5,7 @@ import kr.co.studyhubinu.studyhubserver.email.dto.data.ValidDuplicationInfo;
 import kr.co.studyhubinu.studyhubserver.email.dto.data.ValidMailInfo;
 import kr.co.studyhubinu.studyhubserver.email.dto.request.QuestionRequest;
 import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +55,13 @@ public class EmailService {
         emailSender.send(emailForm);
     }
 
+    public void sendEmailForChangePassword(MailInfo info) throws MessagingException {
+        String toEmail = info.getEmail();
+        verifyEmail(toEmail);
+        MimeMessage emailForm = createEmailForm(toEmail);
+        emailSender.send(emailForm);
+    }
+
     public String setContext(String code) {
         Context context = new Context();
         context.setVariable("code", code);
@@ -95,5 +103,9 @@ public class EmailService {
         message.setFrom(setFrom); //보내는 이메일
         message.setText(setQuestionContext(questionContent, toEmail), "utf-8", "html");
         return message;
+    }
+
+    private void verifyEmail(String email) {
+        userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
     }
 }

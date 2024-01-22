@@ -10,7 +10,7 @@ public class InspectionNotFoundException extends CustomException {
 
     public InspectionNotFoundException() {
         super(message);
-        this.status = StatusType.ALARM_NOT_FOUND;
+        this.status = StatusType.INSPECTION_NOT_FOUND;
     }
 
     @Override
