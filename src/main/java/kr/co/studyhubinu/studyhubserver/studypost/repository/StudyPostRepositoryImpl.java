@@ -90,7 +90,8 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                                 post.title,
                                 post.content,
                                 post.remainingSeat,
-                                post.close
+                                post.close,
+                                post.studyId
                         )
                 )
                 .from(post)
