@@ -1,5 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.email.service;
 
+import kr.co.studyhubinu.studyhubserver.common.timer.Timer;
 import kr.co.studyhubinu.studyhubserver.email.dto.data.MailInfo;
 import kr.co.studyhubinu.studyhubserver.email.dto.data.ValidDuplicationInfo;
 import kr.co.studyhubinu.studyhubserver.email.dto.data.ValidMailInfo;
@@ -68,7 +69,7 @@ public class EmailService {
         return templateEngine.process("mail", context); //mail.html
     }
 
-
+    @Timer
     public boolean validEmail(ValidMailInfo info) {
         String cachedAuthCode = redisTemplate.opsForValue().get(info.getEmail()); // 캐시된 인증 코드 가져오기
         log.info("**************************캐싱된 인증 코드" + cachedAuthCode);

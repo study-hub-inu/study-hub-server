@@ -109,3 +109,10 @@ CREATE TABLE fcm_token (
     token           VARCHAR(255) NOT NULL,
     PRIMARY KEY (fcm_token_id)
 );
+
+CREATE TABLE email (
+    email_id BIGINT NOT NULL AUTO_INCREMENT,
+    email   VARCHAR(100) NOT NULL,
+    code    VARCHAR(100) NOT NULL,
+    PRIMARY KEY (email_id)
+);
