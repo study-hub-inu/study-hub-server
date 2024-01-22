@@ -99,6 +99,7 @@ configurations {
     querydsl.extendsFrom compileClasspath
 }
 
+
 tasks.named('test') {
     useJUnitPlatform()
     finalizedBy jacocoTestReport // 테스트 종료후 항상 리포트 생성
@@ -113,8 +114,39 @@ jacocoTestReport {
     reports {
         xml.required.set(true)
     }
+    def Qdomains = []
+    for(qPattern in "**/QA" .. "**/QZ"){
+        Qdomains.add(qPattern+"*")
+    }
+
+    afterEvaluate {
+
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: [] + Qdomains)
+        }))
+    }
+
+    finalizedBy 'jacocoTestCoverageVerification'
 }
 
 jar {
     enabled = false
+}
+
+jacocoTestCoverageVerification {
+    def Qdomains = []
+    for (qPattern in "*.QA".."*.QZ") {  // qPattern = "*.QA","*.QB","*.QC", ... "*.QZ"
+        Qdomains.add(qPattern + "*")
+    }
+
+    violationRules {
+        rule {
+            enabled = true
+            element = 'CLASS'
+            excludes = [] + Qdomains
+
+        }
+
+    }
 }
