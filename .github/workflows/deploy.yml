@@ -51,7 +51,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
-          path: build/reports/jacoco/test/jacocoTestReport.xml
+          path: build/reports/jacoco/test/html/index.html
 
       - name: Archive test results if tests failed # 테스트가 실패하면 결과 아카이빙
         if: steps.buildAndTests.outcome == 'failure'
