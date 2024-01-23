@@ -47,19 +47,19 @@ jobs:
         id: buildAndTests
         continue-on-error: true # 테스트에 실패해도 계속 로그찍기
 
-      # Jacoco 테스트 커버리지 결과 아카이빙
-      - name: JaCoCo Code Coverage Report
-        id: jacoco_reporter
-        uses: PavanMudigonda/jacoco-reporter@v4.8
-        with:
-          coverage_results_path: build/reports/jacoco/test/jacocoTestReport.xml
-          coverage_report_name: Coverage
-          coverage_report_title: JaCoCo
-          github_token: ${{ secrets.PAT }}
-          skip_check_run: false
-          minimum_coverage: 20
-          fail_below_threshold: false
-          publish_only_summary: false
+#      # Jacoco 테스트 커버리지 결과 아카이빙
+#      - name: JaCoCo Code Coverage Report
+#        id: jacoco_reporter
+#        uses: PavanMudigonda/jacoco-reporter@v4.9
+#        with:
+#          coverage_results_path: build/reports/jacoco/test/jacocoTestReport.xml
+#          coverage_report_name: Coverage
+#          coverage_report_title: JaCoCo
+#          github_token: ${{ secrets.PAT }}
+#          skip_check_run: false
+#          minimum_coverage: 20
+#          fail_below_threshold: false
+#          publish_only_summary: false
 
 
       - name: Archive test results if tests failed # 테스트가 실패하면 결과 아카이빙
