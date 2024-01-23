@@ -69,7 +69,6 @@ public class StudyPostFindService {
 
     public FindPostResponseById findPostById(Long postId, Long userId) {
         final PostData postData = findPostDataById(postId, userId);
-
         return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
     }
 

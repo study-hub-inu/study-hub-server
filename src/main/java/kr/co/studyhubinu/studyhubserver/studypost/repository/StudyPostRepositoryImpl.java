@@ -114,10 +114,11 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .select(Projections.constructor(
                         PostData.class,
                         post.id.as("postId"), post.title, post.createdDate, post.content, post.major,
-                        post.studyPerson, post.filteredGender, post.studyWay, post.penalty,
-                        post.penaltyWay, post.studyStartDate, post.studyEndDate, post.chatUrl, post.remainingSeat,
+                        post.studyPerson, post.filteredGender, post.studyWay, post.penalty, post.penaltyWay,
+                        post.studyStartDate, post.studyEndDate, post.chatUrl, post.remainingSeat,
                         userId != null ? Expressions.booleanTemplate("{0} = {1}", post.postedUserId, userId) : Expressions.constant(false),
                         userId != null ? Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId) : Expressions.constant(false),
+                        post.studyId,
                         Projections.constructor(
                                 UserData.class,
                                 user.id, user.major, user.nickname, user.imageUrl
