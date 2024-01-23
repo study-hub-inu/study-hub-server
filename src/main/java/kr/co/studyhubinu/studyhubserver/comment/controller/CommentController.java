@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,17 +39,25 @@ public class CommentController {
     }
 
     @Operation(summary = "댓글 삭제")
-    @DeleteMapping("/v1/comments/{commentId}")
-    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("commentId") final Long commentId, final UserId userId) {
+    @DeleteMapping("/v1/comments/{comment-id}")
+    public ResponseEntity<HttpStatus> deleteComment(@PathVariable("comment-id") final Long commentId, final UserId userId) {
         commentService.deleteComment(commentId, userId.getId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "댓글 리스트 조회")
-    @GetMapping("/v1/comments/{postId}")
-    public ResponseEntity<Slice<CommentResponse>> getComments(@PathVariable("postId") final Long postId, @RequestParam final int page, @RequestParam final int size, final UserId userId) {
+    @GetMapping("/v1/comments/{post-id}")
+    public ResponseEntity<Slice<CommentResponse>> getComments(@PathVariable("post-id") final Long postId, @RequestParam final int page, @RequestParam final int size, final UserId userId) {
         final Slice<CommentResponse> commentResponses = commentService.getComments(postId, page, size, userId.getId());
         return ResponseEntity.ok().body(commentResponses);
     }
+
+    @Operation(summary = "댓글 미리 보기")
+    @GetMapping("/v1/comments/{post-id}/preview")
+    public ResponseEntity<List<CommentResponse>> getPreviewComments(@PathVariable("post-id") final Long postId, final UserId userId) {
+        final List<CommentResponse> commentPreviewResponse = commentService.getPreviewComments(postId, userId.getId());
+        return ResponseEntity.ok().body(commentPreviewResponse);
+    }
+
 
 }

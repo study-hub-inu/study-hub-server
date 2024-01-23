@@ -21,11 +21,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 public class CommentService {
+
+    private static final Long COMMENT_PREVIEW_COUNT = 5L;
 
     private final CommentRepository commentRepository;
     private final CommentValidator commentValidator;
@@ -72,5 +76,9 @@ public class CommentService {
 
     private CommentEntity findComment(Long commentId) {
         return commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
+    }
+
+    public List<CommentResponse> getPreviewComments(Long postId, Long userId) {
+        return commentRepository.findPreviewByPostId(postId, userId, COMMENT_PREVIEW_COUNT);
     }
 }

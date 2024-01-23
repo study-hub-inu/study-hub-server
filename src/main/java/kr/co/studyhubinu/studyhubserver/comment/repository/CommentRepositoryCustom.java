@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CommentRepositoryCustom {
     List<CommentResponse> findSliceByPostIdWithUserId(Long postId, Long userId, Pageable pageable);
+
+    List<CommentResponse> findPreviewByPostId(Long postId, Long userId, Long commentPreviewCount);
 }
