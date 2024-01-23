@@ -52,6 +52,8 @@ public class ApplyService {
     }
 
     private void validateSameRequest(UserEntity user, StudyEntity study) {
-        applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).orElseThrow(SameUserRequestException::new);
+        if(applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
+            throw new SameUserRequestException();
+        }
     }
 }

@@ -61,7 +61,6 @@ class ApplyServiceTest {
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
         when(studyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(study));
-        when(applyRepository.findByUserIdAndStudyId(user.getId(), study.getId())).thenReturn(Optional.ofNullable(ApplyEntity.builder().build()));
         when(applyRepository.save(any())).thenReturn(ApplyEntity.builder()
                 .userId(user.getId())
                 .study(study.getId())
