@@ -47,7 +47,7 @@ jobs:
         id: buildAndTests
         continue-on-error: true # 테스트에 실패해도 계속 로그찍기
 
-      #테스트 커버리지 결과 아카이빙
+      # Jacoco 테스트 커버리지 결과 아카이빙
       - name: JaCoCo Code Coverage Report
         id: jacoco_reporter
         uses: PavanMudigonda/jacoco-reporter@v4.9
