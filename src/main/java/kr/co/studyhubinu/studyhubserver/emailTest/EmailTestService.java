@@ -15,10 +15,10 @@ public class EmailTestService {
 
     @Timer
     public boolean validEmail(ValidMailInfo info) {
-        String authCode = emailTestRepository.findByEmail(info.getEmail());
-        log.info("**************************저장된 인증 코드" + authCode);
+        EmailTestEntity email = emailTestRepository.findByEmail(info.getEmail());
+        log.info("**************************저장된 인증 코드" + email.getCode());
         log.info("**************************입력된 인증 코드" + info.getAuthCode());
-        return authCode != null && authCode.equals(info.getAuthCode());
+        return email != null && email.getCode().equals(info.getAuthCode());
     }
 
     public void insertEmail(String email, String authCode) {
