@@ -29,7 +29,7 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
                         userEntity.id, userEntity.nickname, userEntity.major, userEntity.imageUrl,
                         applyEntity.introduce, applyEntity.createdDate))
                 .from(applyEntity)
-                .leftJoin(userEntity).on(applyEntity.userId.eq(userEntity.id))
+                .innerJoin(userEntity).on(applyEntity.userId.eq(userEntity.id))
                 .where(applyEntity.studyId.eq(studyId))
                 .orderBy(applyEntity.createdDate.desc())
                 .offset(pageable.getOffset())
