@@ -12,12 +12,14 @@ public class ParticipateApplyData {
     private String content;
     private String chatUrl;
     private String inspection;
+    private Long postId;
 
-    public ParticipateApplyData(MajorType major, String title, String content, String chatUrl, Inspection inspection) {
+    public ParticipateApplyData(MajorType major, String title, String content, String chatUrl, Inspection inspection, Long postId) {
         this.major = major.getValue();
         this.title = title;
         this.content = content;
         this.chatUrl = chatUrl;
         this.inspection = inspection.getValue();
+        this.postId = postId;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static kr.co.studyhubinu.studyhubserver.study.domain.QStudyEntity.studyEntity;
+import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.studyPostEntity;
 import static kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity.userEntity;
 import static kr.co.studyhubinu.studyhubserver.apply.domain.QApplyEntity.applyEntity;
 
@@ -41,9 +42,10 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
             return jpaQueryFactory
                     .select(Projections.constructor(ParticipateApplyData.class,
                             studyEntity.major, studyEntity.title, studyEntity.content, studyEntity.chatUrl,
-                            applyEntity.inspection))
+                            applyEntity.inspection, studyPostEntity.id.as("postId")))
                     .from(applyEntity)
                     .innerJoin(studyEntity).on(applyEntity.studyId.eq(studyEntity.id))
+                    .innerJoin(studyPostEntity).on(studyEntity.id.eq(studyPostEntity.studyId))
                     .where(
                             applyEntity.userId.eq(userId)
                                     .and(applyEntity.inspection.eq(Inspection.ACCEPT))
