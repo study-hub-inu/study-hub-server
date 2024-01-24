@@ -23,15 +23,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional(readOnly = true)
 public class ApplyService {
 
     private final UserRepository userRepository;
     private final StudyRepository studyRepository;
     private final ApplyRepository applyRepository;
 
+    @Transactional
     public void enroll(Long userId, EnrollApplyRequest request) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
@@ -40,6 +43,7 @@ public class ApplyService {
         applyRepository.save(ApplyEntity.of(user.getId(), study.getId(), request.getIntroduce()));
     }
 
+    @Transactional
     public void update(UpdateApplyRequest request) {
         UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
