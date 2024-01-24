@@ -9,6 +9,7 @@ import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.service.ApplyService;
+import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindParticipateApplyResponse;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
@@ -46,4 +47,11 @@ public class ApplyController {
     public FindApplyResponse findStudyEnroll(FindApplyRequest request, @RequestParam int page, @RequestParam int size) {
         return applyService.findApply(request, page, size);
     }
+
+    @Operation(summary = "내가 참여한 스터디 목록", description = "헤더에 JWT토큰 보내주시면 됩니다")
+    @GetMapping("/v1/participated-study")
+    public ResponseEntity<FindParticipateApplyResponse> getParticipateApply(UserId userId, @RequestParam int size, @RequestParam int page) {
+        return ResponseEntity.ok().body(applyService.getParticipateApply(userId.getId(), size, page));
+    }
+
 }

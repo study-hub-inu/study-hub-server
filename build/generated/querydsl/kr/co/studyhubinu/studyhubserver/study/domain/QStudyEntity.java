@@ -30,6 +30,8 @@ public class QStudyEntity extends EntityPathBase<StudyEntity> {
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
+    public final EnumPath<kr.co.studyhubinu.studyhubserver.user.enums.MajorType> major = createEnum("major", kr.co.studyhubinu.studyhubserver.user.enums.MajorType.class);
+
     public final NumberPath<Long> masterUserId = createNumber("masterUserId", Long.class);
 
     //inherited

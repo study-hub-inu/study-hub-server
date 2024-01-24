@@ -27,7 +27,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-@Transactional
+@Transactional(readOnly = true)
 public class StudyPostFindService {
 
     private static final int POST_RECOMMEND_COUNT = 10;

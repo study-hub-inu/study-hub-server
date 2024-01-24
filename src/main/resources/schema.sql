@@ -54,6 +54,7 @@ CREATE TABLE study
     study_end_date     DATE          DEFAULT NULL,
     chat_url           VARCHAR(100)  DEFAULT NULL,
     master_user_id     BIGINT NOT NULL,
+    major              VARCHAR(50)   DEFAULT NULL,
     created_date       TIMESTAMP(3)     DEFAULT NULL,
     modified_date      TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (study_id)

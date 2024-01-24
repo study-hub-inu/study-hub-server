@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
-import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
+import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserActivityCountData;
 import lombok.RequiredArgsConstructor;

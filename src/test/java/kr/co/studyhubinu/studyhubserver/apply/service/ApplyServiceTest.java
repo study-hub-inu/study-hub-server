@@ -9,22 +9,16 @@ import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
-import kr.co.studyhubinu.studyhubserver.exception.apply.SameUserRequestException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
-import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
+import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
