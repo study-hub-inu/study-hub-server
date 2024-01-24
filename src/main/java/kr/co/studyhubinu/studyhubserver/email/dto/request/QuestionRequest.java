@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.email.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.studyhubinu.studyhubserver.email.validate.InuEmail;
+import kr.co.studyhubinu.studyhubserver.email.validate.NormalEmail;
 import lombok.Getter;
 
 import javax.validation.constraints.NotBlank;
@@ -17,7 +17,7 @@ public class QuestionRequest {
     private String content;
 
     @Schema(description = "답변 받을 이메일", example = "kdw990202@inu.ac.kr")
-    @InuEmail
+    @NormalEmail
     @NotBlank(message = "이메일값은 필수 입니다")
     private String toEmail;
 }
