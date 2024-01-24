@@ -68,10 +68,9 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
         JPAQuery<PostDataByBookmark> studyPostDto = jpaQueryFactory.select(
                         Projections.constructor(PostDataByBookmark.class,
-                                post.id.as("postId"), post.major, post.title, post.content, post.remainingSeat, post.close))
+                                post.id.as("postId"), post.major, post.title, post.content, post.remainingSeat, post.close, post.studyId))
                 .from(post)
-                .innerJoin(bookmark)
-                .on(bookmark.postId.eq(post.id))
+                .innerJoin(bookmark).on(bookmark.postId.eq(post.id))
                 .where(bookmark.userId.eq(userId))
                 .orderBy(post.createdDate.desc())
                 .offset(pageable.getOffset())

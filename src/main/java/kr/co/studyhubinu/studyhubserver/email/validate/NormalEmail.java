@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = EmailValidator.class)
 public @interface NormalEmail {
 
-    String message() default "잘못된 이메일 형식입니다.";
+    String message() default "이메일 형식에 맞지 않습니다.";
 
     Class<?>[] groups() default {};
 
