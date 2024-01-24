@@ -5,9 +5,10 @@ import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
-import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
+import kr.co.studyhubinu.studyhubserver.exception.apply.ApplyNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.apply.SameUserRequestException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
@@ -20,8 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class ApplyService {
@@ -33,23 +32,15 @@ public class ApplyService {
     public void enroll(Long userId, EnrollApplyRequest request) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
-        ApplyEntity apply = toApplyEntity(user, study);
+        validateSameRequest(user, study);
 
-        applyRepository.save(apply);
-    }
-
-    private ApplyEntity toApplyEntity(UserEntity user, StudyEntity study) {
-        return ApplyEntity.builder()
-                .userId(user.getId())
-                .study(study.getId())
-                .inspection(Inspection.STANDBY)
-                .build();
+        applyRepository.save(ApplyEntity.of(user.getId(), study.getId(), request.getIntroduce()));
     }
 
     public void update(UpdateApplyRequest request) {
         UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
-        ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId());
+        ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
         applyEntity.update(request.getInspection());
     }
 
@@ -58,5 +49,11 @@ public class ApplyService {
         Slice<ApplyUserData> userData = Converter.toSlice(pageable, applyRepository.findByStudy(request.getStudyId(), pageable));
 
         return new FindApplyResponse((long) size, userData);
+    }
+
+    private void validateSameRequest(UserEntity user, StudyEntity study) {
+        if(applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
+            throw new SameUserRequestException();
+        }
     }
 }

@@ -42,6 +42,15 @@ public class ApplyEntity extends BaseTimeEntity {
         this.userId = userId;
     }
 
+    public static ApplyEntity of(Long userId, Long studyId, String introduce) {
+        return ApplyEntity.builder()
+                .userId(userId)
+                .study(studyId)
+                .introduce(introduce)
+                .inspection(Inspection.STANDBY)
+                .build();
+    }
+
     public void update(Inspection inspection) {
         this.inspection = inspection;
     }
