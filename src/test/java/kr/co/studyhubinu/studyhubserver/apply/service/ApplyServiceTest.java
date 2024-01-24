@@ -9,6 +9,8 @@ import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
+import kr.co.studyhubinu.studyhubserver.exception.apply.SameUserRequestException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,18 +56,18 @@ class ApplyServiceTest {
         EnrollApplyRequest request = EnrollApplyRequest.builder()
                 .studyId(1L)
                 .build();
-        Optional<UserEntity> user = Optional.ofNullable(UserEntity.builder().id(1L).build());
-        Optional<StudyEntity> study = Optional.ofNullable(StudyEntity.builder().id(1L).build());
+        UserEntity user = UserEntity.builder().id(1L).build();
+        StudyEntity study = StudyEntity.builder().id(1L).build();
 
-        when(userRepository.findById(anyLong())).thenReturn(user);
-        when(studyRepository.findById(anyLong())).thenReturn(study);
+        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
+        when(studyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(study));
         when(applyRepository.save(any())).thenReturn(ApplyEntity.builder()
-                .userId(user.get().getId())
-                .study(study.get().getId())
+                .userId(user.getId())
+                .study(study.getId())
                 .build());
 
         // when, then
-        applyService.enroll(user.get().getId(), request);
+        applyService.enroll(user.getId(), request);
     }
 
     @Test
@@ -80,7 +83,7 @@ class ApplyServiceTest {
         Optional<StudyEntity> study = Optional.ofNullable(StudyEntity.builder().id(1L).build());
         when(userRepository.findById(anyLong())).thenReturn(user);
         when(studyRepository.findById(anyLong())).thenReturn(study);
-        when(applyRepository.findByUserIdAndStudyId(1L, 1L)).thenReturn(ApplyEntity.builder().build());
+        when(applyRepository.findByUserIdAndStudyId(1L, 1L)).thenReturn(Optional.ofNullable(ApplyEntity.builder().build()));
 
         // when, then
         applyService.update(request);

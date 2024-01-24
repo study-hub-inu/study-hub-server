@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
+import kr.co.studyhubinu.studyhubserver.exception.apply.ApplyNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyEntityFixture;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -83,13 +85,13 @@ class ApplyRepositoryTest {
         applyRepository.save(applyEntity);
         applyRepository.flush();
 
-        ApplyEntity apply = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId());
-        apply.update(updateApplyRequest.getInspection());
+        Optional<ApplyEntity> apply = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId());
+        apply.get().update(updateApplyRequest.getInspection());
         applyRepository.flush();
-        ApplyEntity result = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId());
+        Optional<ApplyEntity> result = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId());
 
         // then
-        assertThat(result.getInspection()).isEqualTo(Inspection.STANDBY);
+        assertThat(result.get().getInspection()).isEqualTo(Inspection.STANDBY);
     }
 
     @Test
@@ -109,7 +111,7 @@ class ApplyRepositoryTest {
         userRepository.flush();
 
         // when
-        ApplyEntity result = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId());
+        ApplyEntity result = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
 
         // then
         assertAll(
