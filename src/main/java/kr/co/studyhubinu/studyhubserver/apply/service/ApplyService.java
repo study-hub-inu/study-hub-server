@@ -60,7 +60,7 @@ public class ApplyService {
         }
     }
 
-    public FindParticipateApplyResponse getParticipateApply(final Long userId, final int size, final int page) {
+    public FindParticipateApplyResponse getParticipateApply(final Long userId, final int page, final int size) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         final Pageable pageable = PageRequest.of(page, size);
         Long totalCount = applyRepository.countByUserIdAndInspection(user.getId(), Inspection.ACCEPT);
