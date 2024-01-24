@@ -99,13 +99,14 @@ public class StudyPostController {
         return ResponseEntity.ok(findPostResponseByInquiries);
     }
 
+    @Operation(summary = "스터디 게시글 마감처리", description = "postId와 헤더에 jwt토큰 보내주시면 됩니다!")
     @PutMapping("/v1/study-posts/{post-id}/close")
     public ResponseEntity<HttpStatus> closePost(@PathVariable("post-id") Long postId, UserId userId) {
         studyPostService.closePost(postId, userId.getId());
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "검색어 추천 기능 개발", description = "parameter에 검색어를 입력해주세요 기획상 추천수는 5개입니다")
+    @Operation(summary = "검색어 추천 기능 개발", description = "parameter에 검색어를 입력해주세요 기획상 추천수는 10개입니다")
     @ApiImplicitParam(name = "keyword", value = "검색어 키워드", required = true)
     @GetMapping("/v1/study-post/recommend")
     public ResponseEntity<FindRecommendPostsResponse> findRecommendPosts(@RequestParam String keyword) {
