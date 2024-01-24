@@ -7,8 +7,6 @@ DROP TABLE if EXISTS post;
 DROP TABLE if EXISTS study;
 DROP TABLE if EXISTS users;
 DROP TABLE IF EXISTS fcm_token;
-DROP TABLE IF EXISTS email;
-
 
 CREATE TABLE users
 (
@@ -109,11 +107,4 @@ CREATE TABLE fcm_token (
     user_id         BIGINT       NOT NULL,
     token           VARCHAR(255) NOT NULL,
     PRIMARY KEY (fcm_token_id)
-);
-
-CREATE TABLE email (
-    email_id BIGINT NOT NULL AUTO_INCREMENT,
-    email   VARCHAR(100) NOT NULL,
-    code    VARCHAR(100) NOT NULL,
-    PRIMARY KEY (email_id)
 );
