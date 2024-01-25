@@ -30,6 +30,7 @@ public class FindPostResponseById {
     private final String chatUrl;
     private final boolean isUsersPost;
     private final boolean isBookmarked;
+    private final Long studyId;
     private final boolean isApply;
     private final UserData postedUser;
     private final List<PostDataByMajor> relatedPost;
@@ -51,6 +52,7 @@ public class FindPostResponseById {
         this.chatUrl = postData.getCharUrl();
         this.isUsersPost = postData.isUsersPost();
         this.isBookmarked = postData.isBookmarked();
+        this.studyId = postData.getStudyId();
         this.postedUser = postData.getPostedUser();
         this.relatedPost = relatedPosts;
         this.isApply = isApply;

@@ -51,7 +51,7 @@ public class CommentRepositoryImpl implements CommentRepositoryCustom {
     }
 
     @Override
-    public List<CommentResponse> findPreviewByPostId(Long postId, Long userId, Long commentPreviewCount) {
+    public List<CommentResponse> findPreviewByPostId(Long postId, Long userId, int commentPreviewCount) {
         JPAQuery<CommentResponse> data = jpaQueryFactory
                 .select(Projections.constructor(CommentResponse.class,
                                 commentEntity.id,

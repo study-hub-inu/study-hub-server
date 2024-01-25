@@ -29,7 +29,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CommentService {
 
-    private static final Long COMMENT_PREVIEW_COUNT = 5L;
+    private static final int COMMENT_PREVIEW_COUNT = 8;
 
     private final CommentRepository commentRepository;
     private final CommentValidator commentValidator;

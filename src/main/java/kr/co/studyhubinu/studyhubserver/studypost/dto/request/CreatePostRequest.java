@@ -97,6 +97,7 @@ public class CreatePostRequest {
                 .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
                 .userId(userId)
+                .major(major)
                 .build();
     }
 

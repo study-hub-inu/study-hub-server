@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.study.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
+import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import lombok.*;
 
 import javax.persistence.*;
@@ -33,10 +34,12 @@ public class StudyEntity extends BaseTimeEntity {
     @Column(name = "master_user_id")
     private Long masterUserId;
 
+    @Enumerated(EnumType.STRING)
+    private MajorType major;
 
 
     @Builder
-    public StudyEntity(Long id, String title, String content, LocalDate studyStartDate, LocalDate studyEndDate, String chatUrl, Long userId) {
+    public StudyEntity(Long id, String title, String content, LocalDate studyStartDate, LocalDate studyEndDate, String chatUrl, Long userId, MajorType major) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -44,6 +47,7 @@ public class StudyEntity extends BaseTimeEntity {
         this.studyEndDate = studyEndDate;
         this.chatUrl = chatUrl;
         this.masterUserId = userId;
+        this.major = major;
     }
 
 }

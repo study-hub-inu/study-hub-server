@@ -43,7 +43,6 @@ public class StudyPostFindService {
     public FindPostResponseByInquiry findPostResponseByInquiry(final InquiryRequest inquiryRequest, final int page, final int size, Long userId) {
         final Pageable pageable = PageRequest.of(page, size);
         final Slice<PostDataByInquiry> posts = Converter.toSlice(pageable, studyPostRepository.findByInquiry(inquiryRequest, pageable, userId));
-
         return new FindPostResponseByInquiry((long) posts.getContent().size(), posts);
     }
 
@@ -51,9 +50,7 @@ public class StudyPostFindService {
         validateUser(userId);
         final Pageable pageable = PageRequest.of(page, size);
         final Long totalCount = getBookmarkCountByUserId(userId);
-
         final Slice<PostDataByBookmark> posts = Converter.toSlice(pageable, studyPostRepository.findPostsByBookmarked(userId, pageable));
-
         return new FindPostResponseByBookmark(totalCount, posts);
     }
 
@@ -65,9 +62,7 @@ public class StudyPostFindService {
         final UserEntity user = findUser(userId);
         final Pageable pageable = PageRequest.of(page, size);
         final Long totalCount = getPostCountByUserId(userId);
-
         final Slice<PostDataByUserId> posts = Converter.toSlice(pageable, studyPostRepository.findByPostedUserId(user.getId(), pageable));
-
         return new FindPostResponseByUserId(totalCount, posts);
     }
 

@@ -1,8 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.apply.repository;
 
 import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
-import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,4 +11,6 @@ public interface ApplyRepository extends JpaRepository<ApplyEntity, Long>, Apply
     Optional<ApplyEntity> findByUserIdAndStudyId(Long userId, Long studyId);
 
     List<ApplyEntity> findByUserId(Long userId);
+
+    Long countByUserIdAndInspection(Long userId, Inspection accept);
 }
