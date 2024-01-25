@@ -14,26 +14,27 @@ import java.util.List;
 
 @Getter
 public class FindPostResponseById {
-    private Long postId;
-    private String title;
-    private LocalDateTime createdDate;
-    private String content;
-    private MajorType major;
-    private int studyPerson;
-    private GenderType filteredGender;
-    private StudyWayType studyWay;
-    private int penalty;
-    private String penaltyWay;
-    private LocalDate studyStartDate;
-    private LocalDate studyEndDate;
-    private int remainingSeat;
-    private String chatUrl;
-    private boolean isUsersPost;
-    private boolean isBookmarked;
-    private UserData postedUser;
-    private List<PostDataByMajor> relatedPost;
+    private final Long postId;
+    private final String title;
+    private final LocalDateTime createdDate;
+    private final String content;
+    private final MajorType major;
+    private final int studyPerson;
+    private final GenderType filteredGender;
+    private final StudyWayType studyWay;
+    private final int penalty;
+    private final String penaltyWay;
+    private final LocalDate studyStartDate;
+    private final LocalDate studyEndDate;
+    private final int remainingSeat;
+    private final String chatUrl;
+    private final boolean isUsersPost;
+    private final boolean isBookmarked;
+    private final boolean isApply;
+    private final UserData postedUser;
+    private final List<PostDataByMajor> relatedPost;
 
-    public FindPostResponseById(PostData postData, List<PostDataByMajor> relatedPosts) {
+    public FindPostResponseById(PostData postData, List<PostDataByMajor> relatedPosts, boolean isApply) {
         this.postId = postData.getPostId();
         this.title = postData.getTitle();
         this.createdDate = postData.getCreatedDate();
@@ -52,5 +53,6 @@ public class FindPostResponseById {
         this.isBookmarked = postData.isBookmarked();
         this.postedUser = postData.getPostedUser();
         this.relatedPost = relatedPosts;
+        this.isApply = isApply;
     }
 }
