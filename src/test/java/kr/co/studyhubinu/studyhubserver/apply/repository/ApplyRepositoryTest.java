@@ -12,6 +12,8 @@ import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -52,7 +54,7 @@ class ApplyRepositoryTest {
         // when
         ApplyEntity apply = ApplyEntity.builder()
                 .userId(user.getId())
-                .study(study.getId())
+                .studyId(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .build();
         ApplyEntity result = applyRepository.save(apply);
@@ -78,7 +80,7 @@ class ApplyRepositoryTest {
         // when
         ApplyEntity applyEntity = ApplyEntity.builder()
                 .userId(user.getId())
-                .study(study.getId())
+                .studyId(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .build();
         applyRepository.save(applyEntity);
@@ -100,7 +102,7 @@ class ApplyRepositoryTest {
         StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
         ApplyEntity apply = ApplyEntity.builder()
                 .userId(user.getId())
-                .study(study.getId())
+                .studyId(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .build();
         applyRepository.save(apply);
@@ -114,8 +116,8 @@ class ApplyRepositoryTest {
 
         // then
         assertAll(
-                () -> assertEquals(result.getUserId(), user.getId()),
-                () -> assertEquals(result.getStudyId(), apply.getId())
+                () -> assertEquals(result.getUserId(), apply.getUserId()),
+                () -> assertEquals(result.getStudyId(), apply.getStudyId())
         );
     }
 
@@ -131,14 +133,14 @@ class ApplyRepositoryTest {
 
         ApplyEntity apply1 = ApplyEntity.builder()
                 .userId(user.getId())
-                .study(study.getId())
+                .studyId(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .introduce("벌금내러 왔습니다.")
                 .build();
 
         ApplyEntity apply2 = ApplyEntity.builder()
                 .userId(user2.getId())
-                .study(study.getId())
+                .studyId(study.getId())
                 .inspection(Inspection.ACCEPT)
                 .introduce("목숨을 걸겠습니다.")
                 .build();
@@ -155,7 +157,14 @@ class ApplyRepositoryTest {
     }
 
     @Test
-    void 스터디_참가요청_조회_유저데이터_반환() {
+    void 로그인하지_않은_유저가_조회할_경우_반환값_없음() {
+        // given
+        applyRepository.save(ApplyEntity.builder().userId(1L).studyId(1L).build());
 
+        // when
+        Optional<ApplyEntity> apply = applyRepository.findByUserIdAndStudyId(null, 1L);
+
+        // then
+        assertThat(apply).isEmpty();
     }
 }

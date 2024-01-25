@@ -35,17 +35,17 @@ public class ApplyEntity extends BaseTimeEntity {
     private Long userId;
 
     @Builder
-    public ApplyEntity(Inspection inspection, String introduce, Long study, Long userId) {
+    public ApplyEntity(Inspection inspection, String introduce, Long studyId, Long userId) {
         this.inspection = inspection;
         this.introduce = introduce;
-        this.studyId = study;
+        this.studyId = studyId;
         this.userId = userId;
     }
 
     public static ApplyEntity of(Long userId, Long studyId, String introduce) {
         return ApplyEntity.builder()
                 .userId(userId)
-                .study(studyId)
+                .studyId(studyId)
                 .introduce(introduce)
                 .inspection(Inspection.STANDBY)
                 .build();

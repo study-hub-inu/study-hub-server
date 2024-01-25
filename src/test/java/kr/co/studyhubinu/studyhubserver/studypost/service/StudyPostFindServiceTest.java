@@ -1,5 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
+import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
+import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
@@ -45,6 +47,9 @@ class StudyPostFindServiceTest {
 
     @Mock
     BookmarkRepository bookmarkRepository;
+
+    @Mock
+    ApplyRepository applyRepository;
 
     @Test
     void 스터디_게시글_전체_조회() {
@@ -159,6 +164,7 @@ class StudyPostFindServiceTest {
         postsByMajor.add(postDataByMajor);
         when(studyPostRepository.findByMajor(any(), anyLong())).thenReturn(postsByMajor);
         when(studyPostRepository.findPostById(anyLong(), anyLong())).thenReturn(Optional.ofNullable(PostData.builder().postId(1L).build()));
+        when(applyRepository.findByUserIdAndStudyId(anyLong(), any())).thenReturn(Optional.empty());
 
         // when
         FindPostResponseById postResponse = studyPostFindService.findPostById(1L, 1L);

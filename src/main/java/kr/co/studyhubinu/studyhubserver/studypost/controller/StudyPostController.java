@@ -67,7 +67,7 @@ public class StudyPostController {
     }
 
     @Operation(summary = "스터디 단건 조회", description = "url 끝에 postId를 넣어주세요")
-    @GetMapping("/v1/study-posts/{postId}")
+    @GetMapping("/v2/study-posts/{postId}")
     public ResponseEntity<FindPostResponseById> findPostById(@PathVariable Long postId, UserId userId) {
         FindPostResponseById findPostResponseById = studyPostFindService.findPostById(postId, userId.getId());
         return ResponseEntity.ok(findPostResponseById);
