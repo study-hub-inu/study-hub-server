@@ -13,6 +13,7 @@ import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -115,8 +116,8 @@ class ApplyRepositoryTest {
 
         // then
         assertAll(
-                () -> assertEquals(result.getUserId(), user.getId()),
-                () -> assertEquals(result.getStudyId(), apply.getId())
+                () -> assertEquals(result.getUserId(), apply.getUserId()),
+                () -> assertEquals(result.getStudyId(), apply.getStudyId())
         );
     }
 
