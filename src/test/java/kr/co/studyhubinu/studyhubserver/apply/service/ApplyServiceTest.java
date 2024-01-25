@@ -63,7 +63,7 @@ class ApplyServiceTest {
         when(studyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(study));
         when(applyRepository.save(any())).thenReturn(ApplyEntity.builder()
                 .userId(user.getId())
-                .study(study.getId())
+                .studyId(study.getId())
                 .build());
 
         // when, then

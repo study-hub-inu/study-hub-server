@@ -1,6 +1,8 @@
 package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 
+import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
+import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +38,7 @@ public class StudyPostFindService {
     private final StudyPostRepository studyPostRepository;
     private final UserRepository userRepository;
     private final BookmarkRepository bookMarkRepository;
+    private final ApplyRepository applyRepository;
 
     public FindPostResponseByInquiry findPostResponseByInquiry(final InquiryRequest inquiryRequest, final int page, final int size, Long userId) {
         final Pageable pageable = PageRequest.of(page, size);
@@ -69,7 +73,14 @@ public class StudyPostFindService {
 
     public FindPostResponseById findPostById(Long postId, Long userId) {
         final PostData postData = findPostDataById(postId, userId);
-        return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId));
+        boolean isApply = getUserApply(userId, postData);
+
+        return new FindPostResponseById(postData, getRelatedPosts(postData.getMajor(), postId), isApply);
+    }
+
+    private boolean getUserApply(Long userId, PostData postData) {
+        Optional<ApplyEntity> apply = applyRepository.findByUserIdAndStudyId(userId, postData.getStudyId());
+        return apply.isPresent();
     }
 
     public List<PostDataByMajor> getRelatedPosts(MajorType major, Long exceptPostId) {
