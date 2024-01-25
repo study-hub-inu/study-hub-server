@@ -194,10 +194,10 @@ class StudyPostControllerTest extends ControllerRequest {
     void 스터디_단건_조회_성공() throws Exception {
         // given
         PostData postData = PostData.builder().build();
-        when(studyPostFindService.findPostById(any(), any())).thenReturn(new FindPostResponseById(postData, new ArrayList<>()));
+        when(studyPostFindService.findPostById(any(), any())).thenReturn(new FindPostResponseById(postData, new ArrayList<>(), true));
 
         // when
-        ResultActions resultActions = performGetRequest("/api/v1/study-posts/1", null);
+        ResultActions resultActions = performGetRequest("/api/v2/study-posts/1", null);
         MvcResult mvcResult = resultActions.andReturn();
         String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
 
