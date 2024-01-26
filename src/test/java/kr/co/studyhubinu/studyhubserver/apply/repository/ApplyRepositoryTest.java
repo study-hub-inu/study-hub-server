@@ -25,6 +25,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
+import static kr.co.studyhubinu.studyhubserver.apply.enums.Inspection.ACCEPT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,7 +56,7 @@ class ApplyRepositoryTest {
         ApplyEntity apply = ApplyEntity.builder()
                 .userId(user.getId())
                 .studyId(study.getId())
-                .inspection(Inspection.ACCEPT)
+                .inspection(ACCEPT)
                 .build();
         ApplyEntity result = applyRepository.save(apply);
 
@@ -81,7 +82,7 @@ class ApplyRepositoryTest {
         ApplyEntity applyEntity = ApplyEntity.builder()
                 .userId(user.getId())
                 .studyId(study.getId())
-                .inspection(Inspection.ACCEPT)
+                .inspection(ACCEPT)
                 .build();
         applyRepository.save(applyEntity);
         applyRepository.flush();
@@ -103,7 +104,7 @@ class ApplyRepositoryTest {
         ApplyEntity apply = ApplyEntity.builder()
                 .userId(user.getId())
                 .studyId(study.getId())
-                .inspection(Inspection.ACCEPT)
+                .inspection(ACCEPT)
                 .build();
         applyRepository.save(apply);
         applyRepository.flush();
@@ -134,26 +135,26 @@ class ApplyRepositoryTest {
         ApplyEntity apply1 = ApplyEntity.builder()
                 .userId(user.getId())
                 .studyId(study.getId())
-                .inspection(Inspection.ACCEPT)
+                .inspection(ACCEPT)
                 .introduce("벌금내러 왔습니다.")
                 .build();
 
         ApplyEntity apply2 = ApplyEntity.builder()
                 .userId(user2.getId())
                 .studyId(study.getId())
-                .inspection(Inspection.ACCEPT)
+                .inspection(ACCEPT)
                 .introduce("목숨을 걸겠습니다.")
                 .build();
 
-        ApplyEntity result1 = applyRepository.save(apply1);
-        ApplyEntity result2 = applyRepository.save(apply2);
-        List<ApplyEntity> list = applyRepository.findAll();
+        applyRepository.save(apply1);
+        applyRepository.save(apply2);
 
         // when
         List<ApplyUserData> result = applyRepository.findByStudy(study.getId(), pageable);
 
         // then
         assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getInspection()).isEqualTo(ACCEPT);
     }
 
     @Test
