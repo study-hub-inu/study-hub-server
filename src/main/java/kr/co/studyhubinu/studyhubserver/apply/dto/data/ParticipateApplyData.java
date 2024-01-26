@@ -7,12 +7,12 @@ import lombok.Getter;
 @Getter
 public class ParticipateApplyData {
 
-    private String major;
-    private String title;
-    private String content;
-    private String chatUrl;
-    private String inspection;
-    private Long postId;
+    private final String major;
+    private final String title;
+    private final String content;
+    private final String chatUrl;
+    private final String inspection;
+    private final Long postId;
 
     public ParticipateApplyData(MajorType major, String title, String content, String chatUrl, Inspection inspection, Long postId) {
         this.major = major.getValue();
