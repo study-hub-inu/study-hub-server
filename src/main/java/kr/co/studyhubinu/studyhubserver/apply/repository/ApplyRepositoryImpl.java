@@ -27,7 +27,7 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
         return jpaQueryFactory
                 .select(Projections.constructor(ApplyUserData.class,
                         userEntity.id, userEntity.nickname, userEntity.major, userEntity.imageUrl,
-                        applyEntity.introduce, applyEntity.createdDate))
+                        applyEntity.introduce, applyEntity.createdDate, applyEntity.inspection))
                 .from(applyEntity)
                 .innerJoin(userEntity).on(applyEntity.userId.eq(userEntity.id))
                 .where(applyEntity.studyId.eq(studyId))
