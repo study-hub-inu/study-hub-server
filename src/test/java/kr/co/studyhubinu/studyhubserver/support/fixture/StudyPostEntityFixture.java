@@ -26,7 +26,7 @@ public enum StudyPostEntityFixture {
     private final LocalDate studyStartDate;
     private final LocalDate studyEndDate;
     private final Integer remainingSeat;
-    private final Long studyId;
+    private Long studyId;
 
     StudyPostEntityFixture(String title, String content, MajorType major, Integer studyPerson, GenderType gender, StudyWayType studyWay, Integer penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Integer remainingSeat, Long studyId) {
         this.title = title;
@@ -78,5 +78,28 @@ public enum StudyPostEntityFixture {
                 .remainingSeat(this.remainingSeat)
                 .studyId(this.studyId)
                 .build();
+    }
+
+    public StudyPostEntity studyPostEntity_생성_studyId_추가(Long userId, Long postId, Long studyId) {
+        return StudyPostEntity.builder()
+                .id(postId)
+                .title(this.title)
+                .content(this.content)
+                .major(this.major)
+                .studyPerson(this.studyPerson)
+                .filteredGender(this.gender)
+                .studyWay(this.studyWay)
+                .penalty(this.penalty)
+                .penaltyWay(this.penaltyWay)
+                .studyStartDate(this.studyStartDate)
+                .studyEndDate(this.studyEndDate)
+                .postedUserId(userId)
+                .remainingSeat(this.remainingSeat)
+                .studyId(studyId)
+                .build();
+    }
+
+    public void setStudyId(Long studyId) {
+        this.studyId = studyId;
     }
 }

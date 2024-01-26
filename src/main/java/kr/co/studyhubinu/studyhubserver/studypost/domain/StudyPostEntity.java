@@ -109,4 +109,8 @@ public class StudyPostEntity extends BaseTimeEntity {
     public void close() {
         this.close = true;
     }
+
+    public void minusRemainingSeat() {
+        this.remainingSeat--;
+    }
 }

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long>, StudyPostRepositoryCustom {
 
@@ -20,4 +21,6 @@ public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long
     @Modifying(clearAutomatically = true)
     @Query("UPDATE StudyPostEntity sp SET sp.close = true WHERE sp.studyStartDate = :studyStartDate AND sp.close = false")
     void closeStudyPostsByStartDate(@Param("studyStartDate") LocalDate studyStartDate);
+
+    Optional<StudyPostEntity> findByStudyId(Long studyId);
 }

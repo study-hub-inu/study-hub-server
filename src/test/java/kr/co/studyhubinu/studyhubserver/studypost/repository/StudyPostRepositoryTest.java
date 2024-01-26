@@ -3,10 +3,14 @@ package kr.co.studyhubinu.studyhubserver.studypost.repository;
 import kr.co.studyhubinu.studyhubserver.bookmark.domain.BookmarkEntity;
 import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundExceptionByStudyId;
+import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
+import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.request.InquiryRequest;
 import kr.co.studyhubinu.studyhubserver.support.fixture.BookmarkEntityFixture;
+import kr.co.studyhubinu.studyhubserver.support.fixture.StudyEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
@@ -28,10 +32,15 @@ class StudyPostRepositoryTest {
 
     @Autowired
     private StudyPostRepository studyPostRepository;
+
     @Autowired
     private BookmarkRepository bookmarkRepository;
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private StudyRepository studyRepository;
 
     @Test
     void 유저의_식별자로_게시글_개수를_조회한다() {
@@ -288,5 +297,24 @@ class StudyPostRepositoryTest {
 
         // then
         assertThat(posts.size()).isEqualTo(2);
+    }
+
+    @Test
+    void 스터디_식별자로_게시글_조회() {
+        // given
+        StudyEntity study = StudyEntityFixture.INU.studyEntity_생성();
+        StudyEntity savedStudy = studyRepository.save(study);
+        StudyPostEntity post = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성_studyId_추가(1L, 1L, savedStudy.getId());
+
+        studyPostRepository.save(post);
+
+        // when
+        StudyPostEntity savedPost = studyPostRepository.findByStudyId(savedStudy.getId()).orElseThrow(PostNotFoundExceptionByStudyId::new);
+
+        // then
+        assertAll(
+                () -> assertTrue(savedPost.getContent().equals("심장을 바칠 사람만요")),
+                () -> assertTrue(savedPost.getTitle().equals("정처기 딸사람 구해요"))
+        );
     }
 }
