@@ -73,22 +73,6 @@ public class CreatePostRequest {
     @NotNull(message = "스터디 종료 날짜 작성은 필수입니다!")
     private LocalDate studyEndDate;
 
-    @Builder
-    public CreatePostRequest(String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, String penaltyWay, boolean close, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
-        this.title = title;
-        this.content = content;
-        this.chatUrl = chatUrl;
-        this.major = major;
-        this.studyPerson = studyPerson;
-        this.penalty = penalty;
-        this.penaltyWay = penaltyWay;
-        this.close = close;
-        this.gender = gender;
-        this.studyWay = studyWay;
-        this.studyStartDate = studyStartDate;
-        this.studyEndDate = studyEndDate;
-    }
-
     public StudyEntity toStudyEntity(Long userId) {
         return StudyEntity.builder()
                 .title(title)
@@ -112,11 +96,28 @@ public class CreatePostRequest {
                 .studyWay(studyWay)
                 .penalty(penalty)
                 .penaltyWay(penaltyWay)
+                .close(close)
                 .studyStartDate(studyStartDate)
                 .studyEndDate(studyEndDate)
                 .postedUserId(userId)
                 .remainingSeat(studyPerson)
                 .studyId(studyId)
                 .build();
+    }
+
+    @Builder
+    public CreatePostRequest(String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, String penaltyWay, boolean close, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
+        this.title = title;
+        this.content = content;
+        this.chatUrl = chatUrl;
+        this.major = major;
+        this.studyPerson = studyPerson;
+        this.penalty = penalty;
+        this.penaltyWay = penaltyWay;
+        this.close = close;
+        this.gender = gender;
+        this.studyWay = studyWay;
+        this.studyStartDate = studyStartDate;
+        this.studyEndDate = studyEndDate;
     }
 }

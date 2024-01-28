@@ -10,22 +10,23 @@ import java.time.LocalDate;
 
 @Getter
 public class UpdateStudyPostInfo {
-    private Long postId;
-    private Long userId;
-    private String title;
-    private String content;
-    private String chatUrl;
-    private MajorType major;
-    private int studyPerson;
-    private int penalty;
-    private String penaltyWay;
-    private GenderType gender;
-    private StudyWayType studyWay;
-    private LocalDate studyStartDate;
-    private LocalDate studyEndDate;
+    private final Long postId;
+    private final Long userId;
+    private final String title;
+    private final String content;
+    private final String chatUrl;
+    private final MajorType major;
+    private final int studyPerson;
+    private final int penalty;
+    private final String penaltyWay;
+    private final boolean close;
+    private final GenderType gender;
+    private final StudyWayType studyWay;
+    private final LocalDate studyStartDate;
+    private final LocalDate studyEndDate;
 
     @Builder
-    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, String penaltyWay, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
+    public UpdateStudyPostInfo(Long postId, Long userId, String title, String content, String chatUrl, MajorType major, int studyPerson, int penalty, String penaltyWay, boolean close, GenderType gender, StudyWayType studyWay, LocalDate studyStartDate, LocalDate studyEndDate) {
         this.postId = postId;
         this.userId = userId;
         this.title = title;
@@ -35,6 +36,7 @@ public class UpdateStudyPostInfo {
         this.studyPerson = studyPerson;
         this.penalty = penalty;
         this.penaltyWay = penaltyWay;
+        this.close = close;
         this.gender = gender;
         this.studyWay = studyWay;
         this.studyStartDate = studyStartDate;

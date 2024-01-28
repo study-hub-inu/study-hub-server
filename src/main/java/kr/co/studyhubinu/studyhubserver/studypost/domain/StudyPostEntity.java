@@ -70,7 +70,7 @@ public class StudyPostEntity extends BaseTimeEntity {
     private Long studyId;
 
     @Builder
-    public StudyPostEntity(Long id, String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, Long postedUserId, int remainingSeat, Long studyId) {
+    public StudyPostEntity(Long id, String title, String content, String chatUrl, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, boolean close, LocalDate studyStartDate, LocalDate studyEndDate, Long postedUserId, int remainingSeat, Long studyId) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -81,6 +81,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.studyWay = studyWay;
         this.penalty = penalty;
         this.penaltyWay = penaltyWay;
+        this.close = close;
         this.studyStartDate = studyStartDate;
         this.studyEndDate = studyEndDate;
         this.postedUserId = postedUserId;
@@ -98,6 +99,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.studyWay = info.getStudyWay();
         this.penalty = info.getPenalty();
         this.penaltyWay = info.getPenaltyWay();
+        this.close = info.isClose();
         this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
     }

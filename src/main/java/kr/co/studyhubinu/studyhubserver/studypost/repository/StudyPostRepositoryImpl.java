@@ -95,7 +95,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 )
                 .from(post)
                 .where(post.postedUserId.eq(userId))
-                .orderBy(post.createdDate.desc())
+                .orderBy(post.close.asc(), post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
 
