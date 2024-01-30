@@ -10,8 +10,7 @@
 ## 프로젝트 구조 
 
 ### 전체 구조도
-![아키텍쳐 drawio](https://github.com/study-hub-inu/study-hub-server/assets/97587573/ce800f7d-f8f0-4811-a513-c9fbeedc2100)
+![아키텍쳐 drawio](https://github.com/study-hub-inu/study-hub-server/assets/97587573/a070f07d-b490-421d-8f89-d21d825b578c)
 
 ### CI/CD 구조
-![CICD drawio](https://github.com/study-hub-inu/study-hub-server/assets/97587573/a6a5e139-d209-4f68-8455-32c579c970af)
-
+![CICD drawio](https://github.com/study-hub-inu/study-hub-server/assets/97587573/1d71439c-fad7-4da3-abaf-29e5a4a17caf)
