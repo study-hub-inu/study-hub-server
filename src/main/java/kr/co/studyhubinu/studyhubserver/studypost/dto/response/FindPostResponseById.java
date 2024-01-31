@@ -31,6 +31,7 @@ public class FindPostResponseById {
     private final boolean isUsersPost;
     private final boolean isBookmarked;
     private final Long studyId;
+    private final boolean isClose;
     private final boolean isApply;
     private final UserData postedUser;
     private final List<PostDataByMajor> relatedPost;
@@ -53,6 +54,7 @@ public class FindPostResponseById {
         this.isUsersPost = postData.isUsersPost();
         this.isBookmarked = postData.isBookmarked();
         this.studyId = postData.getStudyId();
+        this.isClose = postData.isClose();
         this.postedUser = postData.getPostedUser();
         this.relatedPost = relatedPosts;
         this.isApply = isApply;

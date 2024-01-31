@@ -117,7 +117,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                         post.studyStartDate, post.studyEndDate, post.chatUrl, post.remainingSeat,
                         userId != null ? Expressions.booleanTemplate("{0} = {1}", post.postedUserId, userId) : Expressions.constant(false),
                         userId != null ? Expressions.booleanTemplate("{0} = {1}", bookmark.userId, userId) : Expressions.constant(false),
-                        post.studyId,
+                        post.studyId, post.close.as("isClose"),
                         Projections.constructor(
                                 UserData.class,
                                 user.id, user.major, user.nickname, user.imageUrl

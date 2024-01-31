@@ -29,10 +29,11 @@ public class PostData {
     private final boolean isUsersPost;
     private final boolean isBookmarked;
     private final Long studyId;
+    private final boolean isClose;
     private final UserData postedUser;
 
     @Builder
-    public PostData(Long postId, String title, LocalDateTime createdDate, String content, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, String charUrl, int remainingSeat, boolean isUsersPost, boolean isBookmarked, Long studyId, UserData postedUser) {
+    public PostData(Long postId, String title, LocalDateTime createdDate, String content, MajorType major, int studyPerson, GenderType filteredGender, StudyWayType studyWay, int penalty, String penaltyWay, LocalDate studyStartDate, LocalDate studyEndDate, String charUrl, int remainingSeat, boolean isUsersPost, boolean isBookmarked, Long studyId, boolean isClose, UserData postedUser) {
         this.postId = postId;
         this.title = title;
         this.createdDate = createdDate;
@@ -50,6 +51,7 @@ public class PostData {
         this.isUsersPost = isUsersPost;
         this.isBookmarked = isBookmarked;
         this.studyId = studyId;
+        this.isClose = isClose;
         this.postedUser = postedUser;
     }
 }
