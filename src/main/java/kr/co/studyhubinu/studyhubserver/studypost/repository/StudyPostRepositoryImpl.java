@@ -72,7 +72,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .from(post)
                 .innerJoin(bookmark).on(bookmark.postId.eq(post.id))
                 .where(bookmark.userId.eq(userId))
-                .orderBy(post.createdDate.desc())
+                .orderBy(post.close.asc(), post.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
 
