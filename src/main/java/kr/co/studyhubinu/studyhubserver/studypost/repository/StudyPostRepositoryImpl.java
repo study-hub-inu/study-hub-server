@@ -50,7 +50,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 .from(studyPostEntity)
                 .leftJoin(userEntity).on(studyPostEntity.postedUserId.eq(userEntity.id))
                 .where(textEq(inquiryRequest.getInquiryText()).or(majorEq(inquiryRequest.getInquiryText(), inquiryRequest.isTitleAndMajor())))
-                .orderBy(hotPredicate(inquiryRequest), studyPostEntity.createdDate.desc())
+                .orderBy(studyPostEntity.close.asc(), hotPredicate(inquiryRequest), studyPostEntity.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
 
