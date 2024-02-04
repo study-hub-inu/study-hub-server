@@ -7,6 +7,7 @@ DROP TABLE if EXISTS post;
 DROP TABLE if EXISTS study;
 DROP TABLE if EXISTS users;
 DROP TABLE IF EXISTS fcm_token;
+DROP TABLE IF EXISTS announce;
 
 CREATE TABLE users
 (
@@ -108,4 +109,14 @@ CREATE TABLE fcm_token (
     user_id         BIGINT       NOT NULL,
     token           VARCHAR(255) NOT NULL,
     PRIMARY KEY (fcm_token_id)
+);
+
+CREATE TABLE notice (
+    notice_id   BIGINT NOT NULL AUTO_INCREMENT,
+    title         VARCHAR(50) NOT NULL,
+    content       VARCHAR(255) NOT NULL,
+    user_id       BIGINT        NOT NULL,
+    created_date    TIMESTAMP(3)     DEFAULT NULL,
+    modified_date   TIMESTAMP(3)     DEFAULT NULL,
+    PRIMARY KEY (notice_id)
 );
