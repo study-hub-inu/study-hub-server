@@ -120,3 +120,7 @@ CREATE TABLE notice (
     modified_date   TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (notice_id)
 );
+
+CREATE TABLE reject (
+
+);

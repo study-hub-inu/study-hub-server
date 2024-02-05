@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.RejectApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.service.ApplyService;
@@ -37,6 +38,16 @@ public class ApplyController {
         applyService.update(request);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "스터디 참여 신청 거절",
+            description = "JWT토큰 헤더에 보내주시면 됩니다!")
+    @PutMapping("/v1/study-reject")
+    public ResponseEntity<HttpStatus> rejectApply(@RequestBody final RejectApplyRequest rejectApplyRequest, final UserId userId) {
+        applyService.rejectApply(rejectApplyRequest, userId.getId());
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "스터디 참여 신청 수락", description = "")
 
     @Operation(summary = "스터디 참여 신청 정보 조회", description = "해당 스터디 Id를 보내주세요.")
     @ApiImplicitParams({
