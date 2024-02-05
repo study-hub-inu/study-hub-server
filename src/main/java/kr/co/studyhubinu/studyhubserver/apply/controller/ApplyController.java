@@ -47,8 +47,6 @@ public class ApplyController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "스터디 참여 신청 수락", description = "")
-
     @Operation(summary = "스터디 참여 신청 정보 조회", description = "해당 스터디 Id를 보내주세요.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
