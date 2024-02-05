@@ -126,6 +126,7 @@ CREATE TABLE reject (
     reject_id      BIGINT NOT NULL AUTO_INCREMENT,
     reject_reason  VARCHAR(255) NOT NULL,
     rejected_user_id BIGINT NOT NULL,
+    study_id         BIGINT NOT NULL,
     created_date    TIMESTAMP(3)     DEFAULT NULL,
     modified_date   TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (reject_id)

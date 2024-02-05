@@ -19,6 +19,9 @@ public class RejectEntity extends BaseTimeEntity {
     @Column(name = "reject_id")
     private Long id;
 
+    @Column(name = "study_id")
+    private Long studyId;
+
     @Column(name = "reject_reason")
     private String rejectReason;
 
@@ -26,7 +29,8 @@ public class RejectEntity extends BaseTimeEntity {
     private Long rejectedUserId;
 
     @Builder
-    public RejectEntity(String rejectReason, Long rejectedUserId) {
+    public RejectEntity(Long studyId, String rejectReason, Long rejectedUserId) {
+        this.studyId = studyId;
         this.rejectReason = rejectReason;
         this.rejectedUserId = rejectedUserId;
     }

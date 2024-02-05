@@ -10,6 +10,7 @@ import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindParticipateApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
+import kr.co.studyhubinu.studyhubserver.apply.repository.RejectRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.apply.ApplyNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.apply.SameUserRequestException;
@@ -39,6 +40,7 @@ public class ApplyService {
     private final StudyRepository studyRepository;
     private final ApplyRepository applyRepository;
     private final StudyPostRepository studyPostRepository;
+    private final RejectRepository rejectRepository;
 
     @Transactional
     public void enroll(Long userId, EnrollApplyRequest request) {
@@ -92,8 +94,9 @@ public class ApplyService {
     public void rejectApply(final RejectApplyRequest rejectApplyRequest, final Long userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(rejectApplyRequest.getStudyId()).orElseThrow();
-        ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
+        ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(rejectApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
         applyEntity.updateReject();
+        rejectRepository.save(rejectApplyRequest.toRejectEntity());
     }
 
 }
