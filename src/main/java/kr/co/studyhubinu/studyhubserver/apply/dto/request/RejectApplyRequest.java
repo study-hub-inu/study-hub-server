@@ -2,13 +2,15 @@ package kr.co.studyhubinu.studyhubserver.apply.dto.request;
 
 import kr.co.studyhubinu.studyhubserver.apply.domain.RejectEntity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class RejectApplyRequest {
 
-    private final Long studyId;
-    private final Long rejectedUserId;
-    private final String rejectReason;
+    private Long studyId;
+    private Long rejectedUserId;
+    private String rejectReason;
 
     public RejectApplyRequest(Long studyId, Long rejectedUserId, String rejectReason) {
         this.studyId = studyId;
