@@ -57,4 +57,8 @@ public class ApplyEntity extends BaseTimeEntity {
     public void updateReject() {
         this.inspection = Inspection.REJECT;
     }
+
+    public void updateAccept() {
+        this.inspection = Inspection.ACCEPT;
+    }
 }
