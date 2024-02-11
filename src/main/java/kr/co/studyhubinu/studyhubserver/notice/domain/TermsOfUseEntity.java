@@ -21,13 +21,16 @@ public class TermsOfUseEntity extends BaseTimeEntity {
 
     private String title;
 
+    private String article;
+
     private String content;
 
     private String version;
 
     @Builder
-    public TermsOfUseEntity(String title, String content, String version) {
+    public TermsOfUseEntity(String title, String article, String content, String version) {
         this.title = title;
+        this.article = article;
         this.content = content;
         this.version = version;
     }

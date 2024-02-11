@@ -26,7 +26,7 @@ public class TermsOfUseRepositoryCustomImpl implements TermsOfUseRepositoryCusto
         JPAQuery<FindTermsOfUsesResponse> data = jpaQueryFactory
                 .select(Projections.constructor(
                         FindTermsOfUsesResponse.class,
-                        termsOfUse.id.as("terms_of_use_id"), termsOfUse.title, termsOfUse.content
+                        termsOfUse.id.as("terms_of_use_id"), termsOfUse.title, termsOfUse.article, termsOfUse.content
                         )
                 )
                 .from(termsOfUse);

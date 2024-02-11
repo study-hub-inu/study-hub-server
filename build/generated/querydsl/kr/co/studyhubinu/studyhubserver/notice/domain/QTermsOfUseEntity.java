@@ -21,6 +21,8 @@ public class QTermsOfUseEntity extends EntityPathBase<TermsOfUseEntity> {
 
     public final kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity _super = new kr.co.studyhubinu.studyhubserver.common.domain.QBaseTimeEntity(this);
 
+    public final StringPath article = createString("article");
+
     public final StringPath content = createString("content");
 
     //inherited
