@@ -6,6 +6,7 @@ import kr.co.studyhubinu.studyhubserver.bookmark.dto.response.GetDoBookmarkRespo
 import kr.co.studyhubinu.studyhubserver.bookmark.service.BookmarkService;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,13 @@ public class BookmarkController {
     public ResponseEntity<GetBookmarkedResponse> checkBookmarked(@PathVariable final Long postId, final UserId userId) {
         final boolean result = bookmarkService.checkBookmarked(userId.getId(), postId);
         return ResponseEntity.ok().body(new GetBookmarkedResponse(result));
+    }
+
+    @Operation(summary = "북마크 전체 삭제", description = "헤더에 userId 보내주시면 됩니다.")
+    @DeleteMapping("/v1/bookmark")
+    public ResponseEntity<HttpStatus> deleteAllBookmark(final UserId userId) {
+        bookmarkService.deleteAllBookmark(userId.getId());
+        return ResponseEntity.noContent().build();
     }
 
 }

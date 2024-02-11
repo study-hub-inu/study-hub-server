@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Transactional(readOnly = true)
 public class BookmarkService {
 
-    private final BookmarkRepository bookMarkRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final UserRepository userRepository;
     private final StudyPostRepository studyPostRepository;
 
@@ -26,14 +26,14 @@ public class BookmarkService {
         AtomicBoolean created = new AtomicBoolean(false);
         validateUserExist(userId);
         validateStudyPostExist(postId);
-        bookMarkRepository.findByUserIdAndPostId(userId, postId).ifPresentOrElse(
+        bookmarkRepository.findByUserIdAndPostId(userId, postId).ifPresentOrElse(
                 bookMark -> {
-                    bookMarkRepository.delete(bookMark);
+                    bookmarkRepository.delete(bookMark);
                     created.set(false);
                 },
                 () -> {
                     BookmarkEntity bookmark = new BookmarkEntity(postId, userId);
-                    bookMarkRepository.save(bookmark);
+                    bookmarkRepository.save(bookmark);
                     created.set(true);
                 }
         );
@@ -43,7 +43,7 @@ public class BookmarkService {
     public boolean checkBookmarked(Long userId, Long postId) {
         validateUserExist(userId);
         validateStudyPostExist(postId);
-        return bookMarkRepository.findByUserIdAndPostId(userId, postId).isPresent();
+        return bookmarkRepository.findByUserIdAndPostId(userId, postId).isPresent();
     }
 
     private void validateUserExist(Long userId) {
@@ -53,5 +53,10 @@ public class BookmarkService {
     private void validateStudyPostExist(Long postId) {
         studyPostRepository.findById(postId).orElseThrow(PostNotFoundException::new);
     }
-    
+
+    @Transactional
+    public void deleteAllBookmark(Long userId) {
+        validateUserExist(userId);
+        bookmarkRepository.deleteAllBookmarksByUserId(userId);
+    }
 }
