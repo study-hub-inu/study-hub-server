@@ -60,7 +60,7 @@ public class ApplyService {
 
     public FindApplyResponse findApply(FindApplyRequest request, final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Slice<ApplyUserData> userData = Converter.toSlice(pageable, applyRepository.findByStudy(request.getStudyId(), pageable));
+        Slice<ApplyUserData> userData = Converter.toSlice(pageable, applyRepository.findStudyByIdAndInspection(request, pageable));
 
         return new FindApplyResponse((long) size, userData);
     }

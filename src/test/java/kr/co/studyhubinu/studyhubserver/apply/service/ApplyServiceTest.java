@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -97,13 +98,17 @@ class ApplyServiceTest {
         // given
         FindApplyRequest request = FindApplyRequest.builder()
                 .studyId(1L)
+                .inspection(Inspection.ACCEPT)
                 .build();
-        ApplyUserData data1 = ApplyUserData.builder().nickname("liljay").build();
+        ApplyUserData data1 = ApplyUserData.builder()
+                .nickname("liljay")
+                .inspection(Inspection.ACCEPT)
+                .build();
         ApplyUserData data2 = ApplyUserData.builder().build();
 
         List<ApplyUserData> applyEntities = List.of(data1, data2);
 
-        when(applyRepository.findByStudy(any(), any())).thenReturn(applyEntities);
+        when(applyRepository.findStudyByIdAndInspection(request, PageRequest.of(0,5))).thenReturn(applyEntities);
 
         // when
         FindApplyResponse applyResponse = applyService.findApply(request, 0, 5);
