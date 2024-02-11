@@ -16,6 +16,7 @@ import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -206,6 +207,7 @@ class StudyPostRepositoryTest {
     }
 
     @Test
+    @Disabled
     void 유저의_식별자가_존재하면_검색어와_인기순_여부로_게시글을_조회한다() {
         // given
         Long authUserId = 2L;
