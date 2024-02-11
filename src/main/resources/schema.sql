@@ -9,6 +9,7 @@ DROP TABLE if EXISTS users;
 DROP TABLE IF EXISTS fcm_token;
 DROP TABLE IF EXISTS notice;
 DROP TABLE IF EXISTS reject;
+DROP TABLE IF EXISTS terms_of_use;
 
 CREATE TABLE users
 (
