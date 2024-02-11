@@ -16,6 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -76,11 +79,17 @@ class ApplyControllerTest extends ControllerRequest {
         FindApplyResponse findApplyResponse = FindApplyResponse.builder().build();
         FindApplyRequest findApplyRequest = FindApplyRequest.builder()
                         .studyId(1L)
+                        .inspection(Inspection.ACCEPT)
                         .build();
         Mockito.when(applyService.findApply(any(), anyInt(), anyInt())).thenReturn(findApplyResponse);
+        Map<String, String> params = new HashMap<>();
+        params.put("studyId", "1");
+        params.put("inspection", "ACCEPT");
+        params.put("page", "0");
+        params.put("size", "5");
 
         // when
-        ResultActions resultActions = performPostRequest("/api/v1/study", findApplyRequest);
+        ResultActions resultActions = performGetRequest("/api/v2/study", params);
 
         // then
         resultActions.andExpect(status().isOk())

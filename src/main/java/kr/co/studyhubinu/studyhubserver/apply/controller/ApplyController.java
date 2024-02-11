@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
+import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.service.ApplyService;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindParticipateApplyResponse;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
@@ -54,14 +55,16 @@ public class ApplyController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "스터디 참여 신청 정보 조회", description = "해당 스터디 Id를 보내주세요.")
+    @Operation(summary = "스터디 참여 신청 정보 조회", description = "해당 스터디 Id, 신청 정보를 파라미터로 보내주세요.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
-            @ApiImplicitParam(name = "size", value = "사이즈", required = true)
+            @ApiImplicitParam(name = "size", value = "사이즈", required = true),
+            @ApiImplicitParam(name = "studyId", value = "스터디 식별자", required = true),
+            @ApiImplicitParam(name = "inspection", value = "상태", required = true)
     })
-    @GetMapping("/v1/study")
-    public FindApplyResponse findStudyEnroll(FindApplyRequest request, @RequestParam int page, @RequestParam int size) {
-        return applyService.findApply(request, page, size);
+    @GetMapping("/v2/study")
+    public FindApplyResponse findStudyEnroll(@RequestParam Long studyId, @RequestParam Inspection inspection, @RequestParam int page, @RequestParam int size) {
+        return applyService.findApply(new FindApplyRequest(studyId, inspection), page, size);
     }
 
     @Operation(summary = "내가 참여한 스터디 목록", description = "헤더에 JWT토큰 보내주시면 됩니다")
