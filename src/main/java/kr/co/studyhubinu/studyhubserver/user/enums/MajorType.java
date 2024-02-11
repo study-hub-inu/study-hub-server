@@ -1,6 +1,9 @@
 package kr.co.studyhubinu.studyhubserver.user.enums;
 
 import kr.co.studyhubinu.studyhubserver.common.enums.EnumModel;
+import kr.co.studyhubinu.studyhubserver.exception.user.MajorTypeNotFoundException;
+
+import java.util.Arrays;
 
 public enum MajorType implements EnumModel {
     NONE("전공없음"),
@@ -99,5 +102,12 @@ public enum MajorType implements EnumModel {
             }
         }
         return NONE;
+    }
+
+    public static MajorType findMajorType(final String text) {
+        return Arrays.stream(MajorType.values())
+                .filter(majorType -> majorType.value.equals(text))
+                .findFirst()
+                .orElseThrow(MajorTypeNotFoundException::new);
     }
 }
