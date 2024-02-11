@@ -74,9 +74,9 @@ public class UserController {
 
 
     @Operation(summary = "비밀번호 수정", description = "jwt 토큰 bearer 헤더에 보내주시면 됩니다")
-    @PutMapping("/v1/users/password")
-    public ResponseEntity<HttpStatus> updatePassword(@Valid @RequestBody UpdatePasswordRequest request, UserId userId) {
-        userService.updatePassword(request.toService(userId.getId()));
+    @PutMapping("/v2/users/password")
+    public ResponseEntity<HttpStatus> updatePassword(@Valid @RequestBody UpdatePasswordRequest request) {
+        userService.updatePassword(request);
         return ResponseEntity.ok().build();
     }
 
