@@ -56,6 +56,7 @@ public class BookmarkService {
 
     @Transactional
     public void deleteAllBookmark(Long userId) {
+        validateUserExist(userId);
         bookmarkRepository.deleteAllBookmarksByUserId(userId);
     }
 }

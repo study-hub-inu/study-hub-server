@@ -23,4 +23,8 @@ public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long
     void closeStudyPostsByStartDate(@Param("studyStartDate") LocalDate studyStartDate);
 
     Optional<StudyPostEntity> findByStudyId(Long studyId);
+
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
+    @Query("DELETE FROM StudyPostEntity sp WHERE sp.postedUserId = :userId")
+    void deleteAllStudyPostByUserId(@Param("userId") Long userId);
 }
