@@ -9,6 +9,7 @@ DROP TABLE if EXISTS users;
 DROP TABLE IF EXISTS fcm_token;
 DROP TABLE IF EXISTS notice;
 DROP TABLE IF EXISTS reject;
+DROP TABLE IF EXISTS terms_of_use;
 
 CREATE TABLE users
 (
@@ -130,4 +131,15 @@ CREATE TABLE reject (
     created_date    TIMESTAMP(3)     DEFAULT NULL,
     modified_date   TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (reject_id)
+);
+
+CREATE TABLE terms_of_use (
+    terms_of_use_id   BIGINT NOT NULL AUTO_INCREMENT,
+    title             VARCHAR(100),
+    article           VARCHAR(100),
+    content           TEXT,
+    version VARCHAR(50),
+    created_date    TIMESTAMP(3)     DEFAULT NULL,
+    modified_date   TIMESTAMP(3)     DEFAULT NULL,
+    PRIMARY KEY (terms_of_use_id)
 );
