@@ -131,3 +131,13 @@ CREATE TABLE reject (
     modified_date   TIMESTAMP(3)     DEFAULT NULL,
     PRIMARY KEY (reject_id)
 );
+
+CREATE TABLE terms_of_use (
+    terms_of_use_id   BIGINT NOT NULL AUTO_INCREMENT,
+    title             VARCHAR(100),
+    content           TEXT,
+    version VARCHAR(50),
+    created_date    TIMESTAMP(3)     DEFAULT NULL,
+    modified_date   TIMESTAMP(3)     DEFAULT NULL,
+    PRIMARY KEY (terms_of_use_id)
+);
