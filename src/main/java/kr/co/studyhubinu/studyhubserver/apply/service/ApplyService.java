@@ -3,10 +3,7 @@ package kr.co.studyhubinu.studyhubserver.apply.service;
 import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ParticipateApplyData;
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.RejectApplyRequest;
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
+import kr.co.studyhubinu.studyhubserver.apply.dto.request.*;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindParticipateApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
@@ -99,4 +96,11 @@ public class ApplyService {
         rejectRepository.save(rejectApplyRequest.toRejectEntity());
     }
 
+    @Transactional
+    public void acceptApply(AcceptApplyRequest acceptApplyRequest, Long userId) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        StudyEntity study = studyRepository.findById(acceptApplyRequest.getStudyId()).orElseThrow();
+        ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(acceptApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
+        applyEntity.updateAccept();
+    }
 }
