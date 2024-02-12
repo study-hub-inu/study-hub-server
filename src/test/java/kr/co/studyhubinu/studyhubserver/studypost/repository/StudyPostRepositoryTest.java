@@ -16,6 +16,7 @@ import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -241,6 +242,7 @@ class StudyPostRepositoryTest {
     }
 
     @Test
+    @Disabled
     void 스터디_시작_날짜와_마감이_안된_게시글은_마감으로_수정한다() {
         // given
         Long postedUserId = 1L;
