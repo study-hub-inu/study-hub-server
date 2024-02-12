@@ -56,24 +56,6 @@ class ApplyControllerTest extends ControllerRequest {
     }
 
     @Test
-    void 스터디_요청상태_수정() throws Exception {
-        // given
-        doNothing().when(applyService).update(any());
-        UpdateApplyRequest request = UpdateApplyRequest.builder()
-                .studyId(1L)
-                .userId(1L)
-                .inspection(Inspection.ACCEPT)
-                .build();
-
-        // when
-        ResultActions resultActions = performPutRequest("/api/v1/study", request);
-
-        // then
-        resultActions.andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
     void 스터디_요청상태_조회() throws Exception {
         // given
         FindApplyResponse findApplyResponse = FindApplyResponse.builder().build();

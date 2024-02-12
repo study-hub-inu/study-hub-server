@@ -31,14 +31,6 @@ public class ApplyController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "스터디 참여 신청 정보 수정",
-            description = "참여 신청한 유저의 Id, 해당 스터디 Id, 변경하려는 상태(ACCEPT, STANDBY, REJECT)를 보내주세요")
-    @PutMapping("/v1/study")
-    public ResponseEntity<HttpStatus> updateStudyInspection(UpdateApplyRequest request) {
-        applyService.update(request);
-        return ResponseEntity.ok().build();
-    }
-
     @Operation(summary = "스터디 참여 신청 거절",
             description = "JWT토큰 헤더에 보내주시면 됩니다!")
     @PutMapping("/v1/study-reject")

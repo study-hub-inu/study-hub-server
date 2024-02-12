@@ -49,16 +49,6 @@ public class ApplyService {
         applyRepository.save(ApplyEntity.of(user.getId(), study.getId(), request.getIntroduce()));
     }
 
-    @Transactional
-    public void update(UpdateApplyRequest request) {
-        UserEntity user = userRepository.findById(request.getUserId()).orElseThrow(UserNotFoundException::new);
-        StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
-        ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
-
-        isAccept(request);
-        applyEntity.update(request.getInspection());
-    }
-
     public FindApplyResponse findApply(FindApplyRequest request, final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
         Slice<ApplyUserData> userData = Converter.toSlice(pageable, applyRepository.findStudyByIdAndInspection(request, pageable));
@@ -81,16 +71,10 @@ public class ApplyService {
         return new FindParticipateApplyResponse(totalCount, participateApplyData);
     }
 
-    private void isAccept(UpdateApplyRequest request) {
-        if(request.getInspection().equals(ACCEPT)) {
-            StudyPostEntity post = studyPostRepository.findByStudyId(request.getStudyId()).orElseThrow(PostNotFoundExceptionByStudyId::new);
-            post.minusRemainingSeat();
-        }
-    }
 
     @Transactional
     public void rejectApply(final RejectApplyRequest rejectApplyRequest, final UserId userId) {
-        UserEntity user = userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
+        userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(rejectApplyRequest.getStudyId()).orElseThrow();
         ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(rejectApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
         applyEntity.updateReject();
@@ -99,7 +83,7 @@ public class ApplyService {
 
     @Transactional
     public void acceptApply(AcceptApplyRequest acceptApplyRequest, UserId userId) {
-        UserEntity user = userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
+        userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(acceptApplyRequest.getStudyId()).orElseThrow();
         ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(acceptApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
         applyEntity.updateAccept();
