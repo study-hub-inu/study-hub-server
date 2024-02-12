@@ -18,6 +18,7 @@ import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -40,8 +41,8 @@ public class ApplyService {
     private final RejectRepository rejectRepository;
 
     @Transactional
-    public void enroll(Long userId, EnrollApplyRequest request) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public void enroll(UserId userId, EnrollApplyRequest request) {
+        UserEntity user = userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
         validateSameRequest(user, study);
 
@@ -71,8 +72,8 @@ public class ApplyService {
         }
     }
 
-    public FindParticipateApplyResponse getParticipateApply(final Long userId, final int page, final int size) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public FindParticipateApplyResponse getParticipateApply(final UserId userId, final int page, final int size) {
+        UserEntity user = userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         final Pageable pageable = PageRequest.of(page, size);
         Long totalCount = applyRepository.countByUserIdAndInspection(user.getId(), ACCEPT);
         Slice<ParticipateApplyData> participateApplyData = Converter.toSlice
@@ -88,8 +89,8 @@ public class ApplyService {
     }
 
     @Transactional
-    public void rejectApply(final RejectApplyRequest rejectApplyRequest, final Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public void rejectApply(final RejectApplyRequest rejectApplyRequest, final UserId userId) {
+        UserEntity user = userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(rejectApplyRequest.getStudyId()).orElseThrow();
         ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(rejectApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
         applyEntity.updateReject();
@@ -97,8 +98,8 @@ public class ApplyService {
     }
 
     @Transactional
-    public void acceptApply(AcceptApplyRequest acceptApplyRequest, Long userId) {
-        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+    public void acceptApply(AcceptApplyRequest acceptApplyRequest, UserId userId) {
+        UserEntity user = userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(acceptApplyRequest.getStudyId()).orElseThrow();
         ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(acceptApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
         applyEntity.updateAccept();

@@ -42,7 +42,7 @@ class ApplyControllerTest extends ControllerRequest {
     @Test
     void 스터디_가입_요청_성공() throws Exception {
         // given
-        doNothing().when(applyService).enroll(anyLong(), any());
+        doNothing().when(applyService).enroll(any(), any());
         EnrollApplyRequest request = EnrollApplyRequest.builder()
                 .studyId(1L)
                 .build();

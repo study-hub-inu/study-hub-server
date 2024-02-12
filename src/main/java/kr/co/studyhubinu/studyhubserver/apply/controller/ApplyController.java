@@ -27,7 +27,7 @@ public class ApplyController {
     @Operation(summary = "스터디 참여 신청", description = "studyId와 신청자가 작성한 글을 json 형태로 입력해주세요.")
     @PostMapping("/v1/study")
     public ResponseEntity<HttpStatus> enrollStudy(UserId userId, EnrollApplyRequest request) {
-        applyService.enroll(userId.getId(), request);
+        applyService.enroll(userId, request);
         return ResponseEntity.ok().build();
     }
 
@@ -43,15 +43,15 @@ public class ApplyController {
             description = "JWT토큰 헤더에 보내주시면 됩니다!")
     @PutMapping("/v1/study-reject")
     public ResponseEntity<HttpStatus> rejectApply(@RequestBody @Valid final RejectApplyRequest rejectApplyRequest, final UserId userId) {
-        applyService.rejectApply(rejectApplyRequest, userId.getId());
+        applyService.rejectApply(rejectApplyRequest, userId);
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "스터디 참여 신청 거절",
+    @Operation(summary = "스터디 참여 신청 수락",
             description = "JWT토큰 헤더에 보내주시면 됩니다!")
     @PutMapping("/v1/study-accept")
     public ResponseEntity<HttpStatus> acceptApply(@RequestBody @Valid final AcceptApplyRequest acceptApplyRequest, final UserId userId) {
-        applyService.acceptApply(acceptApplyRequest, userId.getId());
+        applyService.acceptApply(acceptApplyRequest, userId);
         return ResponseEntity.ok().build();
     }
 
@@ -70,7 +70,7 @@ public class ApplyController {
     @Operation(summary = "내가 참여한 스터디 목록", description = "헤더에 JWT토큰 보내주시면 됩니다")
     @GetMapping("/v1/participated-study")
     public ResponseEntity<FindParticipateApplyResponse> getParticipateApply(UserId userId, @RequestParam int page, @RequestParam int size) {
-        return ResponseEntity.ok().body(applyService.getParticipateApply(userId.getId(), page, size));
+        return ResponseEntity.ok().body(applyService.getParticipateApply(userId, page, size));
     }
 
 }

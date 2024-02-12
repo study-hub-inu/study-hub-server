@@ -13,6 +13,7 @@ import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
+import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,7 +67,7 @@ class ApplyServiceTest {
                 .build());
 
         // when, then
-        applyService.enroll(user.getId(), request);
+        applyService.enroll(new UserId(1L), request);
     }
 
     /**
