@@ -20,39 +20,38 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-public class ApplyServiceIntegrationTest {
-
-    @Autowired
-    ApplyService applyService;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    ApplyRepository applyRepository;
-
-    @Autowired
-    StudyRepository studyRepository;
-
-    @Test
-    @Disabled
-    void 내가_신청한_스터디목록_조회() {
-        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
-        StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
-        userRepository.save(user);
-        applyRepository.save(ApplyEntity.builder()
-                .userId(user.getId()).introduce("안녕")
-                .studyId(study.getId())
-                .inspection(Inspection.ACCEPT)
-                .build());
-
-
-        FindMyRequestApplyResponse applyResponse = applyService.getMyRequestApply(new UserId(user.getId()), 0, 3);
-        RequestApplyData applyData = applyResponse.getRequestStudyData().getContent().get(0);
-
-        assertThat(applyData.getInspection()).isEqualTo(Inspection.ACCEPT);
-        assertThat(applyData.getIntroduce()).isEqualTo("안녕");
-
-    }
-}
+//@SpringBootTest
+//public class ApplyServiceIntegrationTest {
+//
+//    @Autowired
+//    ApplyService applyService;
+//
+//    @Autowired
+//    UserRepository userRepository;
+//
+//    @Autowired
+//    ApplyRepository applyRepository;
+//
+//    @Autowired
+//    StudyRepository studyRepository;
+//
+//    @Test
+//    void 내가_신청한_스터디목록_조회() {
+//        UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
+//        StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
+//        userRepository.save(user);
+//        applyRepository.save(ApplyEntity.builder()
+//                .userId(user.getId()).introduce("안녕")
+//                .studyId(study.getId())
+//                .inspection(Inspection.ACCEPT)
+//                .build());
+//
+//
+//        FindMyRequestApplyResponse applyResponse = applyService.getMyRequestApply(new UserId(user.getId()), 0, 3);
+//        RequestApplyData applyData = applyResponse.getRequestStudyData().getContent().get(0);
+//
+//        assertThat(applyData.getInspection()).isEqualTo(Inspection.ACCEPT);
+//        assertThat(applyData.getIntroduce()).isEqualTo("안녕");
+//
+//    }
+//}
