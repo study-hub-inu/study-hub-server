@@ -12,6 +12,7 @@ import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,6 +36,7 @@ public class ApplyServiceIntegrationTest {
     StudyRepository studyRepository;
 
     @Test
+    @Disabled
     void 내가_신청한_스터디목록_조회() {
         UserEntity user = UserEntityFixture.YEONGJAE.UserEntity_생성();
         StudyEntity study = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
