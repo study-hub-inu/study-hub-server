@@ -8,6 +8,7 @@ import org.springframework.data.domain.Slice;
 public class FindParticipateApplyResponse {
     private Long totalCount;
     Slice<ParticipateApplyData> participateStudyData;
+
     public FindParticipateApplyResponse(Long totalCount, Slice<ParticipateApplyData> participateStudyData) {
         this.totalCount = totalCount;
         this.participateStudyData = participateStudyData;
