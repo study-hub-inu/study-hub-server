@@ -11,6 +11,7 @@ import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.UpdatePasswordRequest;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -94,10 +95,10 @@ class UserServiceTest {
     void 현재_비밀번호를_인증하지않고_비밀번호_변경을_시도한다() {
         // given
         UserEntity userEntity = UserEntityFixture.JOOWON.UserEntity_생성(1L);
-        UpdatePasswordInfo updatePasswordInfo = new UpdatePasswordInfo(1L, "liljay", false);
+        UpdatePasswordRequest updatePasswordInfo = new UpdatePasswordRequest("201801686@inu.ac.kr", "liljay", false);
 
         // when
-        given(userRepository.findById(1L)).willReturn(Optional.ofNullable(userEntity));
+        given(userRepository.findByEmail(updatePasswordInfo.getEmail())).willReturn(Optional.ofNullable(userEntity));
 
         // then
         assertThatThrownBy(() -> userService.updatePassword(updatePasswordInfo))

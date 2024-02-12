@@ -26,7 +26,7 @@ public class NoticeRepositoryCustomImpl implements NoticeRepositoryCustom{
         JPAQuery<FindNoticeResponse> data = jpaQueryFactory
                 .select(Projections.constructor(
                         FindNoticeResponse.class,
-                        notice.id.as("noticeId"), notice.title, notice.content
+                        notice.id.as("noticeId"), notice.title, notice.content, notice.createdDate
                         )
                 )
                 .from(notice)

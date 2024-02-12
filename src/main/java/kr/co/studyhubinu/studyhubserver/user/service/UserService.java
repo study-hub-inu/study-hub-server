@@ -14,6 +14,7 @@ import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserDeleter;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
+import kr.co.studyhubinu.studyhubserver.user.dto.request.UpdatePasswordRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.response.GetUserResponse;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -82,18 +83,18 @@ public class UserService {
     }
 
     @Transactional
-    public void updatePassword(UpdatePasswordInfo info) {
-        UserEntity user = getUserById(info.getUserId(), new UserNotFoundException());
+    public void updatePassword(UpdatePasswordRequest passwordRequest) {
+        UserEntity user = getUserByEmail(passwordRequest);
 
-        if(!info.isAuth()) {
+        if (!passwordRequest.isAuth()) {
             throw new UserNotAccessRightException();
         }
-        user.updatePassword(passwordEncoder.encode(user.getEmail(), info.getPassword()));
+        user.updatePassword(passwordEncoder.encode(user.getEmail(), passwordRequest.getPassword()));
     }
 
     public void verifyPassword(Long userId, String password) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotAccessRightException::new);
-        if(!passwordEncoder.matches(passwordEncoder.encode(user.getEmail(), password), user.getPassword())) {
+        if (!passwordEncoder.matches(passwordEncoder.encode(user.getEmail(), password), user.getPassword())) {
             throw new PasswordNotFoundException();
         }
     }
@@ -108,7 +109,7 @@ public class UserService {
     private void userVerify(UserEntity userEntity, SignInRequest signInRequest) {
         String userPassword = passwordEncoder.encode(signInRequest.getEmail(), signInRequest.getPassword());
 
-        if(!passwordEncoder.matches(userPassword, userEntity.getPassword())) {
+        if (!passwordEncoder.matches(userPassword, userEntity.getPassword())) {
             throw new PasswordNotFoundException();
         }
     }
@@ -125,5 +126,9 @@ public class UserService {
         if (userRepository.existsByEmail(signUpInfo.getEmail())) {
             throw new AlreadyExistUserException();
         }
+    }
+
+    private UserEntity getUserByEmail(UpdatePasswordRequest passwordRequest) {
+        return userRepository.findByEmail(passwordRequest.getEmail()).orElseThrow(UserNotFoundException::new);
     }
 }

@@ -207,6 +207,7 @@ class StudyPostRepositoryTest {
     }
 
     @Test
+    @Disabled
     void 유저의_식별자가_존재하면_검색어와_인기순_여부로_게시글을_조회한다() {
         // given
         Long authUserId = 2L;

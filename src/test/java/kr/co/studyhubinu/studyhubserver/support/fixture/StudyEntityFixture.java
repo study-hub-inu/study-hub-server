@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public enum StudyEntityFixture {
 
-    INU("인천대학교 스터디", "반가워요 잘해봐요", LocalDate.of(2024, 1, 3), LocalDate.of(2024, 1, 5), "asdadsa", 1L, MajorType.COMPUTER_SCIENCE_ENGINEERING);
+    INU("인천대학교 스터디", "반가워요 잘해봐요", LocalDate.of(2025, 1, 3), LocalDate.of(2025, 1, 5), "asdadsa", 1L, MajorType.COMPUTER_SCIENCE_ENGINEERING);
 
     private String title;
     private String content;

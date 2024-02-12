@@ -105,4 +105,10 @@ public class StudyPostService {
             throw new PostEndDateConflictException();
         }
     }
+
+    @Transactional
+    public void deleteAllPosts(Long userId) {
+        isExistUser(userId);
+        studyPostRepository.deleteAllStudyPostByUserId(userId);
+    }
 }
