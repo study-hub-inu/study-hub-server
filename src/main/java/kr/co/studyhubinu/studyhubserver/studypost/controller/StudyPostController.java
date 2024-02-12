@@ -112,4 +112,11 @@ public class StudyPostController {
     public ResponseEntity<FindRecommendPostsResponse> findRecommendPosts(@RequestParam String keyword) {
         return ResponseEntity.ok().body(studyPostFindService.findRecommendPosts(keyword));
     }
+
+    @Operation(summary = "내가쓴 게시글 전체 삭제", description = "헤더에 userId 보내주시면 됩니다.")
+    @DeleteMapping("/v1/all/study-post")
+    public ResponseEntity<HttpStatus> deleteAllPosts(final UserId userId) {
+        studyPostService.deleteAllPosts(userId.getId());
+        return ResponseEntity.noContent().build();
+    }
 }

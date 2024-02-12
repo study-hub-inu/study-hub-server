@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.user.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import kr.co.studyhubinu.studyhubserver.email.validate.InuEmail;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UpdatePasswordInfo;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,6 +14,10 @@ import javax.validation.constraints.Pattern;
 @Getter
 @NoArgsConstructor
 public class UpdatePasswordRequest {
+
+    @NotNull
+    @InuEmail
+    private String email;
 
     @Schema(description = "유저 비밀번호", example = "asd123")
     @Pattern(
@@ -27,7 +32,8 @@ public class UpdatePasswordRequest {
     private boolean auth;
 
     @Builder
-    public UpdatePasswordRequest(String password, boolean auth) {
+    public UpdatePasswordRequest(String email, String password, boolean auth) {
+        this.email = email;
         this.password = password;
         this.auth = auth;
     }

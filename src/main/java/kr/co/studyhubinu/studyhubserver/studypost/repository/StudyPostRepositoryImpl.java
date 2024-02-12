@@ -187,7 +187,7 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
 
     private Predicate majorEq(String inquiryText, boolean titleAndMajor) {
         if (inquiryText != null && titleAndMajor) {
-            return studyPostEntity.major.eq(MajorType.of(inquiryText));
+            return studyPostEntity.major.eq(MajorType.findMajorType(inquiryText));
         }
         return null;
     }

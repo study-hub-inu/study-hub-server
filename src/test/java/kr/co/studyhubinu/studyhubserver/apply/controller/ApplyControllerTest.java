@@ -16,6 +16,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -39,7 +42,7 @@ class ApplyControllerTest extends ControllerRequest {
     @Test
     void 스터디_가입_요청_성공() throws Exception {
         // given
-        doNothing().when(applyService).enroll(anyLong(), any());
+        doNothing().when(applyService).enroll(any(), any());
         EnrollApplyRequest request = EnrollApplyRequest.builder()
                 .studyId(1L)
                 .build();
@@ -53,34 +56,22 @@ class ApplyControllerTest extends ControllerRequest {
     }
 
     @Test
-    void 스터디_요청상태_수정() throws Exception {
-        // given
-        doNothing().when(applyService).update(any());
-        UpdateApplyRequest request = UpdateApplyRequest.builder()
-                .studyId(1L)
-                .userId(1L)
-                .inspection(Inspection.ACCEPT)
-                .build();
-
-        // when
-        ResultActions resultActions = performPutRequest("/api/v1/study", request);
-
-        // then
-        resultActions.andExpect(status().isOk())
-                .andDo(print());
-    }
-
-    @Test
     void 스터디_요청상태_조회() throws Exception {
         // given
         FindApplyResponse findApplyResponse = FindApplyResponse.builder().build();
         FindApplyRequest findApplyRequest = FindApplyRequest.builder()
                         .studyId(1L)
+                        .inspection(Inspection.ACCEPT)
                         .build();
         Mockito.when(applyService.findApply(any(), anyInt(), anyInt())).thenReturn(findApplyResponse);
+        Map<String, String> params = new HashMap<>();
+        params.put("studyId", "1");
+        params.put("inspection", "ACCEPT");
+        params.put("page", "0");
+        params.put("size", "5");
 
         // when
-        ResultActions resultActions = performPostRequest("/api/v1/study", findApplyRequest);
+        ResultActions resultActions = performGetRequest("/api/v2/study", params);
 
         // then
         resultActions.andExpect(status().isOk())

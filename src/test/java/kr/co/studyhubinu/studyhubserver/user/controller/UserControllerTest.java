@@ -259,12 +259,13 @@ public class UserControllerTest extends ControllerRequest {
         doNothing().when(userService).updatePassword(any());
 
         UpdatePasswordRequest updatePasswordRequest = UpdatePasswordRequest.builder()
-                .password("liljayjayjay@")
+                .email("201801686@inu.ac.kr")
+                .password("@liljayjayjay")
                 .auth(true)
                 .build();
 
         // when
-        ResultActions resultActions = performPutRequest("/api/v1/users/password", updatePasswordRequest);
+        ResultActions resultActions = performPutRequest("/api/v2/users/password", updatePasswordRequest);
 
         // then
         resultActions.andExpect(status().isOk())
