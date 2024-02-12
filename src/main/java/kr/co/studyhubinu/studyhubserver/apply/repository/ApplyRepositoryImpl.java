@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ParticipateApplyData;
+import kr.co.studyhubinu.studyhubserver.apply.dto.data.RequestApplyData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,20 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
                 .innerJoin(userEntity).on(applyEntity.userId.eq(userEntity.id))
                 .where(applyEntity.studyId.eq(request.getStudyId())
                         .and(applyEntity.inspection.eq(request.getInspection())))
+                .orderBy(applyEntity.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+    }
+
+    @Override
+    public List<RequestApplyData> findApplyByUserId(Long userId, Pageable pageable) {
+        return jpaQueryFactory
+                .select(Projections.constructor(RequestApplyData.class,
+                        applyEntity.studyId, studyEntity.title, applyEntity.inspection, applyEntity.introduce))
+                .from(applyEntity)
+                .innerJoin(studyEntity).on(applyEntity.studyId.eq(studyEntity.id))
+                .where(applyEntity.userId.eq(userId))
                 .orderBy(applyEntity.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
