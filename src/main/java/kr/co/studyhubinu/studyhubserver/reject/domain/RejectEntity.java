@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.apply.domain;
+package kr.co.studyhubinu.studyhubserver.reject.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import lombok.AccessLevel;

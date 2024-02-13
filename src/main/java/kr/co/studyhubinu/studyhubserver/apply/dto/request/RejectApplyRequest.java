@@ -1,7 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.apply.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kr.co.studyhubinu.studyhubserver.apply.domain.RejectEntity;
+import kr.co.studyhubinu.studyhubserver.reject.domain.RejectEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
