@@ -64,3 +64,12 @@ cloud:
 firebase:
   project:
     id: ${firebase.project.id}
+
+sentry:
+  dsn: ${sentry_dsn_value}
+  traces-sample-rate: 1.0
+  exception-resolver-order: -2147483647   #including ones handled by @ExceptionHandler annotated methods.
+  debug: true
+  logging:
+    enabled: true
+    minimum-event-level: warn

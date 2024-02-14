@@ -15,6 +15,9 @@ build/bootJarMainClassName
 
 firebase-service-key.json
 
+### 로깅
+logs
+
 *.yml
 application.yml
 !application-prod.yml
