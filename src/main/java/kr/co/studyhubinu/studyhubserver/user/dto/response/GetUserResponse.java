@@ -10,19 +10,19 @@ import lombok.Getter;
 @Getter
 public class GetUserResponse {
 
-    private Long postCount;
-    private Long participateCount;
-    private Long bookmarkCount;
-    private String nickname;
-    private MajorType major;
-    private GenderType gender;
-    private String email;
-    private String imageUrl;
+    private final Long postCount;
+    private final Long participateCount;
+    private final Long applyCount;
+    private final String nickname;
+    private final MajorType major;
+    private final GenderType gender;
+    private final String email;
+    private final String imageUrl;
 
     public GetUserResponse(UserEntity user, UserActivityCountData data) {
         this.postCount = data.getPostCount();
         this.participateCount = data.getParticipateCount();
-        this.bookmarkCount = data.getBookmarkCount();
+        this.applyCount = data.getApplyCount();
         this.nickname = user.getNickname();
         this.major = user.getMajor();
         this.gender = user.getGender();
@@ -31,10 +31,10 @@ public class GetUserResponse {
     }
 
     @Builder
-    public GetUserResponse(Long postCount, Long participateCount, Long bookmarkCount, String nickname, MajorType major, GenderType gender, String email, String imageUrl) {
+    public GetUserResponse(Long postCount, Long participateCount, Long applyCount, String nickname, MajorType major, GenderType gender, String email, String imageUrl) {
         this.postCount = postCount;
         this.participateCount = participateCount;
-        this.bookmarkCount = bookmarkCount;
+        this.applyCount = applyCount;
         this.nickname = nickname;
         this.major = major;
         this.gender = gender;

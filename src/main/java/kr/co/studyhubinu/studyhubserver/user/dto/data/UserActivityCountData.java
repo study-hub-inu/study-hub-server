@@ -4,13 +4,13 @@ import lombok.Getter;
 
 @Getter
 public class UserActivityCountData {
-    private Long postCount;
-    private Long participateCount;
-    private Long bookmarkCount;
+    private final Long postCount;
+    private final Long participateCount;
+    private final Long applyCount;
 
-    public UserActivityCountData(Long postCount, Long participateCount, Long bookmarkCount) {
+    public UserActivityCountData(Long postCount, Long participateCount, Long applyCount) {
         this.postCount = postCount;
         this.participateCount = participateCount;
-        this.bookmarkCount = bookmarkCount;
+        this.applyCount = applyCount;
     }
 }
