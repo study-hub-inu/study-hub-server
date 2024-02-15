@@ -9,7 +9,7 @@ import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindMyRequestApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindParticipateApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
-import kr.co.studyhubinu.studyhubserver.apply.repository.RejectRepository;
+import kr.co.studyhubinu.studyhubserver.reject.repository.RejectRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.apply.ApplyNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.apply.SameUserRequestException;
