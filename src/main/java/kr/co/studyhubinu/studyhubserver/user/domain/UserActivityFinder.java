@@ -1,25 +1,25 @@
 package kr.co.studyhubinu.studyhubserver.user.domain;
 
-import kr.co.studyhubinu.studyhubserver.bookmark.repository.BookmarkRepository;
-import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
+import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserActivityCountData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import static kr.co.studyhubinu.studyhubserver.apply.enums.Inspection.ACCEPT;
 
 @Component
 @RequiredArgsConstructor
 public class UserActivityFinder {
 
     private final StudyPostRepository studyPostRepository;
-    private final BookmarkRepository bookMarkRepository;
-    private final StudyRepository studyRepository;
+    private final ApplyRepository applyRepository;
 
     public UserActivityCountData countUserActivity(Long userId) {
         Long postCount = studyPostRepository.countByPostedUserId(userId);
-        Long participateCount = 0L;
-        Long bookmarkCount = bookMarkRepository.countByUserId(userId);
-        return new UserActivityCountData(postCount, participateCount, bookmarkCount);
+        Long participateCount = applyRepository.countByUserIdAndInspection(userId, ACCEPT);
+        Long applyCount = applyRepository.countByUserId(userId);
+        return new UserActivityCountData(postCount, participateCount, applyCount);
     }
 
 }

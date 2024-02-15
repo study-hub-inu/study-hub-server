@@ -13,4 +13,6 @@ public interface ApplyRepository extends JpaRepository<ApplyEntity, Long>, Apply
     List<ApplyEntity> findByUserId(Long userId);
 
     Long countByUserIdAndInspection(Long userId, Inspection accept);
+
+    Long countByUserId(Long userId);
 }
