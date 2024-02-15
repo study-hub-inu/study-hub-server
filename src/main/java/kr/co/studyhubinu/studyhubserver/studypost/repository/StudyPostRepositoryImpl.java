@@ -49,7 +49,8 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
                 ))
                 .from(studyPostEntity)
                 .leftJoin(userEntity).on(studyPostEntity.postedUserId.eq(userEntity.id))
-                .where(textEq(inquiryRequest.getInquiryText()).or(majorEq(inquiryRequest.getInquiryText(), inquiryRequest.isTitleAndMajor())))
+                .where(textEqMajorOrTitle(inquiryRequest.getInquiryText(), inquiryRequest.isTitleAndMajor()))
+//                .where(textEq(inquiryRequest.getInquiryText(), inquiryRequest.isTitleAndMajor()).or(majorEq(inquiryRequest.getInquiryText(), inquiryRequest.isTitleAndMajor())))
                 .orderBy(studyPostEntity.close.asc(), hotPredicate(inquiryRequest), studyPostEntity.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1);
@@ -181,8 +182,21 @@ public class StudyPostRepositoryImpl implements StudyPostRepositoryCustom {
         return data.fetch();
     }
 
-    private BooleanExpression textEq(String inquiryText) {
-        return studyPostEntity.title.contains(Objects.requireNonNullElse(inquiryText, ""));
+
+    private Predicate textEqMajorOrTitle(String inquiryText, boolean titleAndMajor) {
+        if (inquiryText != null && !titleAndMajor) {
+            return studyPostEntity.major.eq(MajorType.findMajorType(inquiryText));
+        } else {
+            return studyPostEntity.title.like(Objects.requireNonNullElse(inquiryText, "") + "%");
+        }
+    }
+
+    private BooleanExpression textEq(String inquiryText, boolean titleAndMajor) {
+        if (!titleAndMajor) {
+            return studyPostEntity.title.contains(Objects.requireNonNullElse(inquiryText, ""));
+        }
+        return null;
+//        return studyPostEntity.title.contains(Objects.requireNonNullElse(inquiryText, ""));
     }
 
     private Predicate majorEq(String inquiryText, boolean titleAndMajor) {
