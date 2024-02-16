@@ -87,7 +87,7 @@ public class StudyPostController {
     @Operation(summary = "스터디 게시글 전체 조회", description = "parameter 칸에 조회할 내용을 입력해주세요")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "inquiry", value = "검색 값"),
-            @ApiImplicitParam(name = "titleAndMajor", value = "true = 제목, 학과 중 하나만 일치할 경우, false = 학과만 일치"),
+            @ApiImplicitParam(name = "titleAndMajor", value = "true = 제목만 일치, false = 학과만 일치"),
             @ApiImplicitParam(name = "hot", value = "true = 인기순 O, false = 인기순 X"),
             @ApiImplicitParam(name = "page", value = "페이지", required = true),
             @ApiImplicitParam(name = "size", value = "사이즈", required = true)
