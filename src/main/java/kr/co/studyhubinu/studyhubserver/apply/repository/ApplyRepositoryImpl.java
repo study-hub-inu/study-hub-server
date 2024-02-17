@@ -78,9 +78,10 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
     public List<RequestApplyData> findApplyByUserId(Long userId, Pageable pageable) {
         return jpaQueryFactory
                 .select(Projections.constructor(RequestApplyData.class,
-                        applyEntity.studyId, studyEntity.title, applyEntity.inspection, applyEntity.introduce))
+                        applyEntity.studyId, studyEntity.title, applyEntity.inspection, applyEntity.introduce, studyPostEntity.id))
                 .from(applyEntity)
                 .innerJoin(studyEntity).on(applyEntity.studyId.eq(studyEntity.id))
+                .innerJoin(studyPostEntity).on(studyPostEntity.studyId.eq(studyEntity.id))
                 .where(applyEntity.userId.eq(userId))
                 .orderBy(applyEntity.createdDate.desc())
                 .offset(pageable.getOffset())
