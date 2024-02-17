@@ -24,7 +24,7 @@ public class RejectRepositoryImpl implements RejectRepositoryCustom {
                 .from(rejectEntity)
                 .innerJoin(studyEntity)
                 .on(rejectEntity.studyId.eq(studyEntity.id))
-                .where(studyEntity.id.eq(studyId), rejectEntity.rejectedUserId.eq(rejectedUserId))
+                .where(rejectEntity.studyId.eq(studyId), rejectEntity.rejectedUserId.eq(rejectedUserId))
                 .fetchOne();
     }
 
