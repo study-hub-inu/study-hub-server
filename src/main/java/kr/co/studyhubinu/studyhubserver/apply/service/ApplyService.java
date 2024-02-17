@@ -81,6 +81,11 @@ public class ApplyService {
         applyEntity.updateAccept();
     }
 
+    @Transactional
+    public void deleteMyStudy(UserId userId, Long studyId) {
+        applyRepository.deleteByUserIdAndStudyId(userId.getId(), studyId);
+    }
+
     public FindMyRequestApplyResponse getMyRequestApply(UserId userId, int page, int size) {
         userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         final Pageable pageable = PageRequest.of(page, size);
@@ -90,7 +95,7 @@ public class ApplyService {
     }
 
     private void validateSameRequest(UserEntity user, StudyEntity study) {
-        if(applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
+        if (applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
             throw new SameUserRequestException();
         }
     }

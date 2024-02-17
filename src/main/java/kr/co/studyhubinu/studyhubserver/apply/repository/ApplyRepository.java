@@ -15,4 +15,6 @@ public interface ApplyRepository extends JpaRepository<ApplyEntity, Long>, Apply
     Long countByUserIdAndInspection(Long userId, Inspection accept);
 
     Long countByUserId(Long userId);
+
+    void deleteByUserIdAndStudyId(Long userId, Long studyId);
 }
