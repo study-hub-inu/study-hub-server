@@ -13,6 +13,6 @@ public class RejectService {
     private final RejectRepository rejectRepository;
 
     public RejectReasonResponse findRejectReason(UserId userId, Long studyId) {
-        return rejectRepository.findByStudyIdAndRejectedUserId(userId.getId(), studyId);
+        return rejectRepository.findByStudyIdAndRejectedUserId(studyId, userId.getId());
     }
 }
