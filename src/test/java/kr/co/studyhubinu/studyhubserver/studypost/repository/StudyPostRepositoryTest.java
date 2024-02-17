@@ -292,8 +292,9 @@ class StudyPostRepositoryTest {
         studyPostRepository.save(post1);
         studyPostRepository.save(post2);
         InquiryRequest inquiryRequest = InquiryRequest.builder().
-                inquiryText(searchKeyword).
-                build();
+                inquiryText(searchKeyword)
+                .titleAndMajor(true)
+                .build();
 
         // when
         List<PostDataByInquiry> posts = studyPostRepository.findByInquiry(inquiryRequest, PageRequest.of(0,2), 1L);
