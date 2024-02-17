@@ -61,13 +61,14 @@ jobs:
 #          fail_below_threshold: false
 #          publish_only_summary: false
 
+
       - name: Archive test results if tests failed # 테스트가 실패하면 결과 아카이빙
         if: steps.buildAndTests.outcome == 'failure'
         uses: actions/upload-artifact@v2
         with:
           name: test-results
           path:  |
-            **/build
+            build/reports/tests/test/
 
       - name: Stop workflow if tests failed # 테스트가 실패하면 테스트 실패 로그 아카이빙 후 전체 플로우 종료
         if: steps.buildAndTests.outcome == 'failure'
