@@ -80,4 +80,11 @@ public class ApplyController {
         return ResponseEntity.ok(applyService.getMyRequestApply(userId, page, size));
     }
 
+    @Operation(summary = "내가 신청한 스터디 삭제", description = "헤더에 JWT와 함께 studyId를 보내주시면 됩니다.")
+    @DeleteMapping("/v1/study/{studyId}")
+    public ResponseEntity<HttpStatus> deleteApply(UserId userId, @PathVariable("studyId") Long studyId) {
+        applyService.deleteMyStudy(userId, studyId);
+        return ResponseEntity.ok().build();
+    }
+
 }

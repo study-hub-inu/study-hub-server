@@ -59,10 +59,7 @@ class ApplyControllerTest extends ControllerRequest {
     void 스터디_요청상태_조회() throws Exception {
         // given
         FindApplyResponse findApplyResponse = FindApplyResponse.builder().build();
-        FindApplyRequest findApplyRequest = FindApplyRequest.builder()
-                        .studyId(1L)
-                        .inspection(Inspection.ACCEPT)
-                        .build();
+
         Mockito.when(applyService.findApply(any(), anyInt(), anyInt())).thenReturn(findApplyResponse);
         Map<String, String> params = new HashMap<>();
         params.put("studyId", "1");
@@ -72,6 +69,19 @@ class ApplyControllerTest extends ControllerRequest {
 
         // when
         ResultActions resultActions = performGetRequest("/api/v2/study", params);
+
+        // then
+        resultActions.andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    void 스터디_요청_삭제() throws Exception {
+        // given
+        doNothing().when(applyService).deleteMyStudy(any(), anyLong());
+
+        // when
+        ResultActions resultActions = performDeleteRequest("/api/v1/study/1");
 
         // then
         resultActions.andExpect(status().isOk())

@@ -33,7 +33,7 @@ public class JwtProvider {
     private String createAccessToken(Long id) {
         String jwtToken = JWT.create()
                 .withSubject("accessToken")
-                .withExpiresAt(new Date(System.currentTimeMillis() + 1000L * 60 * 3))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 1000L * 60 * 60))
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(SECRET));
         return JwtProperties.TOKEN_PREFIX + jwtToken;
@@ -50,7 +50,7 @@ public class JwtProvider {
     }
 
     public String reissuedAccessToken(JwtDto jwtDto) {
-        String refreshToken = jwtDto.getRefreshToken().replace(JwtProperties.TOKEN_PREFIX, "");;
+        String refreshToken = jwtDto.getRefreshToken().replace(JwtProperties.TOKEN_PREFIX, "");
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
@@ -61,7 +61,7 @@ public class JwtProvider {
     }
 
     public String reissuedRefreshToken(JwtDto jwtDto) {
-        String refreshToken = jwtDto.getRefreshToken().replace(JwtProperties.TOKEN_PREFIX, "");;
+        String refreshToken = jwtDto.getRefreshToken().replace(JwtProperties.TOKEN_PREFIX, "");
         DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET)).build().verify(refreshToken);
         Long id = decodedJWT.getClaim("id").asLong();
 
