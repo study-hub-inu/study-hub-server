@@ -82,7 +82,7 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
                 .from(applyEntity)
                 .innerJoin(studyEntity).on(applyEntity.studyId.eq(studyEntity.id))
                 .innerJoin(studyPostEntity).on(studyPostEntity.studyId.eq(studyEntity.id))
-                .where(applyEntity.userId.eq(userId))
+                .where(applyEntity.userId.eq(userId), applyEntity.inspection.in(Inspection.STANDBY, Inspection.REJECT))
                 .orderBy(applyEntity.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
