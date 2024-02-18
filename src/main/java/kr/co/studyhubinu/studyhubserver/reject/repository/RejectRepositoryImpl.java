@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.EntityManager;
 
-import static kr.co.studyhubinu.studyhubserver.apply.domain.QRejectEntity.rejectEntity;
+import static kr.co.studyhubinu.studyhubserver.reject.domain.QRejectEntity.rejectEntity;
 import static kr.co.studyhubinu.studyhubserver.study.domain.QStudyEntity.studyEntity;
 
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package kr.co.studyhubinu.studyhubserver.apply.domain;
+package kr.co.studyhubinu.studyhubserver.reject.domain;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import kr.co.studyhubinu.studyhubserver.reject.domain.RejectEntity;
 
 
 /**
@@ -16,7 +15,7 @@ import kr.co.studyhubinu.studyhubserver.reject.domain.RejectEntity;
 @Generated("com.querydsl.codegen.DefaultEntitySerializer")
 public class QRejectEntity extends EntityPathBase<RejectEntity> {
 
-    private static final long serialVersionUID = -1259208686L;
+    private static final long serialVersionUID = 147312695L;
 
     public static final QRejectEntity rejectEntity = new QRejectEntity("rejectEntity");
 
