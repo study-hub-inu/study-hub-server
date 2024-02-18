@@ -2,11 +2,14 @@ package kr.co.studyhubinu.studyhubserver.apply.repository;
 
 import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
+import kr.co.studyhubinu.studyhubserver.apply.dto.data.RequestApplyData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.exception.apply.ApplyNotFoundException;
 import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
+import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.fixture.UserEntityFixture;
 import kr.co.studyhubinu.studyhubserver.support.repository.RepositoryTest;
@@ -26,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static kr.co.studyhubinu.studyhubserver.apply.enums.Inspection.ACCEPT;
+import static kr.co.studyhubinu.studyhubserver.apply.enums.Inspection.REJECT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,6 +46,9 @@ class ApplyRepositoryTest {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    StudyPostRepository studyPostRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -167,5 +174,26 @@ class ApplyRepositoryTest {
 
         // then
         assertThat(apply).isEmpty();
+    }
+
+    @Test
+    void 내가_신청한_스터디_조회_시_Apply된_스터디를_제외하고_조회() {
+        UserEntity userEntity = userRepository.save(UserEntityFixture.DONGWOO.UserEntity_생성());
+        StudyEntity studyEntity = studyRepository.save(StudyEntityFixture.INU.studyEntity_생성());
+        StudyPostEntity studyPostEntity = StudyPostEntity.builder()
+                .studyId(studyEntity.getId())
+                .postedUserId(userEntity.getId())
+                .build();
+        studyPostRepository.save(studyPostEntity);
+
+        ApplyEntity apply = ApplyEntity.builder()
+                .userId(userEntity.getId())
+                .studyId(studyEntity.getId())
+                .inspection(ACCEPT)
+                .build();
+        applyRepository.save(apply);
+
+        List<RequestApplyData> applyData = applyRepository.findApplyByUserId(userEntity.getId(), PageRequest.of(0,3));
+        assertThat(applyData.size()).isEqualTo(0);
     }
 }
