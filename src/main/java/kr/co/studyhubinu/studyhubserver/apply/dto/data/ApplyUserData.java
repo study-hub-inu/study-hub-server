@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 public class ApplyUserData {
 
-    private final Long id;
+    private final Long requestUserId;
     private final String nickname;
     private final MajorType major;
     private final String imageUrl;
@@ -19,8 +19,8 @@ public class ApplyUserData {
     private final Inspection inspection;
 
     @Builder
-    public ApplyUserData(Long id, String nickname, MajorType major, String imageUrl, String introduce, LocalDateTime createdDate, Inspection inspection) {
-        this.id = id;
+    public ApplyUserData(Long requestUserId, String nickname, MajorType major, String imageUrl, String introduce, LocalDateTime createdDate, Inspection inspection) {
+        this.requestUserId = requestUserId;
         this.nickname = nickname;
         this.major = major;
         this.imageUrl = imageUrl;
