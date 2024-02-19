@@ -44,7 +44,7 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
         return jpaQueryFactory
                 .select(Projections.constructor(ParticipateApplyData.class,
                         studyEntity.major, studyEntity.title, studyEntity.content, studyEntity.chatUrl,
-                        applyEntity.inspection, studyPostEntity.id.as("postId")))
+                        applyEntity.inspection, studyPostEntity.id.as("postId"), studyEntity.id))
                 .from(applyEntity)
                 .innerJoin(studyEntity).on(applyEntity.studyId.eq(studyEntity.id))
                 .innerJoin(studyPostEntity).on(studyEntity.id.eq(studyPostEntity.studyId))
