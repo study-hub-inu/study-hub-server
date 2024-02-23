@@ -13,13 +13,15 @@ public class ParticipateApplyData {
     private final String chatUrl;
     private final String inspection;
     private final Long postId;
+    private final Long studyId;
 
-    public ParticipateApplyData(MajorType major, String title, String content, String chatUrl, Inspection inspection, Long postId) {
+    public ParticipateApplyData(MajorType major, String title, String content, String chatUrl, Inspection inspection, Long postId, Long studyId) {
         this.major = major.getValue();
         this.title = title;
         this.content = content;
         this.chatUrl = chatUrl;
         this.inspection = inspection.getValue();
         this.postId = postId;
+        this.studyId = studyId;
     }
 }
