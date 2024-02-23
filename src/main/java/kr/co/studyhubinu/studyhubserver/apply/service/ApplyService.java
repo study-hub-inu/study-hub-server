@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.apply.service;
 
 import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
+import kr.co.studyhubinu.studyhubserver.apply.domain.implementations.ApplyWriter;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ParticipateApplyData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.RequestApplyData;
@@ -43,6 +44,7 @@ public class ApplyService {
     private final ApplyRepository applyRepository;
     private final RejectRepository rejectRepository;
     private final StudyPostApplyEventPublisher studyPostApplyEventPublisher;
+    private final ApplyWriter applyWriter;
 
     @Transactional
     public void enroll(UserId userId, EnrollApplyRequest request) {
@@ -84,7 +86,7 @@ public class ApplyService {
         userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(acceptApplyRequest.getStudyId()).orElseThrow(StudyNotFoundException::new);
         ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(acceptApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
-        applyEntity.updateAccept();
+        applyWriter.applyAccept(applyEntity);
         studyPostApplyEventPublisher.acceptApplyEventPublish(study.getId());
     }
 

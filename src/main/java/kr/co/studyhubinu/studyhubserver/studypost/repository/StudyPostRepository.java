@@ -30,7 +30,7 @@ public interface StudyPostRepository extends JpaRepository<StudyPostEntity, Long
     @Query("DELETE FROM StudyPostEntity sp WHERE sp.postedUserId = :userId")
     void deleteAllStudyPostByUserId(@Param("userId") Long userId);
 
-    @Lock(LockModeType.OPTIMISTIC)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select s from StudyPostEntity s where s.studyId = :studyId")
-    Optional<StudyPostEntity> findByIdWithOptimisticLock(Long studyId);
+    Optional<StudyPostEntity> findByIdWithPessimisticLock(@Param("studyId") Long studyId);
 }
