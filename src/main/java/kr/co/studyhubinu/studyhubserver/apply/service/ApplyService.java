@@ -81,7 +81,6 @@ public class ApplyService {
         rejectRepository.save(rejectApplyRequest.toRejectEntity());
     }
 
-    @Transactional
     public void acceptApply(AcceptApplyRequest acceptApplyRequest, UserId userId) {
         userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(acceptApplyRequest.getStudyId()).orElseThrow(StudyNotFoundException::new);

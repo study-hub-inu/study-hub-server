@@ -22,7 +22,7 @@ class StudyPostApplyEventPublisherTest {
     private StudyPostRepository studyPostRepository;
 
     @Test
-    void 스터디_지원서가_수락되면_게시글의_잔여석이_줄어든다() throws InterruptedException {
+    void 동시에_100개의_요청의_스터디_지원서가_수락되면_게시글의_잔여석이_줄어든다() throws InterruptedException {
         // given
         Long postedUserId = 1L;
         StudyPostEntity post = StudyPostEntityFixture.SQLD.studyPostEntity_생성(postedUserId);

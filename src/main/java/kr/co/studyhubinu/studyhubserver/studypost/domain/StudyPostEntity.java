@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
+import kr.co.studyhubinu.studyhubserver.exception.study.NoRemainingSeatsException;
 import kr.co.studyhubinu.studyhubserver.studypost.dto.data.UpdateStudyPostInfo;
 import kr.co.studyhubinu.studyhubserver.study.enums.StudyWayType;
 import kr.co.studyhubinu.studyhubserver.user.enums.GenderType;
@@ -117,6 +118,9 @@ public class StudyPostEntity extends BaseTimeEntity {
     }
 
     public void decreaseRemainingSeat() {
+        if (this.remainingSeat - 1 < 0) {
+            throw new NoRemainingSeatsException();
+        }
         this.remainingSeat -= 1;
     }
 }
