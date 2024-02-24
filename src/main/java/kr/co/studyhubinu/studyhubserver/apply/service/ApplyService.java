@@ -16,12 +16,16 @@ import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.apply.ApplyNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.apply.SameUserRequestException;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.StudyNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.study.StudyPostClosedException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.reject.repository.RejectRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.implementations.StudyPostApplyEventPublisher;
+import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
 import kr.co.studyhubinu.studyhubserver.user.repository.UserRepository;
@@ -43,6 +47,7 @@ public class ApplyService {
     private final StudyRepository studyRepository;
     private final ApplyRepository applyRepository;
     private final RejectRepository rejectRepository;
+    private final StudyPostRepository studyPostRepository;
     private final StudyPostApplyEventPublisher studyPostApplyEventPublisher;
     private final ApplyWriter applyWriter;
 
@@ -51,7 +56,8 @@ public class ApplyService {
         UserEntity user = userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow();
         validateSameRequest(user, study);
-
+        StudyPostEntity studyPost = studyPostRepository.findByStudyId(study.getId()).orElseThrow(PostNotFoundException::new);
+        validateEnrollClosedPost(studyPost);
         applyRepository.save(ApplyEntity.of(user.getId(), study.getId(), request.getIntroduce()));
     }
 
@@ -70,7 +76,6 @@ public class ApplyService {
                 (pageable, applyRepository.findByUserIdAndInspection(user.getId(), pageable));
         return new FindParticipateApplyResponse(totalCount, participateApplyData);
     }
-
 
     @Transactional
     public void rejectApply(final RejectApplyRequest rejectApplyRequest, final UserId userId) {
@@ -105,6 +110,12 @@ public class ApplyService {
     private void validateSameRequest(UserEntity user, StudyEntity study) {
         if (applyRepository.findByUserIdAndStudyId(user.getId(), study.getId()).isPresent()) {
             throw new SameUserRequestException();
+        }
+    }
+
+    private void validateEnrollClosedPost(StudyPostEntity studyPost) {
+        if (studyPost.isClose()) {
+            throw new StudyPostClosedException();
         }
     }
 }
