@@ -122,5 +122,8 @@ public class StudyPostEntity extends BaseTimeEntity {
             throw new NoRemainingSeatsException();
         }
         this.remainingSeat -= 1;
+        if (this.remainingSeat == 0) {
+            this.close = true;
+        }
     }
 }
