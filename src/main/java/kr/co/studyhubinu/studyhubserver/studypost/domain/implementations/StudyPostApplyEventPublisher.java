@@ -17,6 +17,7 @@ public class StudyPostApplyEventPublisher {
     public void acceptApplyEventPublish(Long studyId) {
         StudyPostEntity studyPost = studyPostRepository.findByIdWithPessimisticLock(studyId).orElseThrow(PostNotFoundException::new);
         studyPost.decreaseRemainingSeat();
+        studyPost.closeStudyPostIfRemainingSeatIsZero();
         studyPostRepository.save(studyPost);
     }
 }

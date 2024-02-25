@@ -113,15 +113,15 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.close = true;
     }
 
-    public void minusRemainingSeat() {
-        this.remainingSeat--;
-    }
-
     public void decreaseRemainingSeat() {
         if (this.remainingSeat - 1 < 0) {
             throw new NoRemainingSeatsException();
         }
         this.remainingSeat -= 1;
+
+    }
+
+    public void closeStudyPostIfRemainingSeatIsZero() {
         if (this.remainingSeat == 0) {
             this.close = true;
         }
