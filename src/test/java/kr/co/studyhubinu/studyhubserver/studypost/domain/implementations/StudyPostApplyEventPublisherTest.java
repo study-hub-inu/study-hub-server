@@ -3,6 +3,7 @@ package kr.co.studyhubinu.studyhubserver.studypost.domain.implementations;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.support.fixture.StudyPostEntityFixture;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,6 +21,11 @@ class StudyPostApplyEventPublisherTest {
     private StudyPostApplyEventPublisher studyPostApplyEventPublisher;
     @Autowired
     private StudyPostRepository studyPostRepository;
+
+    @AfterEach
+    public void after() {
+        studyPostRepository.deleteAll();
+    }
 
     @Test
     void 동시에_100개의_요청의_스터디_지원서가_수락되면_게시글의_잔여석이_줄어든다() throws InterruptedException {

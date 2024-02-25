@@ -5,12 +5,12 @@ import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
-import kr.co.studyhubinu.studyhubserver.apply.dto.request.UpdateApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
-import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
+import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
@@ -25,7 +25,6 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -58,6 +57,7 @@ class ApplyServiceTest {
                 .build();
         UserEntity user = UserEntity.builder().id(1L).build();
         StudyEntity study = StudyEntity.builder().id(1L).build();
+        StudyPostEntity studyPost = StudyPostEntity.builder().id(1L).build();
 
         when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user));
         when(studyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(study));
@@ -65,6 +65,7 @@ class ApplyServiceTest {
                 .userId(user.getId())
                 .studyId(study.getId())
                 .build());
+        when(studyPostRepository.findByStudyId(anyLong())).thenReturn(Optional.ofNullable(studyPost));
 
         // when, then
         applyService.enroll(new UserId(1L), request);
