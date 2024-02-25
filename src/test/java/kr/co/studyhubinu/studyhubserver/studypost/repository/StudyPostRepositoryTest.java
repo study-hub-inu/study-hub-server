@@ -95,9 +95,9 @@ class StudyPostRepositoryTest {
         Long postedUserId = 1L;
         Long bookmarkedUserId = 2L;
         StudyPostEntity post1 = StudyPostEntityFixture.SQLD.studyPostEntity_생성(postedUserId);
+        studyPostRepository.save(post1);
         StudyPostEntity post2 = StudyPostEntityFixture.ENGINEER_INFORMATION_PROCESSING.studyPostEntity_생성(postedUserId);
         StudyPostEntity post3 = StudyPostEntityFixture.TOEIC.studyPostEntity_생성(postedUserId);
-        studyPostRepository.save(post1);
         studyPostRepository.save(post2);
         studyPostRepository.save(post3);
         BookmarkEntity bookmark1 = BookmarkEntityFixture.BOOKMARK_POST1.bookMarkEntity_생성(post1.getId(), bookmarkedUserId);
