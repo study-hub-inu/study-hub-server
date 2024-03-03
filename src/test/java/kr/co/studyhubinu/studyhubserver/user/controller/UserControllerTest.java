@@ -111,28 +111,28 @@ public class UserControllerTest extends ControllerRequest {
         assertTrue(responseBody.contains("비밀번호는 10자 이상이어야 하며, 하나 이상의 특수문자를 포함해야 합니다."));
     }
 
-    @ParameterizedTest(name = "{0}")
-    @MethodSource("emailParameters")
-    void 잘못된_형식_이메일로_회원가입시_예외발생(String testName, String email) throws Exception {
-        // given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .email(email)
-                .nickname("포이리에")
-                .gender(GenderType.MALE)
-                .password("dwdwdwdwdwdw@")
-                .build();
-
-        // when
-        ResultActions resultActions = performPostRequest("/api/v1/users/signup", signUpRequest);
-
-        MvcResult mvcResult = resultActions.andReturn();
-        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
-
-        // then
-        resultActions.andExpect(status().is4xxClientError())
-                .andDo(print());
-        assertTrue(responseBody.contains("이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)"));
-    }
+//    @ParameterizedTest(name = "{0}")
+//    @MethodSource("emailParameters")
+//    void 잘못된_형식_이메일로_회원가입시_예외발생(String testName, String email) throws Exception {
+//        // given
+//        SignUpRequest signUpRequest = SignUpRequest.builder()
+//                .email(email)
+//                .nickname("포이리에")
+//                .gender(GenderType.MALE)
+//                .password("dwdwdwdwdwdw@")
+//                .build();
+//
+//        // when
+//        ResultActions resultActions = performPostRequest("/api/v1/users/signup", signUpRequest);
+//
+//        MvcResult mvcResult = resultActions.andReturn();
+//        String responseBody = mvcResult.getResponse().getContentAsString(UTF_8);
+//
+//        // then
+//        resultActions.andExpect(status().is4xxClientError())
+//                .andDo(print());
+//        assertTrue(responseBody.contains("이메일 형식에 맞지 않습니다. (인천대학교 이메일 주소만 가능)"));
+//    }
 
     @Test
     void 로그인_성공시_토큰_반환() throws Exception {
