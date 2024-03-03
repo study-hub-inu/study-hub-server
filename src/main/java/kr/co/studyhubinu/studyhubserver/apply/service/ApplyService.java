@@ -4,6 +4,7 @@ import kr.co.studyhubinu.studyhubserver.apply.domain.ApplyEntity;
 import kr.co.studyhubinu.studyhubserver.apply.domain.implementations.ApplyWriter;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ParticipateApplyData;
+import kr.co.studyhubinu.studyhubserver.apply.dto.data.RejectApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.RequestApplyData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.AcceptApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.EnrollApplyRequest;
@@ -12,6 +13,7 @@ import kr.co.studyhubinu.studyhubserver.apply.dto.request.RejectApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindMyRequestApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindParticipateApplyResponse;
+import kr.co.studyhubinu.studyhubserver.apply.dto.response.FindRejectApplyResponse;
 import kr.co.studyhubinu.studyhubserver.apply.repository.ApplyRepository;
 import kr.co.studyhubinu.studyhubserver.common.dto.Converter;
 import kr.co.studyhubinu.studyhubserver.exception.apply.ApplyNotFoundException;
@@ -19,6 +21,7 @@ import kr.co.studyhubinu.studyhubserver.exception.apply.SameUserRequestException
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.StudyNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.study.StudyPostClosedException;
+import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.reject.repository.RejectRepository;
 import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
@@ -64,8 +67,20 @@ public class ApplyService {
     public FindApplyResponse findApply(FindApplyRequest request, final int page, final int size) {
         Pageable pageable = PageRequest.of(page, size);
         Slice<ApplyUserData> userData = Converter.toSlice(pageable, applyRepository.findStudyByIdAndInspection(request, pageable));
-
         return new FindApplyResponse((long) size, userData);
+    }
+
+    public FindRejectApplyResponse findRejectApply(Long userId, Long studyId, int page, int size) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        StudyEntity study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);
+        validIsMasterUserOfStudy(user, study);
+        Pageable pageable = PageRequest.of(page, size);
+        Slice<RejectApplyUserData> rejectApplyUserData = Converter.toSlice(pageable, applyRepository.findRejectStudyById(studyId, pageable));
+        return new FindRejectApplyResponse((long) size, rejectApplyUserData);
+    }
+
+    private void validIsMasterUserOfStudy(UserEntity user, StudyEntity study) {
+        if (!study.isMasterOfUser(user.getId())) throw new UserNotAccessRightException();
     }
 
     public FindParticipateApplyResponse getParticipateApply(final UserId userId, final int page, final int size) {

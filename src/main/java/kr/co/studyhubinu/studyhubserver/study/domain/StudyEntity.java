@@ -50,4 +50,7 @@ public class StudyEntity extends BaseTimeEntity {
         this.major = major;
     }
 
+    public boolean isMasterOfUser(Long userId) {
+        return this.masterUserId.equals(userId);
+    }
 }

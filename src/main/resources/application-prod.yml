@@ -29,6 +29,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: ALWAYS
+    job:
+      enabled: false
 
   mail:
     host: smtp.gmail.com

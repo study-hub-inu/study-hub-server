@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.ParticipateApplyData;
+import kr.co.studyhubinu.studyhubserver.apply.dto.data.RejectApplyUserData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.data.RequestApplyData;
 import kr.co.studyhubinu.studyhubserver.apply.dto.request.FindApplyRequest;
 import kr.co.studyhubinu.studyhubserver.apply.enums.Inspection;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static kr.co.studyhubinu.studyhubserver.reject.domain.QRejectEntity.rejectEntity;
 import static kr.co.studyhubinu.studyhubserver.study.domain.QStudyEntity.studyEntity;
 import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.studyPostEntity;
 import static kr.co.studyhubinu.studyhubserver.user.domain.QUserEntity.userEntity;
@@ -83,6 +85,25 @@ public class ApplyRepositoryImpl implements ApplyRepositoryCustom {
                 .innerJoin(studyEntity).on(applyEntity.studyId.eq(studyEntity.id))
                 .innerJoin(studyPostEntity).on(studyPostEntity.studyId.eq(studyEntity.id))
                 .where(applyEntity.userId.eq(userId), applyEntity.inspection.in(Inspection.STANDBY, Inspection.REJECT))
+                .orderBy(applyEntity.createdDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize() + 1)
+                .fetch();
+    }
+
+    @Override
+    public List<RejectApplyUserData> findRejectStudyById(Long studyId, Pageable pageable) {
+        return jpaQueryFactory
+                .select(Projections.constructor(RejectApplyUserData.class,
+                        userEntity.id, userEntity.nickname, userEntity.major, userEntity.imageUrl,
+                        applyEntity.introduce, applyEntity.createdDate, applyEntity.inspection, rejectEntity.rejectReason))
+                .from(applyEntity)
+                .innerJoin(userEntity).on(applyEntity.userId.eq(userEntity.id))
+                .innerJoin(rejectEntity)
+                .on(applyEntity.userId.eq(rejectEntity.rejectedUserId)
+                        .and(applyEntity.studyId.eq(rejectEntity.studyId)))
+                .where(applyEntity.studyId.eq(studyId)
+                        .and(applyEntity.inspection.eq(Inspection.REJECT)))
                 .orderBy(applyEntity.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize() + 1)
