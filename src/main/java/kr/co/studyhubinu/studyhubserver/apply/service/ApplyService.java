@@ -70,6 +70,15 @@ public class ApplyService {
         return new FindApplyResponse((long) size, userData);
     }
 
+    public FindApplyResponse findApplyV2(Long userId, FindApplyRequest request, int page, int size) {
+        UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        StudyEntity study = studyRepository.findById(request.getStudyId()).orElseThrow(StudyNotFoundException::new);
+        validIsMasterUserOfStudy(user, study);
+        Pageable pageable = PageRequest.of(page, size);
+        Slice<ApplyUserData> userData = Converter.toSlice(pageable, applyRepository.findStudyByIdAndInspection(request, pageable));
+        return new FindApplyResponse((long) size, userData);
+    }
+
     public FindRejectApplyResponse findRejectApply(Long userId, Long studyId, int page, int size) {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(studyId).orElseThrow(StudyNotFoundException::new);

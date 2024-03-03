@@ -64,6 +64,18 @@ public class ApplyController {
         return applyService.findApply(new FindApplyRequest(studyId, inspection), page, size);
     }
 
+    @Operation(summary = "스터디 참여 신청 정보 조회 jwt포함", description = "해당 스터디 Id, 신청 정보를 파라미터로 보내주세요.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", value = "페이지", required = true),
+            @ApiImplicitParam(name = "size", value = "사이즈", required = true),
+            @ApiImplicitParam(name = "studyId", value = "스터디 식별자", required = true),
+            @ApiImplicitParam(name = "inspection", value = "상태", required = true)
+    })
+    @GetMapping("/v3/study")
+    public FindApplyResponse findStudyEnrollV2(UserId userId, @RequestParam Long studyId, @RequestParam Inspection inspection, @RequestParam int page, @RequestParam int size) {
+        return applyService.findApplyV2(userId.getId(), new FindApplyRequest(studyId, inspection), page, size);
+    }
+
     @Operation(summary = "스터디 참여 신청 정보 조회(거절)", description = "해당 스터디 id를 보내주세요.")
     @GetMapping("/v1/study-reject")
     public FindRejectApplyResponse findRejectApply(UserId userId, @RequestParam Long studyId, @RequestParam int page, @RequestParam int size) {
