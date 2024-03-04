@@ -39,9 +39,9 @@ public class ApplyController {
     @Operation(summary = "스터디 참여 신청 거절",
             description = "JWT 헤더에 보내주시면 됩니다!")
     @PutMapping("/v1/study-reject")
-    public ResponseEntity<HttpStatus> rejectApply(@RequestBody @Valid final RejectApplyRequest rejectApplyRequest, final UserId userId) {
+    public ResponseEntity<Long> rejectApply(@RequestBody @Valid final RejectApplyRequest rejectApplyRequest, final UserId userId) {
         applyService.rejectApply(rejectApplyRequest, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(userId.getId());
     }
 
     @Operation(summary = "스터디 참여 신청 수락",
