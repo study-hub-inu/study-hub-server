@@ -37,7 +37,7 @@ public class ApplyController {
     }
 
     @Operation(summary = "스터디 참여 신청 거절",
-            description = "JWT 헤더에 보내주시면 됩니다!")
+            description = "JWT 헤더에 보내주시면 됩니다!!")
     @PutMapping("/v1/study-reject")
     public ResponseEntity<Long> rejectApply(@RequestBody @Valid final RejectApplyRequest rejectApplyRequest, final UserId userId) {
         applyService.rejectApply(rejectApplyRequest, userId);
