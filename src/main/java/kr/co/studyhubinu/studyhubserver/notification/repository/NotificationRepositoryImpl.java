@@ -3,7 +3,6 @@ package kr.co.studyhubinu.studyhubserver.notification.repository;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.co.studyhubinu.studyhubserver.notification.domain.QNotificationEntity;
 import kr.co.studyhubinu.studyhubserver.notification.dto.response.NotificationResponse;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.studyhubinu.studyhubserver.notification.domain.QNotificationEntity.notificationEntity;
 import static kr.co.studyhubinu.studyhubserver.studypost.domain.QStudyPostEntity.studyPostEntity;
 
 
