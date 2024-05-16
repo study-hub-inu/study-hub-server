@@ -17,7 +17,7 @@ public class BookmarkController {
 
     private final BookmarkService bookmarkService;
 
-    @Operation(summary = "북마크 저장, 삭제", description = "북마크가 되어있으면 삭제, 북마크 안되어있으면 북마크 생성")
+    @Operation(summary = "북마크 저장, 삭제", description = "북마크가 되어있으면 삭제, 북마크 안되어있으면 북마크 생성합니다")
     @PostMapping("/v1/bookmark/{postId}")
     public ResponseEntity<GetDoBookmarkResponse> saveBookMark(final UserId userId, @PathVariable final Long postId) {
         final boolean created = bookmarkService.doBookMark(userId.getId(), postId);
