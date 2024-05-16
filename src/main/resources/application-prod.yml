@@ -6,7 +6,7 @@ server:
 
 spring:
   redis:
-    host: studyhub-redis.reoorm.ng.0001.apn2.cache.amazonaws.com
+    host: studyhubredis-ro.hpuolf.ng.0001.apn2.cache.amazonaws.com
     port: 6379
   datasource:
     url: jdbc:mysql://${rds.hostname}:${rds.port}/${rds.db.name}?allowPublicKeyRetrieval=true&useSSL=false
@@ -63,15 +63,11 @@ cloud:
     s3:
       bucket: ${s3.name}
 
-firebase:
-  project:
-    id: ${firebase.project.id}
-
-sentry:
-  dsn: ${sentry_dsn_value}
-  traces-sample-rate: 1.0
-  exception-resolver-order: -2147483647   #including ones handled by @ExceptionHandler annotated methods.
-  debug: true
-  logging:
-    enabled: true
-    minimum-event-level: warn
+#sentry:
+#  dsn: ${sentry_dsn_value}
+#  traces-sample-rate: 1.0
+#  exception-resolver-order: -2147483647   #including ones handled by @ExceptionHandler annotated methods.
+#  debug: true
+#  logging:
+#    enabled: true
+#    minimum-event-level: warn
