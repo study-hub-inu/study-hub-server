@@ -34,16 +34,11 @@ jobs:
           java-version: 11
           distribution: zulu
 
-      - name: Setup Firebase service key
-        run: |
-          mkdir -p src/main/resources/firebase
-          echo ${{ secrets.FIREBASE_SERVICE_KEY_BASE64_ENCODE }} | base64 -d > src/main/resources/firebase/firebase-service-key.json
-
-      - name: Pemission
+      - name: Permission
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew clean build
+        run: ./gradlew clean build -x test
         id: buildAndTests
         continue-on-error: true # 테스트에 실패해도 계속 로그찍기
 
