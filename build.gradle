@@ -125,9 +125,26 @@ jacocoTestReport {
 
     afterEvaluate {
 
-        classDirectories.setFrom(files(classDirectories.files.collect {
-            fileTree(dir: it,
-                    exclude: [] + Qdomains)
+        classDirectories.setFrom(files(classDirectories.files.collect { dir ->
+            fileTree(dir: dir, exclude: Qdomains + [
+                    '**/*Request*',
+                    '**/*Response*',
+                    '**/SwaggerConfig*',
+                    '**/BatchConfig*',
+                    '**/RedisConfig*',
+                    '**/StudyPostJobConfig*',
+                    '**/CorsConfig*',
+                    '**/S3Config*',
+                    '**/QuerydslConfig*',
+                    '**/RestTemplateConfig*',
+                    '**/defaultController*',
+                    '**/RestTemplateConfig*',
+                    '**/CustomResponseUtil*',
+                    '**/QueryStringArgumentResolver*',
+                    '**/UserIdArgumentResolver*',
+                    '**/TimerAop*',
+                    '**/JpaAuditingConfig*'
+            ])
         }))
     }
 

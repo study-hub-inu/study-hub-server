@@ -63,11 +63,11 @@ cloud:
     s3:
       bucket: ${s3.name}
 
-#sentry:
-#  dsn: ${sentry_dsn_value}
-#  traces-sample-rate: 1.0
-#  exception-resolver-order: -2147483647   #including ones handled by @ExceptionHandler annotated methods.
-#  debug: true
-#  logging:
-#    enabled: true
-#    minimum-event-level: warn
+sentry:
+  dsn: ${sentry_dsn_value}
+  traces-sample-rate: 1.0
+  exception-resolver-order: -2147483647   #including ones handled by @ExceptionHandler annotated methods.
+  debug: true
+  logging:
+    enabled: true
+    minimum-event-level: warn
