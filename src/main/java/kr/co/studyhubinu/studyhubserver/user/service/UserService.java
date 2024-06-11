@@ -4,14 +4,10 @@ import kr.co.studyhubinu.studyhubserver.config.PasswordEncoder;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtProvider;
 import kr.co.studyhubinu.studyhubserver.config.jwt.JwtResponseDto;
 import kr.co.studyhubinu.studyhubserver.exception.common.CustomException;
-import kr.co.studyhubinu.studyhubserver.exception.user.AlreadyExistUserException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNicknameDuplicateException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
-import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
 import kr.co.studyhubinu.studyhubserver.exception.user.*;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserActivityFinder;
-import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserDeleter;
+import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.*;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.SignInRequest;
 import kr.co.studyhubinu.studyhubserver.user.dto.request.UpdatePasswordRequest;
@@ -22,8 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Connection;
-
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,7 +25,7 @@ import java.sql.Connection;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private static final String BASIC_PROFILE_IMAGE = "https://studyhub-s3.s3.ap-northeast-2.amazonaws.com/avatar_l%401x.png";
+    private static final String BASIC_PROFILE_IMAGE = "https://mystudyhubbucket.s3.ap-northeast-2.amazonaws.com/avatar_xl%404x.png";
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserActivityFinder userActivityFinder;
