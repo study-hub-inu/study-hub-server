@@ -1,6 +1,7 @@
 package kr.co.studyhubinu.studyhubserver.studypost.domain.implementations;
 
 import kr.co.studyhubinu.studyhubserver.common.timer.Timer;
+import kr.co.studyhubinu.studyhubserver.exception.apply.StudyApplyLockAcquisitionException;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +28,11 @@ public class StudyPostApplyEventPublisher {
         try {
             available = lock.tryLock(10, 1, TimeUnit.SECONDS);
             if (!available) {
-                log.info("락 획득 실패 for studyPostId: " + studyPost.getId());
-                return;
+                throw new StudyApplyLockAcquisitionException();
             }
             studyPostWriter.updateStudyPostApply(studyPost.getId());
         } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new StudyApplyLockAcquisitionException();
         } finally {
             if (available) {
                 lock.unlock();
