@@ -17,7 +17,6 @@ public class StudyPostReader {
     private final StudyPostRepository studyPostRepository;
 
     public StudyPostEntity readByStudyId(Long studyId) {
-        log.info("dddddddddd 게시글 읽음");
         return studyPostRepository.findByStudyId(studyId).orElseThrow(PostNotFoundException::new);
     }
 

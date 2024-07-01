@@ -20,7 +20,6 @@ public class StudyPostApplyEventPublisher {
     private final StudyPostWriter studyPostWriter;
     private final StudyPostReader studyPostReader;
 
-    @Timer
     public void acceptApplyEventPublish(Long studyId) {
         StudyPostEntity studyPost = studyPostReader.readByStudyId(studyId);
         RLock lock = redissonClient.getLock(studyPost.getId().toString());
