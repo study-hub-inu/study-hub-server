@@ -90,7 +90,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.studyId = studyId;
     }
 
-    public void update(UpdateStudyPostInfo info) {
+    public void update(UpdateStudyPostInfo info, int currentJoinCount) {
         this.title = info.getTitle();
         this.content = info.getContent();
         this.chatUrl = info.getChatUrl();
@@ -103,6 +103,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.close = info.isClose();
         this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
+        this.remainingSeat = info.getStudyPerson() - currentJoinCount;
     }
 
     public boolean isPostOfUser(Long userId) {
