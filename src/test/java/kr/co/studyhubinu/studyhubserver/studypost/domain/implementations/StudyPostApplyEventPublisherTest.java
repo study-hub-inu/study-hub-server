@@ -16,7 +16,6 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@Disabled
 class StudyPostApplyEventPublisherTest {
 
     @Autowired
@@ -42,7 +41,7 @@ class StudyPostApplyEventPublisherTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    studyPostApplyEventPublisher.acceptApplyEventPublish(post.getStudyId());
+                    studyPostApplyEventPublisher.acceptApplyEventPublish(savedPost.getId());
                 } finally {
                     latch.countDown();
                 }
