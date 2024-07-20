@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class RedissonDistributedLockAop {
 
     private final RedissonClient redissonClient;
+    private static final int LOCK_WAIT_TIME = 10;
+    private static final int LOCK_LEASE_TIME = 3;
 
     @Around("@annotation(kr.co.studyhubinu.studyhubserver.common.redisson.RedissonDistributedLock)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -35,7 +37,7 @@ public class RedissonDistributedLockAop {
         Object result;
         boolean available = false;
         try {
-            available = lock.tryLock(10, 3, TimeUnit.SECONDS);
+            available = lock.tryLock(LOCK_WAIT_TIME, LOCK_LEASE_TIME, TimeUnit.SECONDS);
             if (!available) {
                 log.warn("Redisson GetLock Timeout {}", field);
                 throw new StudyApplyLockAcquisitionException();

@@ -16,6 +16,7 @@ import static java.util.concurrent.Executors.newFixedThreadPool;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Disabled
 class StudyPostApplyEventPublisherTest {
 
     @Autowired

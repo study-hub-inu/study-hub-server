@@ -3,7 +3,6 @@ package kr.co.studyhubinu.studyhubserver.studypost.domain.implementations;
 import kr.co.studyhubinu.studyhubserver.common.redisson.RedissonDistributedLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,9 +10,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StudyPostApplyEventPublisher {
 
-    private final RedissonClient redissonClient;
     private final StudyPostWriter studyPostWriter;
-    private final StudyPostReader studyPostReader;
 
     @RedissonDistributedLock(hashKey = "'apply'", field = "#studyPostId")
     public void acceptApplyEventPublish(Long studyPostId) {
