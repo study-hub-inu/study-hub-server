@@ -1,6 +1,6 @@
 package kr.co.studyhubinu.studyhubserver.common.redisson;
 
-import kr.co.studyhubinu.studyhubserver.exception.apply.StudyApplyLockAcquisitionException;
+import kr.co.studyhubinu.studyhubserver.exception.apply.LockAcquisitionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -40,12 +40,12 @@ public class RedissonDistributedLockAop {
             available = lock.tryLock(LOCK_WAIT_TIME, LOCK_LEASE_TIME, TimeUnit.SECONDS);
             if (!available) {
                 log.warn("Redisson GetLock Timeout {}", field);
-                throw new StudyApplyLockAcquisitionException();
+                throw new LockAcquisitionException();
             }
 
             result = joinPoint.proceed();
         } catch (InterruptedException e) {
-            throw new StudyApplyLockAcquisitionException();
+            throw new LockAcquisitionException();
         } finally {
             if (available) {
                 lock.unlock();
