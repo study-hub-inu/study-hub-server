@@ -42,7 +42,7 @@ class StudyPostApplyEventPublisherTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    studyPostApplyEventPublisher.acceptApplyEventPublish(post.getStudyId());
+                    studyPostApplyEventPublisher.acceptApplyEventPublish(savedPost.getId());
                 } finally {
                     latch.countDown();
                 }
