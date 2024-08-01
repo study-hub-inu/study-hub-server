@@ -2,7 +2,6 @@ package kr.co.studyhubinu.studyhubserver.email.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import kr.co.studyhubinu.studyhubserver.email.dto.data.MailInfo;
-import kr.co.studyhubinu.studyhubserver.email.validate.InuEmail;
 import kr.co.studyhubinu.studyhubserver.email.validate.NormalEmail;
 import lombok.Getter;
 

@@ -1,16 +1,19 @@
 package kr.co.studyhubinu.studyhubserver.email.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import kr.co.studyhubinu.studyhubserver.email.dto.request.MailSendRequest;
 import kr.co.studyhubinu.studyhubserver.email.dto.request.MailValidDuplicationRequest;
 import kr.co.studyhubinu.studyhubserver.email.dto.request.MailValidRequest;
 import kr.co.studyhubinu.studyhubserver.email.dto.request.QuestionRequest;
 import kr.co.studyhubinu.studyhubserver.email.dto.response.ValidEmailResponse;
 import kr.co.studyhubinu.studyhubserver.email.service.EmailService;
-import kr.co.studyhubinu.studyhubserver.email.dto.request.MailSendRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;

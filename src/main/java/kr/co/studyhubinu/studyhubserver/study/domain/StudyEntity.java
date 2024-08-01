@@ -2,7 +2,10 @@ package kr.co.studyhubinu.studyhubserver.study.domain;
 
 import kr.co.studyhubinu.studyhubserver.common.domain.BaseTimeEntity;
 import kr.co.studyhubinu.studyhubserver.user.enums.MajorType;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;

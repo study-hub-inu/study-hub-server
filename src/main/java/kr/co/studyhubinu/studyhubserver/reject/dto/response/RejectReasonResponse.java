@@ -1,6 +1,5 @@
 package kr.co.studyhubinu.studyhubserver.reject.dto.response;
 
-import kr.co.studyhubinu.studyhubserver.reject.domain.RejectEntity;
 import lombok.Getter;
 
 @Getter
