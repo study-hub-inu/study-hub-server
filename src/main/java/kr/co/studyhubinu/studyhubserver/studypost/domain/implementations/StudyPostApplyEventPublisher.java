@@ -1,23 +1,44 @@
 package kr.co.studyhubinu.studyhubserver.studypost.domain.implementations;
 
-import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
-import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
-import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
+import kr.co.studyhubinu.studyhubserver.common.redisson.RedissonDistributedLock;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class StudyPostApplyEventPublisher {
 
-    private final StudyPostRepository studyPostRepository;
+    private final StudyPostWriter studyPostWriter;
 
-    @Transactional
-    public void acceptApplyEventPublish(Long studyId) {
-        StudyPostEntity studyPost = studyPostRepository.findByIdWithPessimisticLock(studyId).orElseThrow(PostNotFoundException::new);
-        studyPost.decreaseRemainingSeat();
-        studyPost.closeStudyPostIfRemainingSeatIsZero();
-        studyPostRepository.save(studyPost);
+    @RedissonDistributedLock(hashKey = "'apply'", field = "#studyPostId")
+    public void acceptApplyEventPublish(Long studyPostId) {
+        studyPostWriter.updateStudyPostApply(studyPostId);
     }
+
+    //        RLock lock = redissonClient.getLock(studyPostId.toString());
+//        boolean available = false;
+//        try {
+//            available = lock.tryLock(10, 1, TimeUnit.SECONDS);
+//            if (!available) {
+//                throw new StudyApplyLockAcquisitionException();
+//            }
+//            studyPostWriter.updateStudyPostApply(studyPostId);
+//        } catch (InterruptedException e) {
+//            throw new StudyApplyLockAcquisitionException();
+//        } finally {
+//            if (available) {
+//                lock.unlock();
+//            }
+//        }
+    //    @Transactional
+//    public void acceptApplyEventPublish(Long studyId) {
+//        StudyPostEntity studyPost = studyPostRepository.findByIdWithPessimisticLock(studyId).orElseThrow(PostNotFoundException::new);
+//        studyPost.decreaseRemainingSeat();
+//        studyPost.closeStudyPostIfRemainingSeatIsZero();
+//        studyPostRepository.save(studyPost);
+//    }
+
+
 }

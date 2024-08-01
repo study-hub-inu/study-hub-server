@@ -2,6 +2,7 @@ package kr.co.studyhubinu.studyhubserver.studypost.service;
 
 import kr.co.studyhubinu.studyhubserver.exception.study.PostEndDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostNotFoundException;
+import kr.co.studyhubinu.studyhubserver.exception.study.PostRemainingSeatOverStudyPerson;
 import kr.co.studyhubinu.studyhubserver.exception.study.PostStartDateConflictException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotAccessRightException;
 import kr.co.studyhubinu.studyhubserver.exception.user.UserNotFoundException;
@@ -51,9 +52,20 @@ public class StudyPostService {
         StudyPostEntity post = findPost(info.getPostId());
         validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         validatePostByUser(user.getId(), post);
-        post.update(info);
+        int currentJoinCount = getCurrentJoinCount(info.getStudyPerson(), post.getRemainingSeat(), post.getRemainingSeat());
+        post.update(info, currentJoinCount);
         return post.getId();
     }
+
+    private int getCurrentJoinCount(int studyPerson, Integer updateRemainingSeat, Integer remainingSeat) {
+        int currentJoinCount = studyPerson - remainingSeat;
+        if(studyPerson - currentJoinCount <= 0) {
+            throw new PostRemainingSeatOverStudyPerson();
+        }
+        return currentJoinCount;
+    }
+
+    // 총10명 3명 들어와서 잔여석 7명됬어, 근데 총 인원 5명으로 하면 5-3 해서 2가 되어야돼 근데
 
     @Transactional
     public void deletePost(Long postId, Long userId) {

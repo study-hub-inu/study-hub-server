@@ -28,6 +28,7 @@ import kr.co.studyhubinu.studyhubserver.study.domain.StudyEntity;
 import kr.co.studyhubinu.studyhubserver.study.repository.StudyRepository;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.StudyPostEntity;
 import kr.co.studyhubinu.studyhubserver.studypost.domain.implementations.StudyPostApplyEventPublisher;
+import kr.co.studyhubinu.studyhubserver.studypost.domain.implementations.StudyPostReader;
 import kr.co.studyhubinu.studyhubserver.studypost.repository.StudyPostRepository;
 import kr.co.studyhubinu.studyhubserver.user.domain.UserEntity;
 import kr.co.studyhubinu.studyhubserver.user.dto.data.UserId;
@@ -43,7 +44,6 @@ import static kr.co.studyhubinu.studyhubserver.apply.enums.Inspection.ACCEPT;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
 public class ApplyService {
 
     private final UserRepository userRepository;
@@ -53,6 +53,7 @@ public class ApplyService {
     private final StudyPostRepository studyPostRepository;
     private final StudyPostApplyEventPublisher studyPostApplyEventPublisher;
     private final ApplyWriter applyWriter;
+    private final StudyPostReader studyPostReader;
 
     @Transactional
     public void enroll(UserId userId, EnrollApplyRequest request) {
@@ -110,13 +111,13 @@ public class ApplyService {
         rejectRepository.save(rejectApplyRequest.toRejectEntity());
     }
 
-    @Transactional
     public void acceptApply(AcceptApplyRequest acceptApplyRequest, UserId userId) {
         userRepository.findById(userId.getId()).orElseThrow(UserNotFoundException::new);
         StudyEntity study = studyRepository.findById(acceptApplyRequest.getStudyId()).orElseThrow(StudyNotFoundException::new);
         ApplyEntity applyEntity = applyRepository.findByUserIdAndStudyId(acceptApplyRequest.getRejectedUserId(), study.getId()).orElseThrow(ApplyNotFoundException::new);
+        StudyPostEntity studyPost = studyPostReader.readByStudyId(study.getId());
         applyWriter.applyAccept(applyEntity);
-        studyPostApplyEventPublisher.acceptApplyEventPublish(study.getId());
+        studyPostApplyEventPublisher.acceptApplyEventPublish(studyPost.getId());
     }
 
     @Transactional
