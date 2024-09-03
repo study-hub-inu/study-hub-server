@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private static final String BASIC_PROFILE_IMAGE = "https://mystudyhubbucket.s3.ap-northeast-2.amazonaws.com/avatar_s%404x.png";
+    private static final String BASIC_PROFILE_IMAGE = "https://studyhub-s3-bucket.s3.ap-northeast-2.amazonaws.com/avatar_s%403x.png";
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserActivityFinder userActivityFinder;
