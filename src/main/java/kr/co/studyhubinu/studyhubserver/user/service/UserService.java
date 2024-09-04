@@ -124,4 +124,5 @@ public class UserService {
     private UserEntity getUserByEmail(UpdatePasswordRequest passwordRequest) {
         return userRepository.findByEmail(passwordRequest.getEmail()).orElseThrow(UserNotFoundException::new);
     }
+
 }
