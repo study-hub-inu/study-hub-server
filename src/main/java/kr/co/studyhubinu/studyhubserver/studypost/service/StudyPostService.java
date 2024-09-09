@@ -52,14 +52,15 @@ public class StudyPostService {
         StudyPostEntity post = findPost(info.getPostId());
         validStudyPostDate(info.getStudyStartDate(), info.getStudyEndDate());
         validatePostByUser(user.getId(), post);
-        int currentJoinCount = getCurrentJoinCount(info.getStudyPerson(), post.getRemainingSeat(), post.getRemainingSeat());
+        int currentJoinCount = validRemainingSeatOverStudyPerson(post.getStudyPerson(), post.getRemainingSeat(), info.getStudyPerson());
         post.update(info, currentJoinCount);
         return post.getId();
     }
 
-    private int getCurrentJoinCount(int studyPerson, Integer updateRemainingSeat, Integer remainingSeat) {
-        int currentJoinCount = studyPerson - remainingSeat;
-        if(studyPerson - currentJoinCount <= 0) {
+    // 15/8 (7) -> 15를 13로 만들고 싶어 13/6 (7)
+    private int validRemainingSeatOverStudyPerson(int currentStudyPerson, Integer currentRemainingSeat, int updateStudyPerson) {
+        int currentJoinCount = currentStudyPerson - currentRemainingSeat;
+        if(updateStudyPerson - currentJoinCount <= 0) {
             throw new PostRemainingSeatOverStudyPerson();
         }
         return currentJoinCount;

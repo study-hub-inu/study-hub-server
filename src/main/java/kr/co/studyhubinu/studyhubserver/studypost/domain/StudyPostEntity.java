@@ -104,6 +104,7 @@ public class StudyPostEntity extends BaseTimeEntity {
         this.studyStartDate = info.getStudyStartDate();
         this.studyEndDate = info.getStudyEndDate();
         this.remainingSeat = info.getStudyPerson() - currentJoinCount;
+        closeStudyPostIfRemainingSeatIsZero();
     }
 
     public boolean isPostOfUser(Long userId) {
