@@ -61,5 +61,5 @@ jobs:
           port: 22
           script: |
             sudo docker pull ${{ secrets.DOCKER_REPO }}/studyhub_backend
-            sudo docker compose -f docker-compose-app.yml down
-            sudo docker compose -f docker-compose-app.yml up -d
+            sudo docker compose down
+            sudo docker compose up -d
