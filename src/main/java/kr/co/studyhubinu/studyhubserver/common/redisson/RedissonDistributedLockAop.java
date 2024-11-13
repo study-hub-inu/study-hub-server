@@ -21,8 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class RedissonDistributedLockAop {
 
     private final RedissonClient redissonClient;
-    private static final int LOCK_WAIT_TIME = 10;
-    private static final int LOCK_LEASE_TIME = 3;
+    private static final int LOCK_WAIT_TIME = 3;
+    private static final int LOCK_LEASE_TIME = 1;
 
     @Around("@annotation(kr.co.studyhubinu.studyhubserver.common.redisson.RedissonDistributedLock)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
