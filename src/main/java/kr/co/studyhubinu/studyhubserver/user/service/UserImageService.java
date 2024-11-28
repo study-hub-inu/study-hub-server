@@ -25,7 +25,7 @@ public class UserImageService {
     private final AmazonS3 amazonS3;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
-    private static final String BASIC_PROFILE_IMAGE = "https://studyhub-s3.s3.ap-northeast-2.amazonaws.com/avatar_l%401x.png";
+    private static final String BASIC_PROFILE_IMAGE = "https://studyhub-s3-bucket.s3.ap-northeast-2.amazonaws.com/avatar_s%403x.png";
 
     public void uploadUserImage(Long userId, MultipartFile multipartFile) throws IOException {
         UserEntity user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
